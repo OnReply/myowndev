@@ -20,6 +20,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import TableFooter from 'dashboard/components/widgets/TableFooter';
+import { buildPortalArticleURL } from 'dashboard/helper/portalHelper';
 
 import NotificationTable from './NotificationTable';
 export default {
@@ -56,8 +57,22 @@ export default {
         unreadCount: this.meta.unreadCount,
       });
 
-      this.$router.push(
-        `/app/accounts/${this.accountId}/conversations/${conversationId}`
+      if (primaryActorType === 'Article') {
+        const url = this.portalLink(notification);
+        window.open(url, '_blank');
+      } else {
+        this.$router.push(
+          `/app/accounts/${this.accountId}/conversations/${conversationId}`
+        );
+      }
+    },
+    portalLink(notification) {
+      const slug = notification.primary_actor.title;
+      return buildPortalArticleURL(
+        slug,
+        notification.primary_actor.category_slug,
+        notification.primary_actor.locale,
+        notification.primary_actor.id
       );
     },
     onMarkAllDoneClick() {
