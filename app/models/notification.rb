@@ -36,7 +36,7 @@ class Notification < ApplicationRecord
     assigned_conversation_new_message: 3,
     conversation_mention: 4,
     participating_conversation_new_message: 5,
-    article_creataion: 6
+    article_creation: 6
   }.freeze
 
   enum notification_type: NOTIFICATION_TYPES

@@ -139,7 +139,7 @@ class Article < ApplicationRecord
     if published? && notifications.empty?
       account.users.each do |user|
         NotificationBuilder.new(
-          notification_type: 'article_creataion',
+          notification_type: 'article_creation',
           user: user,
           account: account,
           primary_actor: self

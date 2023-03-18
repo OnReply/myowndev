@@ -353,10 +353,10 @@
             v-model="selectedPushFlags"
             class="notification--checkbox"
             type="checkbox"
-            value="push_article_creataion"
+            value="push_article_creation"
             @input="handlePushInput"
           />
-          <label for="article_creataion">
+          <label for="article_creation">
             {{
               $t(
                 'PROFILE_SETTINGS.FORM.PUSH_NOTIFICATIONS_SECTION.ARTICLE_CREATION'
