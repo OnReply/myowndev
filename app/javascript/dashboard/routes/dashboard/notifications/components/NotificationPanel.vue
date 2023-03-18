@@ -111,6 +111,7 @@ import { mapGetters } from 'vuex';
 import { mixin as clickaway } from 'vue-clickaway';
 
 import NotificationPanelList from './NotificationPanelList';
+import { buildPortalArticleURL } from 'dashboard/helper/portalHelper';
 
 export default {
   components: {
@@ -174,11 +175,25 @@ export default {
         primaryActorType,
         unreadCount: this.meta.unreadCount,
       });
-      this.$router.push({
-        name: 'inbox_conversation',
-        params: { conversation_id: conversationId },
-      });
+      if (primaryActorType === 'Article') {
+        const url = this.portalLink(notification);
+        window.open(url, '_blank');
+      } else {
+        this.$router.push({
+          name: 'inbox_conversation',
+          params: { conversation_id: conversationId },
+        });
+      }
       this.$emit('close');
+    },
+    portalLink(notification) {
+      const slug = notification.primary_actor.title;
+      return buildPortalArticleURL(
+        slug,
+        notification.primary_actor.category_slug,
+        notification.primary_actor.locale,
+        notification.primary_actor.id
+      );
     },
     onClickNextPage() {
       if (!this.inLastPage) {
