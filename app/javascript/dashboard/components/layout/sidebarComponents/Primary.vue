@@ -23,7 +23,8 @@
         :open-in-new-page="true"
         :to="helpDocsURL"
       />
-      <notification-bell @open-notification-panel="openNotificationPanel" />
+      <notification-bell type="Conversation" @open-notification-panel="openNotificationPanel" />
+      <notification-bell type="Article" @open-notification-panel="openNotificationPanel" />
       <agent-details @toggle-menu="toggleOptions" />
       <options-menu
         :show="showOptionsMenu"

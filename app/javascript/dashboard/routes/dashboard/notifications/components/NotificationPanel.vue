@@ -129,15 +129,16 @@ export default {
       meta: 'notifications/getMeta',
       records: 'notifications/getNotifications',
       uiFlags: 'notifications/getUIFlags',
+      type: 'notifications/getType',
     }),
     totalUnreadNotifications() {
-      return this.meta.unreadCount;
+      return this.meta.unreadCount[this.type];
     },
     noUnreadNotificationAvailable() {
-      return this.meta.unreadCount === 0;
+      return this.meta.unreadCount[this.type] === 0;
     },
     getUnreadNotifications() {
-      return this.records.filter(notification => notification.read_at === null);
+      return this.records.filter(notification => notification.read_at === null && notification.primary_actor_type === this.type);
     },
     currentPage() {
       return Number(this.meta.currentPage);
@@ -157,7 +158,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch('notifications/get', { page: 1 });
+    this.$store.dispatch('notifications/get', { page: 1, type: this.type });
   },
   methods: {
     onPageChange(page) {
@@ -173,7 +174,7 @@ export default {
       this.$store.dispatch('notifications/read', {
         primaryActorId,
         primaryActorType,
-        unreadCount: this.meta.unreadCount,
+        unreadCount: this.meta.unreadCount[this.type],
       });
       if (primaryActorType === 'Article') {
         const url = this.portalLink(notification);

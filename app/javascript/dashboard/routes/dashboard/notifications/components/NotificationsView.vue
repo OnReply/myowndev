@@ -54,7 +54,7 @@ export default {
       this.$store.dispatch('notifications/read', {
         primaryActorId,
         primaryActorType,
-        unreadCount: this.meta.unreadCount,
+        unreadCount: this.meta.unreadCount[primaryActorType],
       });
 
       if (primaryActorType === 'Article') {
