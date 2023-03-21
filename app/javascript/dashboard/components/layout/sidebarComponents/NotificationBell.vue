@@ -7,7 +7,7 @@
       :class="{ 'is-active': isNotificationPanelActive }"
       @click="openNotificationPanel"
     >
-      <fluent-icon icon="alert" />
+      <fluent-icon :icon="icon" />
       <span v-if="unreadCount" class="badge warning">{{ unreadCount }}</span>
     </woot-button>
   </div>
@@ -20,6 +20,10 @@ export default {
     type: {
       type: String,
       default: '',
+    },
+    icon: {
+      type: String,
+      default: 'alert',
     },
   },
   computed: {
