@@ -6,11 +6,14 @@ class Public::Api::V1::Portals::ArticlesController < PublicController
   layout 'portal'
 
   def index
+    head :forbidden if current_user.nil?
     @articles = @portal.articles
     @articles = @articles.search(list_params) if list_params.present?
   end
 
-  def show; end
+  def show
+    head :forbidden if current_user.nil?
+  end
 
   private
 
