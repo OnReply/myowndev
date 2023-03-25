@@ -43,6 +43,8 @@ class Notification < ApplicationRecord
 
   after_create_commit :process_notification_delivery, :dispatch_create_event
 
+  # TODO: Get rid of default scope
+  # https://stackoverflow.com/a/1834250/939299
   default_scope { order(id: :desc) }
 
   PRIMARY_ACTORS = %w[Conversation Article].freeze

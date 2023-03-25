@@ -150,6 +150,6 @@ const runSDK = ({ baseUrl, websiteToken }) => {
   });
 };
 
-window.chatwootSDK = {
+window.socialbotSDK = {
   run: runSDK,
 };

@@ -4,16 +4,16 @@ describe('#MessageFormatter', () => {
   describe('content with links', () => {
     it('should format correctly', () => {
       const message =
-        'Chatwoot is an opensource tool. [Chatwoot](https://www.chatwoot.com)';
+        'Chatwoot is an opensource tool. [Chatwoot](https://social-bot.io)';
       expect(new MessageFormatter(message).formattedMessage).toMatch(
-        '<p>Chatwoot is an opensource tool. <a title="" class="link" href="https://www.chatwoot.com" rel="noreferrer noopener nofollow" target="_blank">Chatwoot</a></p>'
+        '<p>Chatwoot is an opensource tool. <a href="https://social-bot.io" class="link" rel="noreferrer noopener nofollow" target="_blank">Chatwoot</a></p>'
       );
     });
     it('should format correctly', () => {
       const message =
-        'Chatwoot is an opensource tool. https://www.chatwoot.com';
+        'Chatwoot is an opensource tool. https://social-bot.io';
       expect(new MessageFormatter(message).formattedMessage).toMatch(
-        '<p>Chatwoot is an opensource tool. <a title="" class="link" href="https://www.chatwoot.com" rel="noreferrer noopener nofollow" target="_blank">https://www.chatwoot.com</a></p>'
+        '<p>Chatwoot is an opensource tool. <a href="https://social-bot.io" class="link" rel="noreferrer noopener nofollow" target="_blank">https://social-bot.io</a></p>'
       );
     });
   });
@@ -22,7 +22,8 @@ describe('#MessageFormatter', () => {
     it('should format correctly', () => {
       const message = '### opensource \n ## tool';
       expect(new MessageFormatter(message).formattedMessage).toMatch(
-        '<strong>opensource</strong><strong>tool</strong>'
+        `<h3>opensource</h3>
+<h2>tool</h2>`
       );
     });
   });
@@ -39,7 +40,7 @@ describe('#MessageFormatter', () => {
       expect(
         new MessageFormatter(message, true, false).formattedMessage
       ).toMatch(
-        '<p><a href="http://twitter.com/chatwootapp" target="_blank" rel="noreferrer nofollow noopener">@chatwootapp</a> is an opensource tool thanks @longnonexistenttwitterusername</p>'
+        '<p><a href="http://twitter.com/chatwootapp" class="link" rel="noreferrer noopener nofollow" target="_blank">@chatwootapp</a> is an opensource tool thanks @longnonexistenttwitterusername</p>'
       );
     });
 
@@ -48,7 +49,7 @@ describe('#MessageFormatter', () => {
       expect(
         new MessageFormatter(message, true, false).formattedMessage
       ).toMatch(
-        '<p><a href="https://twitter.com/hashtag/chatwootapp" target="_blank" rel="noreferrer nofollow noopener">#chatwootapp</a> is an opensource tool</p>'
+        '<p><a href="https://twitter.com/hashtag/chatwootapp" class="link" rel="noreferrer noopener nofollow" target="_blank">#chatwootapp</a> is an opensource tool</p>'
       );
     });
   });
@@ -78,9 +79,9 @@ describe('#MessageFormatter', () => {
   describe('plain text content', () => {
     it('returns the plain text without HTML', () => {
       const message =
-        '<b>Chatwoot is an opensource tool. https://www.chatwoot.com</b>';
+        '<b>Chatwoot is an opensource tool. https://social-bot.io</b>';
       expect(new MessageFormatter(message).plainText).toMatch(
-        'Chatwoot is an opensource tool. https://www.chatwoot.com'
+        'Chatwoot is an opensource tool. https://social-bot.io'
       );
     });
   });
@@ -90,7 +91,8 @@ describe('#MessageFormatter', () => {
       const message =
         '[xssLink](javascript:alert(document.cookie))\n[normalLink](https://google.com)**I am a bold text paragraph**';
       expect(new MessageFormatter(message).formattedMessage).toMatch(
-        '<p><a title="" class="link" rel="noreferrer noopener nofollow" target="_blank">xssLink</a><br><a title="" class="link" href="https://google.com" rel="noreferrer noopener nofollow" target="_blank">normalLink</a><strong>I am a bold text paragraph</strong></p>'
+        `<p>[xssLink](javascript:alert(document.cookie))<br />
+<a href="https://google.com" class="link" rel="noreferrer noopener nofollow" target="_blank">normalLink</a><strong>I am a bold text paragraph</strong></p>`
       );
     });
   });
