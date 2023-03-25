@@ -136,15 +136,6 @@ class Article < ApplicationRecord
   end
 
   def create_notification
-    if published? && notifications.empty?
-      account.users.each do |user|
-        NotificationBuilder.new(
-          notification_type: 'article_creation',
-          user: user,
-          account: account,
-          primary_actor: self
-        ).perform
-      end
-    end
+    ::Article::NotifyUser.perform_later(self) if published? && notifications.empty? && author.super_admin?
   end
 end
