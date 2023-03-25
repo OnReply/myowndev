@@ -95,8 +95,7 @@
         "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Send push notifications when a new message is created in an assigned conversation",
         "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Send push notifications when a new message is created in a participating conversation",
         "HAS_ENABLED_PUSH": "You have enabled push for this browser.",
-        "REQUEST_PUSH": "Enable push notifications",
-        "ARTICLE_CREATION": "Send push notifications when a new article is created"
+        "REQUEST_PUSH": "Enable push notifications"
       },
       "PROFILE_IMAGE": {
         "LABEL": "Profile Image"

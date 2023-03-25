@@ -104,6 +104,8 @@ class Notification < ApplicationRecord
       )
     when 'conversation_mention'
       "[##{conversation&.display_id}] #{transform_user_mention_content primary_actor&.content}"
+    when 'article_creation'
+      I18n.t('notifications.notification_title.article_creation', name: primary_actor.portal.name)
     else
       ''
     end
