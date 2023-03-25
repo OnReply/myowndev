@@ -48,7 +48,6 @@ export default {
     ...mapActions('notifications', ['changeNotificationType']),
     openNotificationPanel() {
       if (this.$route.name !== 'notifications_index') {
-        console.log("changing type ", this.type)
         this.changeNotificationType(this.type)
         this.$emit('open-notification-panel');
       }

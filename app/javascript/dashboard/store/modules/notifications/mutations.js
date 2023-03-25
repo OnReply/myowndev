@@ -58,7 +58,6 @@ export const mutations = {
     Vue.set($state.meta, 'count', count);
   },
   [types.CHANGE_NOTIFICATION_TYPE]($state, type) {
-    console.log("in type", type)
     $state.type = type;
   },
 };

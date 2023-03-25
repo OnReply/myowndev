@@ -7,8 +7,8 @@ class NotificationsAPI extends ApiClient {
   }
 
   get(page, type) {
-    const url = `${this.url}?page=${page}`+ ((type !== null) ? `&type=${type}` : '')
-    console.log("url", url)
+    const url =
+      `${this.url}?page=${page}` + (type !== null ? `&type=${type}` : '');
     return axios.get(url);
   }
 
