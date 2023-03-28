@@ -15,7 +15,7 @@ json.category do
 end
 
 json.views article.views
-
+json.video_url article.video_url
 if article.author.present?
   json.author do
     json.partial! 'api/v1/models/agent', formats: [:json], resource: article.author
