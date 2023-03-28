@@ -34,6 +34,7 @@ class Article < ApplicationRecord
            foreign_key: :associated_article_id,
            dependent: :nullify,
            inverse_of: 'root_article'
+  has_many :notifications, as: :primary_actor, dependent: :destroy_async
 
   belongs_to :root_article,
              class_name: :Article,
@@ -61,6 +62,8 @@ class Article < ApplicationRecord
   scope :search_by_author, ->(author_id) { where(author_id: author_id) if author_id.present? }
   scope :search_by_status, ->(status) { where(status: status) if status.present? }
   scope :order_by_updated_at, -> { reorder(updated_at: :desc) }
+
+  after_update :create_notification, if: :saved_change_to_status?
 
   # TODO: if text search slows down https://www.postgresql.org/docs/current/textsearch-features.html#TEXTSEARCH-UPDATE-TRIGGERS
   pg_search_scope(
@@ -113,6 +116,16 @@ class Article < ApplicationRecord
     # rubocop:enable Rails/SkipsModelValidations
   end
 
+  def push_event_data
+    {
+      created_at: created_at.to_i,
+      id: id,
+      title: portal.slug,
+      category_slug: category.slug,
+      locale: category.locale
+    }
+  end
+
   private
 
   def ensure_account_id
@@ -121,5 +134,9 @@ class Article < ApplicationRecord
 
   def ensure_article_slug
     self.slug ||= "#{Time.now.utc.to_i}-#{title.underscore.parameterize(separator: '-')}" if title.present?
+  end
+
+  def create_notification
+    ::Article::NotifyUser.perform_later(self) if published? && notifications.empty? && author.super_admin?
   end
 end

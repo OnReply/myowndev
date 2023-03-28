@@ -7,27 +7,37 @@
       :class="{ 'is-active': isNotificationPanelActive }"
       @click="openNotificationPanel"
     >
-      <fluent-icon icon="alert" />
+      <fluent-icon :icon="icon" />
       <span v-if="unreadCount" class="badge warning">{{ unreadCount }}</span>
     </woot-button>
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
+  props: {
+    type: {
+      type: String,
+      default: '',
+    },
+    icon: {
+      type: String,
+      default: 'alert',
+    },
+  },
   computed: {
     ...mapGetters({
       accountId: 'getCurrentAccountId',
       notificationMetadata: 'notifications/getMeta',
     }),
     unreadCount() {
-      if (!this.notificationMetadata.unreadCount) {
+      if (!this.notificationMetadata.unreadCount[this.type]) {
         return '';
       }
 
-      return this.notificationMetadata.unreadCount < 100
-        ? `${this.notificationMetadata.unreadCount}`
+      return this.notificationMetadata.unreadCount[this.type] < 100
+        ? `${this.notificationMetadata.unreadCount[this.type]}`
         : '99+';
     },
     isNotificationPanelActive() {
@@ -35,8 +45,10 @@ export default {
     },
   },
   methods: {
+    ...mapActions('notifications', ['changeNotificationType']),
     openNotificationPanel() {
       if (this.$route.name !== 'notifications_index') {
+        this.changeNotificationType(this.type)
         this.$emit('open-notification-panel');
       }
     },
