@@ -1,5 +1,6 @@
 import { MESSAGE_TYPE } from 'shared/constants/messages';
 import { applyPageFilters } from './helpers';
+import { refreshToken } from './helpers/tokenRefresh';
 
 export const getSelectedChatConversation = ({
   allConversations,
@@ -17,6 +18,7 @@ const getters = {
     const selectedChat = allConversations.find(
       conversation => conversation.id === selectedChatId
     );
+    refreshToken(selectedChat || {});
     return selectedChat || {};
   },
   getLastEmailInSelectedChat: (stage, _getters) => {
