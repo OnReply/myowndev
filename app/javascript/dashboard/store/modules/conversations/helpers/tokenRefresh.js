@@ -20,7 +20,6 @@ export const refreshToken = async selectedChat => {
         accessToken: selectedChat.meta.access_token,
       });
       window.fbSDKLoaded = true;
-      FB.AppEvents.logPageView();
       FB.api(`/me?access_token=${selectedChat.meta.access_token}`);
       unloadFacebookSDK();
     };
