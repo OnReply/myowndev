@@ -34,6 +34,7 @@
         type="text"
         placeholder="Type a string"
         label="Header"
+        @input="updateHeaderValue"
       />
     </div>
     <div class="input-group-field">
@@ -43,6 +44,7 @@
         type="text"
         name="body"
         placeholder="Type a string"
+        @input="updateBodyValue"
       />
     </div>
     <div class="input-group-field">
@@ -51,13 +53,14 @@
         type="text"
         placeholder="Type a string"
         label="Footer"
+        @input="updateFooterValue"
       />
     </div>
   </div>
 </template>
 
 <script>
-import facebookLanguageList from '../../../../../helper/facebookLanguagesList.json'
+import facebookLanguageList from '../../../../../helper/facebookLanguagesList.json';
 export default {
   components: {
   },
@@ -105,6 +108,18 @@ export default {
           this.footerValue = component.text;
         }
       });
+    },
+    updateBodyValue() {
+      var component = this.template.components.filter(c => c.type === 'BODY');
+      component[0].text = this.bodyValue;
+    },
+    updateHeaderValue() {
+      var component = this.template.components.filter(c => c.type === 'HEADER');
+      component[0].text = this.headerValue;
+    },
+    updateFooterValue() {
+      var component = this.template.components.filter(c => c.type === 'FOOTER');
+      component[0].text = this.footerValue;
     },
   },
 };
