@@ -15,7 +15,7 @@
         :header-title="$t('WHATSAPP_TEMPLATES.MODAL.TITLE')"
         header-content="Edit your Template"
       />
-      <div class="row modal-content">
+      <div class="modal-content">
         <whatsapp-template-builder
           :inbox-id="inbox.id"
           :show="showWhatsAppTemplatesBuilderModal"
