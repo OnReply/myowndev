@@ -3,8 +3,8 @@
   "info": {
     "description": "This is the API documentation for Chatwoot server.",
     "version": "1.0.0",
-    "title": "Social Bot",
-    "termsOfService": "https://social-bot.io/terms-of-service/",
+    "title": "Chatwoot",
+    "termsOfService": "https://www.chatwoot.com/terms-of-service/",
     "contact": {
       "email": "hello@chatwoot.com"
     },
@@ -3817,7 +3817,7 @@
         }
       }
     },
-    "/profile": {
+    "/api/v1/profile": {
       "get": {
         "tags": [
           "Profile"
