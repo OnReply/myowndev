@@ -87,7 +87,7 @@ gem 'line-bot-api'
 gem 'twilio-ruby', '~> 5.66'
 # twitty will handle subscription of twitter account events
 # gem 'twitty', git: 'https://github.com/chatwoot/twitty'
-gem 'twitty', '~> 0.1.5'
+gem 'twitty'
 # facebook client
 gem 'koala'
 # slack client
@@ -149,23 +149,7 @@ gem 'net-imap', require: false
 gem 'net-pop', require: false
 gem 'net-smtp', require: false
 
-# Include logrange conditionally in intializer using env variable
-gem 'lograge', '~> 0.12.0', require: false
-
-# worked with microsoft refresh token
-gem 'omniauth-oauth2'
-
-gem 'audited', '~> 5.2'
-
-# need for google auth
-gem 'omniauth'
-gem 'omniauth-google-oauth2'
-gem 'omniauth-rails_csrf_protection', '~> 1.0'
-
-### Gems required only in specific deployment environments ###
-##############################################################
-
-group :production do
+group :production, :staging do
   # we dont want request timing out in development while using byebug
   gem 'rack-timeout'
 end
@@ -181,10 +165,6 @@ group :development do
 
   # When we want to squash migrations
   gem 'squasher'
-
-  # profiling
-  gem 'rack-mini-profiler', require: false
-  gem 'stackprof'
 end
 
 group :test do
@@ -222,3 +202,13 @@ group :development, :test do
   gem 'spring'
   gem 'spring-watcher-listen'
 end
+
+# worked with microsoft refresh token
+gem 'omniauth-oauth2'
+
+gem 'audited', '~> 5.2'
+
+# need for google auth
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-rails_csrf_protection', '~> 1.0'
