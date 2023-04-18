@@ -4,25 +4,37 @@ import {
   unloadFacebookSDK,
   loadFBsdk,
 } from '../../../../../shared/helpers/facebookInitializer';
+import ChannelApi from '../../../../api/channels';
+import InboxesAPI from '../../../../api/inboxes';
+export const refreshToken = async accountID => {
+  return new Promise((resolve, reject) => {
+    loadFBsdk();
+    if (window.fbSDKLoaded === undefined) {
+      window.fbAsyncInit = () => {
+        FB.init({
+          appId: window.chatwootConfig.fbAppId,
+          xfbml: true,
+          version: window.chatwootConfig.fbApiVersion,
+          status: true,
+        });
+        let response = ChannelApi.fetchFacebookTokens(accountID);
+        response.then(res => {
+          res.data.tokens.forEach(token => {
+            FB.api(`/me?access_token=${token.key}`, res=> {
+              if (res.error) {
+              } else {
+                InboxesAPI.refreshToken(token.id);
+              }
+            });
+          });
+          unloadFacebookSDK();
+        });
+        window.fbSDKLoaded = true;
+        // FB.api(`/me?access_token=${selectedChat.meta.access_token}`);
+      };
+    }
 
-export const refreshToken = async selectedChat => {
-  if (Object.keys(selectedChat).length === 0) return;
-  if (!selectedChat.meta.hasOwnProperty('access_token')) return;
-  if (!selectedChat.meta.refresh_token) return;
-  loadFBsdk();
-  if (window.fbSDKLoaded === undefined) {
-    window.fbAsyncInit = () => {
-      FB.init({
-        appId: window.chatwootConfig.fbAppId,
-        xfbml: true,
-        version: window.chatwootConfig.fbApiVersion,
-        status: true,
-        accessToken: selectedChat.meta.access_token,
-      });
-      window.fbSDKLoaded = true;
-      FB.api(`/me?access_token=${selectedChat.meta.access_token}`);
-      unloadFacebookSDK();
-    };
-  }
+    resolve();
+  });
   // FB.api('/me',{accessToken: selectedChat.meta.accessToken})
 };

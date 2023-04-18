@@ -1,10 +1,10 @@
 class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
   include Api::V1::InboxesHelper
-  before_action :fetch_inbox, except: [:index, :create]
+  before_action :fetch_inbox, except: [:index, :create, :refresh_token]
   before_action :fetch_agent_bot, only: [:set_agent_bot]
   before_action :validate_limit, only: [:create]
   # we are already handling the authorization in fetch inbox
-  before_action :check_authorization, except: [:show]
+  before_action :check_authorization, except: [:show, :refresh_token]
 
   def index
     @inboxes = policy_scope(Current.account.inboxes.order_by_name.includes(:channel, { avatar_attachment: [:blob] }))
@@ -84,6 +84,13 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
   def destroy
     ::DeleteObjectJob.perform_later(@inbox) if @inbox.present?
     render status: :ok, json: { message: I18n.t('messages.inbox_deletetion_response') }
+  end
+
+  def refresh_token
+    inbox = Current.account.inboxes.find(params[:id])
+    channel = inbox.channel
+    channel.provider_config["refreshed_at"] = Time.current
+    channel.save!
   end
 
   private
