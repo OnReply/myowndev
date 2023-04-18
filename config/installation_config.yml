@@ -1,21 +1,21 @@
 # if you dont specify locked attribute, the default value will be true
 # which means the particular config will be locked
 - name: INSTALLATION_NAME
-  value: 'Social Bot'
+  value: 'Automaytic Communication'
 - name: LOGO_THUMBNAIL
-  value: '/brand-assets/logo_thumbnail.png'
+  value: '/brand-assets/logo_thumbnail.svg'
 - name: LOGO
-  value: '/brand-assets/logo.png'
+  value: '/brand-assets/logo.svg'
 - name: BRAND_URL
-  value: 'https://social-bot.io'
+  value: 'https://automaytic.com'
 - name: WIDGET_BRAND_URL
-  value: 'https://social-bot.io'
+  value: 'https://automaytic.com'
 - name: BRAND_NAME
-  value: 'Social Bot'
+  value: 'Automaytic'
 - name: TERMS_URL
-  value: 'https://social-bot.io/terms-of-service'
+  value: 'https://automaytic.com/terms-of-service'
 - name: PRIVACY_URL
-  value: 'https://social-bot.io/privacy-policy'
+  value: 'https://automaytic.com/privacy-policy'
 - name: DISPLAY_MANIFEST
   value: true
 - name: MAILER_INBOUND_EMAIL_DOMAIN
@@ -69,6 +69,6 @@
 - name: CHATWOOT_CLOUD_PLANS
   value: hacker
 - name: DEPLOYMENT_ENV
-  value: self-hosted
+  value: cloud
 - name: CSML_EDITOR_HOST
-  value: self-hosted
+  value:

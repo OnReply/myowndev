@@ -19,7 +19,7 @@
           </p>
           <p v-if="globalConfig.installationName === 'Chatwoot'">
             <a
-              href="https://social-bot.io/changelog"
+              href="https://www.chatwoot.com/changelog"
               target="_blank"
               rel="noopener nofollow noreferrer"
               class="onboarding--link"

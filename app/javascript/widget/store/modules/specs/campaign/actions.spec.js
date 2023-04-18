@@ -45,7 +45,7 @@ describe('#actions', () => {
         { commit },
         {
           websiteToken: 'XDsafmADasd',
-          currentURL: 'https://social-bot.io',
+          currentURL: 'https://www.chatwoot.com',
           isInBusinessHours: true,
         }
       );
