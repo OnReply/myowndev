@@ -24,7 +24,7 @@ class Api::V1::Accounts::CallbacksController < Api::V1::Accounts::BaseController
   end
 
   def facebook_tokens
-    @tokens = Current.account.whatsapp_channels.where(provider: 'whatsapp_cloud').where("provider_config->>'refreshed_at' IS NULL OR to_timestamp(provider_config->>'refreshed_at', 'YYYY-MM-DD HH24:MI:SS') < (NOW() - interval '1 day')").map {|m| {id: m.inbox.id, key:m.provider_config['api_key']}}
+    @tokens = Current.account.whatsapp_channels.where(provider: 'whatsapp_cloud').where("provider_config->>'refreshed_at' IS NULL OR to_timestamp(provider_config->>'refreshed_at', 'YYYY-MM-DD HH24:MI:SS') < (timezone('utc', NOW()) - interval '1 day')").map {|m| {id: m.inbox.id, key:m.provider_config['api_key']}}
   end
 
   def set_instagram_id(page_access_token, facebook_channel)

@@ -87,6 +87,15 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
   end
 
   def refresh_token
+    begin
+      unless params[:refreshed]
+        raise " Token couldn't be refreshed Channel: #{inbox.name}"
+      end
+    rescue => e
+      pp 'couldn\'t refresh token'
+      Sentry.capture_exception(e)
+      return
+    end
     inbox = Current.account.inboxes.find(params[:id])
     channel = inbox.channel
     channel.provider_config["refreshed_at"] = Time.current
