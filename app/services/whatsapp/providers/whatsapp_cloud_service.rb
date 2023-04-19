@@ -43,7 +43,7 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
   def extend_token_life
     response = HTTParty.get("#{api_base_path}/v16.0/oauth/access_token?grant_type=fb_exchange_token&client_id=#{GlobalConfigService.load('FB_APP_ID', nil)}&client_secret=#{GlobalConfigService.load('FB_APP_SECRET', nil)}&fb_exchange_token=#{whatsapp_channel.provider_config['api_key']}")
     whatsapp_channel.provider_config['api_key'] = response["access_token"]
-    whatsapp_channel.provider_config['token_expiry_date'] = Time.current + response["expires_in"]
+    whatsapp_channel.provider_config['token_expiry_date'] =  response["expires_in"].present? ? Time.current + response["expires_in"] : 'never'
     whatsapp_channel.save!
   end
 

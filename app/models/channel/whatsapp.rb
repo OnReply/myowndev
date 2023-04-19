@@ -33,6 +33,7 @@ class Channel::Whatsapp < ApplicationRecord
   validate :validate_provider_config
 
   after_create :after_create_methods
+  after_update :should_extend_token, if: :saved_change_to_provider_config?
 
   def name
     'Whatsapp'
@@ -76,5 +77,8 @@ class Channel::Whatsapp < ApplicationRecord
   def after_create_methods
     self.extend_token_life() if provider == 'whatsapp_cloud'
     self.sync_templates()
+  end
+  def should_extend_token
+    self.extend_token_life() if provider == 'whatsapp_cloud' && saved_changes['provider_config'][0]['api_key'] != saved_changes['provider_config'][1]['api_key']
   end
 end
