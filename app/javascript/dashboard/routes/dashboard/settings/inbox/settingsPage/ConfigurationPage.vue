@@ -104,12 +104,13 @@
         <woot-code :script="inbox.provider_config.api_key" />
       </settings-section>
       <settings-section
+        v-if="shouldDisplayUpdateSettings()"
         :title="$t('INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_SECTION_UPDATE_TITLE')"
         :sub-title="
           $t('INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_SECTION_UPDATE_SUBHEADER')
         "
       >
-        <div class="whatsapp-settings--content">
+        <div v-if="!successfullyUpdated" class="whatsapp-settings--content">
           <div
             v-if="!hasLoginStarted"
             class="login-init text-left medium-8 mb-1 columns p-0"
@@ -168,6 +169,7 @@ export default {
       whatsAppInboxAPIKey: '',
       hasLoginStarted: false,
       emptyStateMessage: this.$t('INBOX_MGMT.DETAILS.LOADING_FB'),
+      successfullyUpdated: false,
     };
   },
   validations: {
@@ -220,8 +222,10 @@ export default {
 
         await this.$store.dispatch('inboxes/updateInbox', payload);
         this.showAlert(this.$t('INBOX_MGMT.EDIT.API.SUCCESS_MESSAGE'));
+        this.successfullyUpdated = true;
       } catch (error) {
         this.showAlert(this.$t('INBOX_MGMT.EDIT.API.ERROR_MESSAGE'));
+        this.hasLoginStarted = false;
       }
     },
     startLogin() {
@@ -234,7 +238,6 @@ export default {
           if (response.status === 'connected') {
             this.isFbConnected = true;
             this.whatsAppInboxAPIKey = response.authResponse.accessToken;
-            console.log(this.whatsAppInboxAPIKey);
             this.updateWhatsAppInboxAPIKey();
           } else if (response.status === 'not_authorized') {
             // The person is logged into Facebook, but not your app.
@@ -256,6 +259,9 @@ export default {
     },
     showLoader() {
       return !this.user_access_token || this.isCreating;
+    },
+    shouldDisplayUpdateSettings() {
+      return this.inbox.provider_config.token_expiry_date !== 'never';
     },
   },
 };

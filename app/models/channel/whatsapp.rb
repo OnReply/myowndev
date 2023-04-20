@@ -81,10 +81,9 @@ class Channel::Whatsapp < ApplicationRecord
   end
 
   def should_extend_token
-    pp "should extent token"
     res = self.get_expires_at
-    return if response["data"]["expires_at"] == 0
-    return if Time.at(response["data"]["expires_at"]).utc > 7.days.after
+    return if res["data"]["expires_at"] == 0
+    return if Time.at(res["data"]["expires_at"]).utc > 7.days.after
     self.extend_token_life() if provider == 'whatsapp_cloud' && saved_changes['provider_config'][0]['api_key'] != saved_changes['provider_config'][1]['api_key']
   end
 end
