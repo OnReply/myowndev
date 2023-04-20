@@ -48,13 +48,18 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
   end
 
   def sync_token_expiry_date
-    response = HTTParty.get("#{api_base_path}/v16.0/debug_token?input_token=#{whatsapp_channel.provider_config["api_key"]}&access_token=#{whatsapp_channel.provider_config["api_key"]}")
-    whatsapp_channel.provider_config['token_expiry_date'] = Time.at(response["data"]["expires_at"]).utc
+    return if whatsapp_channel.provider_config['token_expiry_date'] == 'never'
+    response = get_expires_at()
+    whatsapp_channel.provider_config['token_expiry_date'] = response["data"]["expires_at"] == 0 ? 'never' : Time.at(response["data"]["expires_at"]).utc
     whatsapp_channel.save!
   end
 
   def refresh_token
     response = HTTParty.get("#{api_base_path}/v16.0/me?access_token=#{whatsapp_channel.provider_config['api_key']}")
+  end
+
+  def get_expires_at
+    HTTParty.get("#{api_base_path}/v16.0/debug_token?input_token=#{whatsapp_channel.provider_config["api_key"]}&access_token=#{whatsapp_channel.provider_config["api_key"]}")
   end
 
   private

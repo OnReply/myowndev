@@ -63,6 +63,7 @@ class Channel::Whatsapp < ApplicationRecord
   delegate :extend_token_life, to: :provider_service
   delegate :sync_token_expiry_date, to: :provider_service
   delegate :refresh_token, to: :provider_service
+  delegate :get_expires_at, to: :provider_service
 
   private
 
@@ -78,7 +79,12 @@ class Channel::Whatsapp < ApplicationRecord
     self.extend_token_life() if provider == 'whatsapp_cloud'
     self.sync_templates()
   end
+
   def should_extend_token
+    pp "should extent token"
+    res = self.get_expires_at
+    return if response["data"]["expires_at"] == 0
+    return if Time.at(response["data"]["expires_at"]).utc > 7.days.after
     self.extend_token_life() if provider == 'whatsapp_cloud' && saved_changes['provider_config'][0]['api_key'] != saved_changes['provider_config'][1]['api_key']
   end
 end
