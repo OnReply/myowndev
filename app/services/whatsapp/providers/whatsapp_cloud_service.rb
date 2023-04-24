@@ -1,4 +1,6 @@
 class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseService
+  prepend ::Whatsapp::Providers::WhatsappCloudInteractiveMessages
+
   def send_message(phone_number, message)
     if message.attachments.present?
       send_attachment_message(phone_number, message)
