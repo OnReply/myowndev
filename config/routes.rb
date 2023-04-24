@@ -138,6 +138,7 @@ Rails.application.routes.draw do
             get :agent_bot, on: :member
             post :set_agent_bot, on: :member
             delete :avatar, on: :member
+            post :template, on: :member
           end
           resources :inbox_members, only: [:create, :show], param: :inbox_id do
             collection do

@@ -22,6 +22,14 @@
           :template="template"
         />
       </div>
+      <div class="modal-footer">
+        <div class="medium-12 row text-center">
+          <woot-submit-button
+            :button-text="$t('EMAIL_TRANSCRIPT.SUBMIT')"
+            @click="submitForm"
+          />
+        </div>
+      </div>
     </woot-modal>
   </div>
 </template>
@@ -29,6 +37,7 @@
 <script>
 import TemplatesPicker from '../../../../../components/widgets/conversation/WhatsappTemplates/TemplatesPicker.vue';
 import WhatsappTemplateBuilder from './WhatsappTemplateBuilder.vue';
+import InboxesAPI from '../../../../../api/inboxes';
 export default {
   components: { TemplatesPicker, WhatsappTemplateBuilder },
   props: {
@@ -53,6 +62,9 @@ export default {
     },
     onClose() {
       this.showWhatsAppTemplatesBuilderModal = false;
+    },
+    submitForm() {
+      this.onClose();
     },
   },
 };
