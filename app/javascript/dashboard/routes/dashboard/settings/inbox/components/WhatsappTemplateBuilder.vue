@@ -193,6 +193,7 @@ export default {
   min-height: 20px;
   position: relative;
   word-wrap: break-word;
+  min-width: 50px;
 }
 ._6xe5 {
   bottom: 3px;
