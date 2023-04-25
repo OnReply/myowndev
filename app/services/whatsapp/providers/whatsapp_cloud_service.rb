@@ -40,6 +40,16 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
     "#{api_base_path}/v13.0/#{media_id}"
   end
 
+  def create_template(template)
+    pp template.to_hash
+    response = HTTParty.post(
+      "#{business_account_path}/message_templates",
+      headers: api_headers,
+      body: template.to_json
+    )
+    response
+  end
+
   private
 
   def api_base_path

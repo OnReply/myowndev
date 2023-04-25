@@ -87,7 +87,15 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
   end
 
   def template
-    
+    fetch_channel
+    template = permit_template_params
+    response = @channel.create_template(template)
+    if response.success?
+      render status: :ok, json: { message: I18n.t('messages.inbox_deletetion_response') }
+    else 
+      pp response
+      render status: :unprocessable_entity, json: { message: response["error"]["error_user_msg"] }
+    end
   end
 
   private
@@ -146,6 +154,23 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
     else
       []
     end
+  end
+
+  def permit_template_params
+    params.require(:template).permit(
+      :category,
+      :language,
+      :name,
+      components: [
+        :format,
+        :type,
+        :text
+      ]
+    )
+  end
+
+  def fetch_channel
+    @channel = @inbox.channel
   end
 end
 
