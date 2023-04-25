@@ -18,6 +18,14 @@ class Inboxes extends ApiClient {
     return axios.get(`${this.url}/${inboxId}/agent_bot`);
   }
 
+  createTemplate(inboxId, template) {
+    var params = template
+    params.components = template.components.filter(component=> component.text)
+    return axios.post(`${this.url}/${inboxId}/template`, {
+      template: template
+    });
+  }
+
   setAgentBot(inboxId, botId) {
     return axios.post(`${this.url}/${inboxId}/set_agent_bot`, {
       agent_bot: botId,

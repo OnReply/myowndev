@@ -1,36 +1,44 @@
 <template>
-  <div class="mt-2">
-    <templates-picker
-      :inbox-id="inbox.id"
-      classes="max-h-full template__list-container"
-      :filter-templates="false"
-      @onSelect="editTemplate"
-    />
-    <woot-modal
-      :show.sync="showWhatsAppTemplatesBuilderModal"
-      :on-close="onClose"
-      size="modal-big"
-    >
-      <woot-modal-header
-        :header-title="$t('WHATSAPP_TEMPLATES.MODAL.TITLE')"
-        header-content="Edit your Template"
+  <div class="main-div">
+    <div class="add-button-div">
+      <woot-submit-button
+        button-text="Create New template"
+        @click="editTemplate(defaultTempate)"
       />
-      <div class="modal-content">
-        <whatsapp-template-builder
-          :inbox-id="inbox.id"
-          :show="showWhatsAppTemplatesBuilderModal"
-          :template="template"
+    </div>
+    <div class="mt-2">
+      <templates-picker
+        :inbox-id="inbox.id"
+        classes="max-h-full template__list-container"
+        :filter-templates="false"
+        @onSelect="editTemplate"
+      />
+      <woot-modal
+        :show.sync="showWhatsAppTemplatesBuilderModal"
+        :on-close="onClose"
+        size="modal-big"
+      >
+        <woot-modal-header
+          :header-title="$t('WHATSAPP_TEMPLATES.MODAL.TITLE')"
+          header-content="Edit your Template"
         />
-      </div>
-      <div class="modal-footer">
-        <div class="medium-12 row text-center">
-          <woot-submit-button
-            :button-text="$t('EMAIL_TRANSCRIPT.SUBMIT')"
-            @click="submitForm"
+        <div class="modal-content">
+          <whatsapp-template-builder
+            :inbox-id="inbox.id"
+            :show="showWhatsAppTemplatesBuilderModal"
+            :template="template"
           />
         </div>
-      </div>
-    </woot-modal>
+        <div class="modal-footer">
+          <div class="medium-12 row text-center">
+            <woot-submit-button
+              :button-text="$t('EMAIL_TRANSCRIPT.SUBMIT')"
+              @click="submitForm"
+            />
+          </div>
+        </div>
+      </woot-modal>
+    </div>
   </div>
 </template>
 
@@ -52,6 +60,26 @@ export default {
     return {
       showWhatsAppTemplatesBuilderModal: false,
       template: null,
+      defaultTempate: {
+        category: "UTILITY",
+        components : [
+          {
+            format: "TEXT",
+            type: "HEADER",
+            text: "",
+          },
+          {
+            type: "BODY",
+            text: "",
+          },
+          {
+            type: "FOOTER",
+            text: "",
+          },
+        ],
+        language: "en_US",
+        name: "",
+      }
     };
   },
   computed: {},
@@ -65,6 +93,7 @@ export default {
     },
     submitForm() {
       this.onClose();
+      InboxesAPI.createTemplate(this.inbox.id, this.template)
     },
   },
 };
@@ -78,5 +107,14 @@ export default {
 }
 .modal-content {
   padding: 2.5rem 3.2rem;
+}
+
+.add-button-div{
+  display: flex;
+  justify-content: end;
+  margin: 0.8rem ;
+}
+.main-div {
+  margin: 1.2rem;
 }
 </style>
