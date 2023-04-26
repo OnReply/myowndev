@@ -2,12 +2,19 @@
   <div class="parent-div">
     <div class="medium-9 small mr-2">
       <div class="input-group-field">
-        <woot-input
-          v-model.trim="template.name"
-          type="text"
-          placeholder="test"
-          label="test"
-        />
+        <label for="name" :class="{ error: $v.template.name.$error }">
+          Name
+          <input
+            v-model.trim="template.name"
+            name="name"
+            type="text"
+            placeholder="test"
+            @keydown="validateInput"
+          />
+          <span v-if="$v.template.name.$error" class="message">
+            {{ $t('INBOX_MGMT.ADD.WHATSAPP.INBOX_NAME.ERROR') }}
+          </span>
+        </label>
       </div>
       <div class="input-group-field">
         <label for="category"> Category </label>
@@ -30,23 +37,33 @@
         </select>
       </div>
       <div class="input-group-field">
-        <woot-input
-          v-model.trim="headerValue"
-          type="text"
-          placeholder="Type a string"
-          label="Header"
-          @input="updateHeaderValue"
-        />
+        <label for="" :class="{ error: $v.headerValue.$error }">
+          Header
+          <input
+            v-model.trim="headerValue"
+            type="text"
+            placeholder="Type a string"
+            @input="updateHeaderValue"
+          />
+          <span v-if="$v.headerValue.$error" class="message">
+            {{ $t('INBOX_MGMT.ADD.WHATSAPP.INBOX_NAME.ERROR') }}
+          </span>
+        </label>
       </div>
       <div class="input-group-field">
-        <label for="body"> Body </label>
-        <textarea
-          v-model.trim="bodyValue"
-          type="text"
-          name="body"
-          placeholder="Type a string"
-          @input="updateBodyValue"
-        />
+        <label for="body" :class="{ error: $v.bodyValue.$error }"> 
+          Body 
+          <textarea
+            v-model.trim="bodyValue"
+            type="text"
+            name="body"
+            placeholder="Type a string"
+            @input="updateBodyValue"
+          />
+          <span v-if="$v.bodyValue.$error" class="message">
+            {{ $t('INBOX_MGMT.ADD.WHATSAPP.INBOX_NAME.ERROR') }}
+          </span>
+        </label>
       </div>
       <div class="input-group-field">
         <woot-input
@@ -80,6 +97,12 @@
 
 <script>
 import facebookLanguageList from '../../../../../helper/facebookLanguagesList.json';
+import { required } from 'vuelidate/lib/validators';
+
+const mustBeCool = (value) => {
+  const regex = /^[a-zA-Z0-9_]+$/;
+  return regex.test(value)
+}
 export default {
   components: {
   },
@@ -96,13 +119,22 @@ export default {
       type: Object,
       default() {
         return {
-          name: 'test',
+          name: '',
           category: 'UTILITY',
           language: 'en',
           components: [],
         };
       },
     },
+  },
+  validations: {
+    template: {
+      name: {
+        required,
+      }
+    },
+    headerValue: { required },
+    bodyValue: { required }
   },
   data() {
     return {
@@ -111,6 +143,7 @@ export default {
       bodyValue: '',
       headerValue: '',
       footerValue: '',
+      nameError: false
     };
   },
   mounted() {
@@ -131,16 +164,38 @@ export default {
     updateBodyValue() {
       var component = this.template.components.filter(c => c.type === 'BODY');
       component[0].text = this.bodyValue;
+      this.$v.bodyValue.$touch()
     },
     updateHeaderValue() {
       var component = this.template.components.filter(c => c.type === 'HEADER');
       component[0].text = this.headerValue;
+      this.$v.headerValue.$touch()
     },
     updateFooterValue() {
       var component = this.template.components.filter(c => c.type === 'FOOTER');
       component[0].text = this.footerValue;
     },
+    validateInput(event) {
+      const keyPressed = event.key;
+      const alphanumericRegex = /^[0-9a-zA-Z_]+$/;
+      if (!alphanumericRegex.test(keyPressed)) {
+        event.preventDefault();
+        if (keyPressed == ''){
+          this.template.name += '_'
+        }
+      }
+      this.$v.template.name.$touch()
+    }
   },
+  watch: {
+    template: {
+      handler() {
+        let disableSubmitButton = this.$v.template.name.$invalid || this.$v.headerValue.$invalid || this.$v.bodyValue.$invalid
+        this.$emit('disable-submit-button', disableSubmitButton)
+      },
+      deep: true
+    }
+  }
 };
 </script>
 

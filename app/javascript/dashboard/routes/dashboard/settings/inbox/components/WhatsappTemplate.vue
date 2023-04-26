@@ -27,6 +27,7 @@
             :inbox-id="inbox.id"
             :show="showWhatsAppTemplatesBuilderModal"
             :template="template"
+            @disable-submit-button="toggleSubmitButton"
           />
         </div>
         <div class="modal-footer">
@@ -34,6 +35,7 @@
             <woot-submit-button
               :button-text="$t('EMAIL_TRANSCRIPT.SUBMIT')"
               @click="submitForm"
+              :disabled="isDisabled"
             />
           </div>
         </div>
@@ -59,6 +61,7 @@ export default {
   data() {
     return {
       showWhatsAppTemplatesBuilderModal: false,
+      isDisabled: true,
       template: null,
       defaultTempate: {
         category: "UTILITY",
@@ -95,6 +98,9 @@ export default {
       this.onClose();
       InboxesAPI.createTemplate(this.inbox.id, this.template)
     },
+    toggleSubmitButton(value) {
+      this.isDisabled = value;
+    }
   },
 };
 </script>
