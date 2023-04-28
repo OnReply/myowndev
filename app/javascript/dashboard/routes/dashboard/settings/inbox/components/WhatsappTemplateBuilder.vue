@@ -171,8 +171,8 @@ export default {
       headerValue: '',
       footerValue: '',
       nameError: false,
-      headerType: 'image',
-      displayHeaderInputField: false,
+      headerType: 'text',
+      displayHeaderInputField: true,
       imageUrl: '',
       imageFile: ''
     };

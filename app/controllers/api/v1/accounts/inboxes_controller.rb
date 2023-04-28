@@ -94,11 +94,19 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
     if response.success?
       render status: :ok, json: { message: I18n.t('messages.inbox_deletetion_response') }
     else 
-      pp response
       render status: :unprocessable_entity, json: { message: response["error"]["error_user_msg"] }
     end
   end
 
+  def delete_template
+    fetch_channel
+    response = @channel.delete_template(params[:name])
+    if response.success?
+      render status: :ok, json: { message: I18n.t('messages.inbox_deletetion_response') }
+    else 
+      render status: :unprocessable_entity, json: { message: response["error"]["error_user_msg"] }
+    end
+  end
   private
 
   def fetch_inbox

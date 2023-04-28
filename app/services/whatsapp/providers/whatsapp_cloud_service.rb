@@ -49,6 +49,14 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
     response
   end
 
+  def delete_template(name)
+    response = HTTParty.delete(
+      "#{business_account_path}/message_templates?name=#{name}",
+      headers: api_headers
+    )
+    response
+  end
+
   private
 
   def api_base_path

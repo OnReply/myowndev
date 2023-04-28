@@ -39,6 +39,10 @@ class Inboxes extends ApiClient {
       agent_bot: botId,
     });
   }
+
+  deleteTemplate(inboxId, template) {
+    return axios.delete(`${this.url}/${inboxId}/delete_template?name=${template.name}`);
+  }
 }
 
 export default new Inboxes();

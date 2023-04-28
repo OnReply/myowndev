@@ -61,4 +61,8 @@ class InboxPolicy < ApplicationPolicy
   def template?
     @account_user.administrator?
   end
+
+  def delete_template?
+    @account_user.administrator?
+  end
 end

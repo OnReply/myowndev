@@ -3,7 +3,7 @@
     <div class="add-button-div">
       <woot-submit-button
         button-text="Create New template"
-        @click="editTemplate(defaultTempate)"
+        @click="openModal(defaultTempate); editMode=false;"
       />
     </div>
     <div class="mt-2">
@@ -34,10 +34,19 @@
         <div class="modal-footer">
           <div class="medium-12 row text-center">
             <woot-submit-button
+              v-if="!editMode"
               :button-text="$t('EMAIL_TRANSCRIPT.SUBMIT')"
               @click="submitForm"
               :disabled="isDisabled"
             />
+             <woot-button
+              v-else
+              :button-text="$t('EMAIL_TRANSCRIPT.SUBMIT')"
+              @click="deleteTemplate"
+              color-scheme="alert"
+            >
+              Delete Template
+            </woot-button>
           </div>
         </div>
       </woot-modal>
@@ -83,12 +92,13 @@ export default {
         ],
         language: "en_US",
         name: "",
-      }
+      },
+      editMode: false
     };
   },
   computed: {},
   methods: {
-    editTemplate(template) {
+    openModal(template) {
       this.showWhatsAppTemplatesBuilderModal = true;
       this.template = template;
     },
@@ -101,7 +111,15 @@ export default {
     },
     toggleSubmitButton(value) {
       this.isDisabled = value;
-    }
+    },
+    editTemplate(template) {
+      this.editMode = true;
+      this.openModal(template)
+    },
+    deleteTemplate() {
+      InboxesAPI.deleteTemplate(this.inbox.id, this.template);
+      this.onClose();
+    },
   },
 };
 </script>
