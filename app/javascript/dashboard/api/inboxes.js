@@ -18,11 +18,19 @@ class Inboxes extends ApiClient {
     return axios.get(`${this.url}/${inboxId}/agent_bot`);
   }
 
-  createTemplate(inboxId, template) {
-    var params = template
-    params.components = template.components.filter(component=> component.text)
-    return axios.post(`${this.url}/${inboxId}/template`, {
-      template: template
+  createTemplate(inboxId, template, headerType, image) {
+    var params_template = template
+    params_template.components = template.components.filter(component=> component.text)
+    const formData = new FormData();
+    if (headerType == 'image') {
+      formData.append("image", image);
+    }
+    formData.append("template", JSON.stringify(params_template));
+    formData.append("header_type", headerType);
+    return axios.post(`${this.url}/${inboxId}/template`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
   }
 

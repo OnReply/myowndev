@@ -28,6 +28,7 @@
             :show="showWhatsAppTemplatesBuilderModal"
             :template="template"
             @disable-submit-button="toggleSubmitButton"
+            ref="templateBuilder"
           />
         </div>
         <div class="modal-footer">
@@ -96,7 +97,7 @@ export default {
     },
     submitForm() {
       this.onClose();
-      InboxesAPI.createTemplate(this.inbox.id, this.template)
+      InboxesAPI.createTemplate(this.inbox.id, this.template, this.$refs.templateBuilder.headerType, this.$refs.templateBuilder.imageFile)
     },
     toggleSubmitButton(value) {
       this.isDisabled = value;

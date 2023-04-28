@@ -37,6 +37,21 @@
         </select>
       </div>
       <div class="input-group-field">
+        <label for="language"> Header type </label>
+        <select v-model="headerType" @change="UpdateDisplayHeaderInputField" name="headerType">
+          <option
+            value="text"
+          >
+            Text
+          </option>
+          <option
+            value="image"
+          >
+            Image
+          </option>
+        </select>
+      </div>
+      <div v-if="displayHeaderInputField" class="input-group-field">
         <label for="" :class="{ error: $v.headerValue.$error }">
           Header
           <input
@@ -48,6 +63,18 @@
           <span v-if="$v.headerValue.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.INBOX_NAME.ERROR') }}
           </span>
+        </label>
+      </div>
+      <div v-else class="input-group-field row">
+        <label>
+          <input
+            id="file"
+            ref="file"
+            type="file"
+            accept="image/png, image/jpeg, image/gif"
+            @change="handleImageUpload"
+          />
+          <slot />
         </label>
       </div>
       <div class="input-group-field">
@@ -80,10 +107,13 @@
         <div class="second-parent">
           <div class="third-parent">
             <div class="bg-white rounded padding-1">
-              <div class="bold padding-left-1">
+              <div v-if="displayHeaderInputField" class="bold padding-left-1">
                 {{ headerValue }}
               </div>
-              <div class="padding-1">
+              <div v-else>
+                <img :src="imageUrl" alt="">
+              </div>
+              <div class="padding-1 template-body">
                 {{ bodyValue }}
               </div>
               <time aria-hidden="true" class="_6xe5">07:26</time>
@@ -98,11 +128,8 @@
 <script>
 import facebookLanguageList from '../../../../../helper/facebookLanguagesList.json';
 import { required } from 'vuelidate/lib/validators';
+import InboxesAPI from '../../../../../api/inboxes';
 
-const mustBeCool = (value) => {
-  const regex = /^[a-zA-Z0-9_]+$/;
-  return regex.test(value)
-}
 export default {
   components: {
   },
@@ -143,7 +170,11 @@ export default {
       bodyValue: '',
       headerValue: '',
       footerValue: '',
-      nameError: false
+      nameError: false,
+      headerType: 'image',
+      displayHeaderInputField: false,
+      imageUrl: '',
+      imageFile: ''
     };
   },
   mounted() {
@@ -185,15 +216,40 @@ export default {
         }
       }
       this.$v.template.name.$touch()
-    }
+    },
+    UpdateDisplayHeaderInputField() {
+      this.displayHeaderInputField = this.headerType == 'text';
+    },
+    async handleImageUpload(event) {
+      const [file] = event.target.files;
+      this.imageFile = file;
+      this.imageUrl = file? URL.createObjectURL(file) : '';
+    },
+    shouldDisableSubmitButton() {
+      console.log("checking")
+      let disableSubmitButton = this.$v.template.name.$invalid || this.IsHeaderValueInvalid() || this.$v.bodyValue.$invalid
+      this.$emit('disable-submit-button', disableSubmitButton)
+    },
+    IsHeaderValueInvalid() {
+      if(this.headerType == 'text') {
+        return this.$v.headerValue.$invalid;
+      } else {
+        return this.imageFile == '';
+      }
+    },
   },
   watch: {
     template: {
       handler() {
-        let disableSubmitButton = this.$v.template.name.$invalid || this.$v.headerValue.$invalid || this.$v.bodyValue.$invalid
-        this.$emit('disable-submit-button', disableSubmitButton)
+        this.shouldDisableSubmitButton();
       },
-      deep: true
+      deep: true,
+    },
+    imageFile: function() {
+      this.shouldDisableSubmitButton();
+    },
+    headerType: function() {
+      this.shouldDisableSubmitButton();
     }
   }
 };
@@ -261,5 +317,8 @@ export default {
 }
 .bold {
   font-weight: bold;
+}
+.template-body{
+  white-space: pre-line;
 }
 </style>

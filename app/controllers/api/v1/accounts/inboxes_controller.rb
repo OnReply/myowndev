@@ -88,8 +88,9 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
 
   def template
     fetch_channel
-    template = permit_template_params
-    response = @channel.create_template(template)
+    @template = permit_template_params
+    attach_image_to_template if params[:header_type] == "image"
+    response = @channel.create_template(@template)
     if response.success?
       render status: :ok, json: { message: I18n.t('messages.inbox_deletetion_response') }
     else 
@@ -157,7 +158,9 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
   end
 
   def permit_template_params
-    params.require(:template).permit(
+    template_hash = JSON.parse(params.require(:template))
+
+    ActionController::Parameters.new(template_hash).permit(
       :category,
       :language,
       :name,
@@ -171,6 +174,15 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
 
   def fetch_channel
     @channel = @inbox.channel
+  end
+
+  def attach_image_to_template
+    image = @channel.template_images.attach(params[:image])
+    url = url_for(@channel.template_images.last)
+    @template["components"].prepend({"type": "HEADER",
+      "format": "IMAGE", "example": {
+        "header_handle": [url]
+      }})
   end
 end
 
