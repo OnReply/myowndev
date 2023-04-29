@@ -51,6 +51,11 @@
         </div>
       </woot-modal>
     </div>
+    <woot-confirm-modal
+      ref="confirmDialog"
+      :title="$t('WHATSAPP_TEMPLATES.BUILDER.DELETE')"
+      :description="$t('WHATSAPP_TEMPLATES.BUILDER.DELETE_DESCRIPTION')"
+    />
   </div>
 </template>
 
@@ -124,13 +129,16 @@ export default {
       this.openModal(template)
     },
     async deleteTemplate() {
-      const response = await InboxesAPI.deleteTemplate(this.inbox.id, this.template);
-      if(response.data.message) {
-        this.showAlert(this.$t('WHATSAPP_TEMPLATES.BUILDER.SUCCESSFUL_DELETION'))
-      } else {
-        this.showAlert(res.data.error)
+      const ok = await this.$refs.confirmDialog.showConfirmation();
+      if (ok) {
+        const response = await InboxesAPI.deleteTemplate(this.inbox.id, this.template);
+        if(response.data.message) {
+          this.showAlert(this.$t('WHATSAPP_TEMPLATES.BUILDER.SUCCESSFUL_DELETION'))
+        } else {
+          this.showAlert(res.data.error)
+        }
+        this.onClose();
       }
-      this.onClose();
     },
   },
 };
