@@ -57,6 +57,7 @@
             v-model.trim="headerValue"
             type="text"
             @input="updateHeaderValue"
+            maxlength="60"
           />
           <span v-if="$v.headerValue.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.INBOX_NAME.ERROR') }}
@@ -83,6 +84,7 @@
             type="text"
             name="body"
             @input="updateBodyValue"
+            maxlength="1024"
           />
           <span v-if="$v.bodyValue.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.INBOX_NAME.ERROR') }}
@@ -90,12 +92,15 @@
         </label>
       </div>
       <div class="input-group-field">
-        <woot-input
-          v-model.trim="footerValue"
-          type="text"
-          :label="$t('WHATSAPP_TEMPLATES.BUILDER.FORM.FOOTER') "
-          @input="updateFooterValue"
-        />
+        <label for="">
+          {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.FOOTER') }}
+          <input
+            v-model.trim="footerValue"
+            type="text"
+            @input="updateFooterValue"
+            maxlength="60"
+          />
+        </label>
       </div>
     </div>
     <div class="medium-3 whatsapp-chat-background">
