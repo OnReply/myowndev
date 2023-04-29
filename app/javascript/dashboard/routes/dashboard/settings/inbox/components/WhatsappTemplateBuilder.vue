@@ -3,12 +3,11 @@
     <div class="medium-9 small mr-2">
       <div class="input-group-field">
         <label for="name" :class="{ error: $v.template.name.$error }">
-          Name
+          {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.NAME') }}
           <input
             v-model.trim="template.name"
             name="name"
             type="text"
-            placeholder="test"
             @keydown="validateInput"
           />
           <span v-if="$v.template.name.$error" class="message">
@@ -17,7 +16,7 @@
         </label>
       </div>
       <div class="input-group-field">
-        <label for="category"> Category </label>
+        <label for="category"> {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.CATEGORY') }} </label>
         <select v-model="template.category" name="category">
           <option v-for="t in templateTypes" :key="t" :value="t">
             {{ t }}
@@ -25,7 +24,7 @@
         </select>
       </div>
       <div class="input-group-field">
-        <label for="language"> Language </label>
+        <label for="language"> {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.LANGUAGE') }} </label>
         <select v-model="template.language" name="language">
           <option
             v-for="language in languages"
@@ -37,27 +36,26 @@
         </select>
       </div>
       <div class="input-group-field">
-        <label for="language"> Header type </label>
+        <label for="language"> {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.HEADER_TYPE') }} </label>
         <select v-model="headerType" @change="UpdateDisplayHeaderInputField" name="headerType">
           <option
             value="text"
           >
-            Text
+            {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.HEADER_TYPES.TEXT') }}
           </option>
           <option
             value="image"
           >
-            Image
+            {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.HEADER_TYPES.IMAGE') }}
           </option>
         </select>
       </div>
       <div v-if="displayHeaderInputField" class="input-group-field">
         <label for="" :class="{ error: $v.headerValue.$error }">
-          Header
+          {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.HEADER') }}
           <input
             v-model.trim="headerValue"
             type="text"
-            placeholder="Type a string"
             @input="updateHeaderValue"
           />
           <span v-if="$v.headerValue.$error" class="message">
@@ -79,12 +77,11 @@
       </div>
       <div class="input-group-field">
         <label for="body" :class="{ error: $v.bodyValue.$error }"> 
-          Body 
+          {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BODY') }} 
           <textarea
             v-model.trim="bodyValue"
             type="text"
             name="body"
-            placeholder="Type a string"
             @input="updateBodyValue"
           />
           <span v-if="$v.bodyValue.$error" class="message">
@@ -96,8 +93,7 @@
         <woot-input
           v-model.trim="footerValue"
           type="text"
-          placeholder="Type a string"
-          label="Footer"
+          :label="$t('WHATSAPP_TEMPLATES.BUILDER.FORM.FOOTER') "
           @input="updateFooterValue"
         />
       </div>

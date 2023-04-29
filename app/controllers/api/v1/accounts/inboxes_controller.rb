@@ -94,7 +94,7 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
     if response.success?
       render status: :ok, json: { message: I18n.t('messages.inbox_deletetion_response') }
     else 
-      render status: :unprocessable_entity, json: { message: response["error"]["error_user_msg"] }
+      render status: :ok, json: { error: response["error"]["error_user_msg"] }
     end
   end
 
@@ -104,7 +104,7 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
     if response.success?
       render status: :ok, json: { message: I18n.t('messages.inbox_deletetion_response') }
     else 
-      render status: :unprocessable_entity, json: { message: response["error"]["error_user_msg"] }
+      render status: :ok, json: { error: response["error"]["error_user_msg"] }
     end
   end
   private

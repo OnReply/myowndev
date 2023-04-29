@@ -494,7 +494,7 @@ export default {
           ...visibleToAllChannelTabs,
           {
             key: 'templates',
-            name: 'Templates',
+            name: this.$t('INBOX_MGMT.TABS.TEMPLATES'),
           },
         ];
       }

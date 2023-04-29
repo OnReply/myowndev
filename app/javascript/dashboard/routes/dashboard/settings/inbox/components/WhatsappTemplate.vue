@@ -45,7 +45,7 @@
               @click="deleteTemplate"
               color-scheme="alert"
             >
-              Delete Template
+              {{ $t('WHATSAPP_TEMPLATES.BUILDER.DELETE') }}
             </woot-button>
           </div>
         </div>
@@ -58,6 +58,7 @@
 import TemplatesPicker from '../../../../../components/widgets/conversation/WhatsappTemplates/TemplatesPicker.vue';
 import WhatsappTemplateBuilder from './WhatsappTemplateBuilder.vue';
 import InboxesAPI from '../../../../../api/inboxes';
+import alertMixin from 'shared/mixins/alertMixin';
 export default {
   components: { TemplatesPicker, WhatsappTemplateBuilder },
   props: {
@@ -96,6 +97,7 @@ export default {
       editMode: false
     };
   },
+  mixins: [alertMixin],
   computed: {},
   methods: {
     openModal(template) {
@@ -105,9 +107,14 @@ export default {
     onClose() {
       this.showWhatsAppTemplatesBuilderModal = false;
     },
-    submitForm() {
+    async submitForm() {
+      const response = await InboxesAPI.createTemplate(this.inbox.id, this.template, this.$refs.templateBuilder.headerType, this.$refs.templateBuilder.imageFile)
+      if(response.data.message) {
+        this.showAlert(this.$t('WHATSAPP_TEMPLATES.BUILDER.SUCCESSFUL_SUBMISSION'))
+      } else {
+        this.showAlert(res.data.error)
+      }
       this.onClose();
-      InboxesAPI.createTemplate(this.inbox.id, this.template, this.$refs.templateBuilder.headerType, this.$refs.templateBuilder.imageFile)
     },
     toggleSubmitButton(value) {
       this.isDisabled = value;
@@ -116,8 +123,13 @@ export default {
       this.editMode = true;
       this.openModal(template)
     },
-    deleteTemplate() {
-      InboxesAPI.deleteTemplate(this.inbox.id, this.template);
+    async deleteTemplate() {
+      const response = await InboxesAPI.deleteTemplate(this.inbox.id, this.template);
+      if(response.data.message) {
+        this.showAlert(this.$t('WHATSAPP_TEMPLATES.BUILDER.SUCCESSFUL_DELETION'))
+      } else {
+        this.showAlert(res.data.error)
+      }
       this.onClose();
     },
   },
