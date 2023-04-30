@@ -104,28 +104,27 @@
         <woot-code :script="inbox.provider_config.api_key" />
       </settings-section>
       <settings-section
+        v-if="shouldDisplayUpdateSettings()"
         :title="$t('INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_SECTION_UPDATE_TITLE')"
         :sub-title="
           $t('INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_SECTION_UPDATE_SUBHEADER')
         "
       >
-        <div class="whatsapp-settings--content">
-          <woot-input
-            v-model.trim="whatsAppInboxAPIKey"
-            type="text"
-            class="input"
-            :placeholder="
-              $t(
-                'INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_SECTION_UPDATE_PLACEHOLDER'
-              )
-            "
-          />
-          <woot-button
-            :disabled="$v.whatsAppInboxAPIKey.$invalid"
-            @click="updateWhatsAppInboxAPIKey"
+        <div v-if="!successfullyUpdated" class="whatsapp-settings--content">
+          <div
+            v-if="!hasLoginStarted"
+            class="login-init text-left medium-8 mb-1 columns p-0"
           >
-            {{ $t('INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_SECTION_UPDATE_BUTTON') }}
-          </woot-button>
+            <a href="#" @click="startLogin()">
+              <img
+                src="~dashboard/assets/images/channels/facebook_login.png"
+                alt="Facebook-logo"
+              />
+            </a>
+          </div>
+          <div v-else class="login-init medium-8 columns p-0">
+            <loading-state v-if="showLoader" :message="emptyStateMessage" />
+          </div>
         </div>
       </settings-section>
     </div>
@@ -133,6 +132,9 @@
 </template>
 
 <script>
+/* eslint-env browser */
+/* global FB */
+
 import alertMixin from 'shared/mixins/alertMixin';
 import inboxMixin from 'shared/mixins/inboxMixin';
 import SettingsSection from '../../../../../components/SettingsSection';
@@ -140,6 +142,11 @@ import ImapSettings from '../ImapSettings';
 import SmtpSettings from '../SmtpSettings';
 import MicrosoftReauthorize from '../channels/microsoft/Reauthorize';
 import { required } from 'vuelidate/lib/validators';
+import LoadingState from 'dashboard/components/widgets/LoadingState';
+import {
+  loadFBsdk,
+  initFB,
+} from '../../../../../../shared/helpers/facebookInitializer';
 
 export default {
   components: {
@@ -147,6 +154,7 @@ export default {
     ImapSettings,
     SmtpSettings,
     MicrosoftReauthorize,
+    LoadingState,
   },
   mixins: [inboxMixin, alertMixin],
   props: {
@@ -159,6 +167,9 @@ export default {
     return {
       hmacMandatory: false,
       whatsAppInboxAPIKey: '',
+      hasLoginStarted: false,
+      emptyStateMessage: this.$t('INBOX_MGMT.DETAILS.LOADING_FB'),
+      successfullyUpdated: false,
     };
   },
   validations: {
@@ -171,6 +182,8 @@ export default {
   },
   mounted() {
     this.setDefaults();
+    loadFBsdk();
+    initFB();
   },
   methods: {
     setDefaults() {
@@ -209,9 +222,46 @@ export default {
 
         await this.$store.dispatch('inboxes/updateInbox', payload);
         this.showAlert(this.$t('INBOX_MGMT.EDIT.API.SUCCESS_MESSAGE'));
+        this.successfullyUpdated = true;
       } catch (error) {
         this.showAlert(this.$t('INBOX_MGMT.EDIT.API.ERROR_MESSAGE'));
+        this.hasLoginStarted = false;
       }
+    },
+    startLogin() {
+      this.hasLoginStarted = true;
+      this.tryFBlogin();
+    },
+    tryFBlogin() {
+      FB.login(
+        response => {
+          if (response.status === 'connected') {
+            this.isFbConnected = true;
+            this.whatsAppInboxAPIKey = response.authResponse.accessToken;
+            this.updateWhatsAppInboxAPIKey();
+          } else if (response.status === 'not_authorized') {
+            // The person is logged into Facebook, but not your app.
+            this.emptyStateMessage = this.$t(
+              'INBOX_MGMT.DETAILS.ERROR_FB_AUTH'
+            );
+          } else {
+            // The person is not logged into Facebook, so we're not sure if
+            // they are logged into this app or not.
+            this.emptyStateMessage = this.$t(
+              'INBOX_MGMT.DETAILS.ERROR_FB_AUTH'
+            );
+          }
+        },
+        {
+          scope: 'whatsapp_business_management,whatsapp_business_messaging',
+        }
+      );
+    },
+    showLoader() {
+      return !this.user_access_token || this.isCreating;
+    },
+    shouldDisplayUpdateSettings() {
+      return this.inbox.provider_config.token_expiry_date !== 'never';
     },
   },
 };
@@ -231,5 +281,15 @@ export default {
       margin-bottom: 0;
     }
   }
+}
+.p-0 {
+  padding: 0%;
+}
+.text-left {
+  text-align: left;
+}
+
+.mb-1 {
+  margin-bottom: 1.6rem;
 }
 </style>
