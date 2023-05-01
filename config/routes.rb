@@ -51,6 +51,7 @@ Rails.application.routes.draw do
               post :register_facebook_page
               get :register_facebook_page
               post :facebook_pages
+              post :facebook_tokens
               post :reauthorize_page
             end
           end
@@ -137,8 +138,9 @@ Rails.application.routes.draw do
             get :campaigns, on: :member
             get :agent_bot, on: :member
             post :set_agent_bot, on: :member
-            delete :avatar, on: :member
+            post :refresh_token, on: :member
             post :template, on: :member
+            delete :avatar, on: :member
             delete :delete_template, on: :member
           end
           resources :inbox_members, only: [:create, :show], param: :inbox_id do

@@ -14,6 +14,12 @@ class Inboxes extends ApiClient {
     return axios.delete(`${this.url}/${inboxId}/avatar`);
   }
 
+  refreshToken(inboxId, refreshed) {
+    return axios.post(`${this.url}/${inboxId}/refresh_token`, {
+      refreshed: refreshed,
+    });
+  }
+
   getAgentBot(inboxId) {
     return axios.get(`${this.url}/${inboxId}/agent_bot`);
   }

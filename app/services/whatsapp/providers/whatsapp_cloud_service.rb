@@ -57,6 +57,28 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
     response
   end
 
+  def extend_token_life
+    response = HTTParty.get("#{api_base_path}/v16.0/oauth/access_token?grant_type=fb_exchange_token&client_id=#{GlobalConfigService.load('FB_APP_ID', nil)}&client_secret=#{GlobalConfigService.load('FB_APP_SECRET', nil)}&fb_exchange_token=#{whatsapp_channel.provider_config['api_key']}")
+    whatsapp_channel.provider_config['api_key'] = response["access_token"]
+    whatsapp_channel.provider_config['token_expiry_date'] =  response["expires_in"].present? ? Time.current + response["expires_in"] : 'never'
+    whatsapp_channel.save!
+  end
+
+  def sync_token_expiry_date
+    return if whatsapp_channel.provider_config['token_expiry_date'] == 'never'
+    response = get_expires_at()
+    whatsapp_channel.provider_config['token_expiry_date'] = response["data"]["expires_at"] == 0 ? 'never' : Time.at(response["data"]["expires_at"]).utc
+    whatsapp_channel.save!
+  end
+
+  def refresh_token
+    response = HTTParty.get("#{api_base_path}/v16.0/me?access_token=#{whatsapp_channel.provider_config['api_key']}")
+  end
+
+  def get_expires_at
+    HTTParty.get("#{api_base_path}/v16.0/debug_token?input_token=#{whatsapp_channel.provider_config["api_key"]}&access_token=#{whatsapp_channel.provider_config["api_key"]}")
+  end
+
   private
 
   def api_base_path
