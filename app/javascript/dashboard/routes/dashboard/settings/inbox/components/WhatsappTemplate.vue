@@ -117,7 +117,7 @@ export default {
       if(response.data.message) {
         this.showAlert(this.$t('WHATSAPP_TEMPLATES.BUILDER.SUCCESSFUL_SUBMISSION'))
       } else {
-        this.showAlert(res.data.error)
+        this.showAlert(response.data.error)
       }
       this.onClose();
     },
@@ -135,7 +135,7 @@ export default {
         if(response.data.message) {
           this.showAlert(this.$t('WHATSAPP_TEMPLATES.BUILDER.SUCCESSFUL_DELETION'))
         } else {
-          this.showAlert(res.data.error)
+          this.showAlert(response.data.error)
         }
         this.onClose();
       }

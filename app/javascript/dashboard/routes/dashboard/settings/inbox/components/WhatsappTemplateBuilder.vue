@@ -227,7 +227,6 @@ export default {
       this.imageUrl = file? URL.createObjectURL(file) : '';
     },
     shouldDisableSubmitButton() {
-      console.log("checking")
       let disableSubmitButton = this.$v.template.name.$invalid || this.IsHeaderValueInvalid() || this.$v.bodyValue.$invalid
       this.$emit('disable-submit-button', disableSubmitButton)
     },
