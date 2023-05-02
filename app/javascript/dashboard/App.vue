@@ -5,7 +5,6 @@
     class="app-wrapper app-root"
     :class="{ 'app-rtl--wrapper': isRTLView }"
   >
-    <update-banner :latest-chatwoot-version="latestChatwootVersion" />
     <transition name="fade" mode="out-in">
       <router-view />
     </transition>
@@ -39,7 +38,6 @@ export default {
     AddAccountModal,
     LoadingState,
     NetworkNotification,
-    UpdateBanner,
     WootSnackbarBox,
   },
 
@@ -90,14 +88,10 @@ export default {
       this.$store.dispatch('setActiveAccount', {
         accountId: this.currentAccountId,
       });
-      const {
-        locale,
-        latest_chatwoot_version: latestChatwootVersion,
-      } = this.getAccount(this.currentAccountId);
+      const { locale } = this.getAccount(this.currentAccountId);
       const { pubsub_token: pubsubToken } = this.currentUser || {};
       this.setLocale(locale);
       this.updateRTLDirectionView(locale);
-      this.latestChatwootVersion = latestChatwootVersion;
       vueActionCable.init(pubsubToken);
 
       verifyServiceWorkerExistence(registration =>
