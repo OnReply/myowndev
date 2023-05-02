@@ -11,6 +11,12 @@ describe Whatsapp::Providers::WhatsappCloudService do
     context 'when called' do
       context 'list' do
         it 'calls message endpoints for interactive list buttons messages' do
+          stub_request(:get, /oauth\/access_token/).
+          to_return(status: 200, body: {"access_token": "1234", expires_in: Time.current.to_i }.to_json, headers: response_headers)
+ 
+          stub_request(:get, /debug_token/).
+          to_return(status: 200, body: {'data': {'expires_at': (Time.current + 10.days).to_i}}.to_json, headers: response_headers)
+ 
           message = create(
             :message, message_type: :outgoing, content: 'test', content_type: 'input_select',
                       content_attributes: { 
@@ -59,6 +65,12 @@ describe Whatsapp::Providers::WhatsappCloudService do
         end
 
         it 'calls message endpoints for interactive list buttons messages with custom action button' do
+          stub_request(:get, /oauth\/access_token/).
+          to_return(status: 200, body: {"access_token": "1234", expires_in: Time.current.to_i }.to_json, headers: response_headers)
+ 
+          stub_request(:get, /debug_token/).
+          to_return(status: 200, body: {'data': {'expires_at': (Time.current + 10.days).to_i}}.to_json, headers: response_headers)
+
           message = create(
             :message, message_type: :outgoing, content: 'test', content_type: 'input_select',
                       content_attributes: {
@@ -96,6 +108,12 @@ describe Whatsapp::Providers::WhatsappCloudService do
         end
 
         it 'calls message endpoints for interactive list buttons messages with large custom action button' do
+          stub_request(:get, /oauth\/access_token/).
+          to_return(status: 200, body: {"access_token": "1234", expires_in: Time.current.to_i }.to_json, headers: response_headers)
+ 
+          stub_request(:get, /debug_token/).
+          to_return(status: 200, body: {'data': {'expires_at': (Time.current + 10.days).to_i}}.to_json, headers: response_headers)
+
           message = create(
             :message, message_type: :outgoing, content: 'test', content_type: 'input_select',
                       content_attributes: {
@@ -133,6 +151,12 @@ describe Whatsapp::Providers::WhatsappCloudService do
         end
 
         it 'calls message endpoints for interactive list buttons messages with header' do
+          stub_request(:get, /oauth\/access_token/).
+          to_return(status: 200, body: {"access_token": "1234", expires_in: Time.current.to_i }.to_json, headers: response_headers)
+ 
+          stub_request(:get, /debug_token/).
+          to_return(status: 200, body: {'data': {'expires_at': (Time.current + 10.days).to_i}}.to_json, headers: response_headers)
+
           message = create(
             :message, message_type: :outgoing, content: 'test', content_type: 'input_select',
                       content_attributes: {
@@ -170,6 +194,12 @@ describe Whatsapp::Providers::WhatsappCloudService do
         end
 
         it 'calls message endpoints for interactive list buttons messages with footer' do
+          stub_request(:get, /oauth\/access_token/).
+          to_return(status: 200, body: {"access_token": "1234", expires_in: Time.current.to_i }.to_json, headers: response_headers)
+ 
+          stub_request(:get, /debug_token/).
+          to_return(status: 200, body: {'data': {'expires_at': (Time.current + 10.days).to_i}}.to_json, headers: response_headers)
+
           message = create(
             :message, message_type: :outgoing, content: 'test', content_type: 'input_select',
                       content_attributes: {
@@ -207,6 +237,12 @@ describe Whatsapp::Providers::WhatsappCloudService do
         end
 
         it 'calls message endpoints for interactive list buttons messages with description' do
+          stub_request(:get, /oauth\/access_token/).
+          to_return(status: 200, body: {"access_token": "1234", expires_in: Time.current.to_i }.to_json, headers: response_headers)
+ 
+          stub_request(:get, /debug_token/).
+          to_return(status: 200, body: {'data': {'expires_at': (Time.current + 10.days).to_i}}.to_json, headers: response_headers)
+ 
           message = create(
             :message, message_type: :outgoing, content: 'test', content_type: 'input_select',
                       content_attributes: {
@@ -244,6 +280,12 @@ describe Whatsapp::Providers::WhatsappCloudService do
         end
 
         it 'calls message endpoints for interactive list buttons messages with one button has a section and others without' do
+          stub_request(:get, /oauth\/access_token/).
+          to_return(status: 200, body: {"access_token": "1234", expires_in: Time.current.to_i }.to_json, headers: response_headers)
+ 
+          stub_request(:get, /debug_token/).
+          to_return(status: 200, body: {'data': {'expires_at': (Time.current + 10.days).to_i}}.to_json, headers: response_headers)
+
           message = create(
             :message, message_type: :outgoing, content: 'test', content_type: 'input_select',
                       content_attributes: {
@@ -281,6 +323,12 @@ describe Whatsapp::Providers::WhatsappCloudService do
         end
 
         it 'calls message endpoints for interactive list buttons messages with one section' do
+          stub_request(:get, /oauth\/access_token/).
+          to_return(status: 200, body: {"access_token": "1234", expires_in: Time.current.to_i }.to_json, headers: response_headers)
+ 
+          stub_request(:get, /debug_token/).
+          to_return(status: 200, body: {'data': {'expires_at': (Time.current + 10.days).to_i}}.to_json, headers: response_headers)
+
           message = create(
             :message, message_type: :outgoing, content: 'test', content_type: 'input_select',
                       content_attributes: {
@@ -319,6 +367,12 @@ describe Whatsapp::Providers::WhatsappCloudService do
         end
 
         it 'calls message endpoints for interactive list buttons messages with two sections' do
+          stub_request(:get, /oauth\/access_token/).
+          to_return(status: 200, body: {"access_token": "1234", expires_in: Time.current.to_i }.to_json, headers: response_headers)
+ 
+          stub_request(:get, /debug_token/).
+          to_return(status: 200, body: {'data': {'expires_at': (Time.current + 10.days).to_i}}.to_json, headers: response_headers)
+
           message = create(
             :message, message_type: :outgoing, content: 'test', content_type: 'input_select',
                       content_attributes: {

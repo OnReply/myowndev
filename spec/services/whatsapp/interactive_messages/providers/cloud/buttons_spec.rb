@@ -10,6 +10,11 @@ describe Whatsapp::Providers::WhatsappCloudService do
   describe '#send_message' do
     context 'when called' do
       it 'calls message endpoints for interactive quick buttons messages' do
+        stub_request(:get, /oauth\/access_token/).
+         to_return(status: 200, body: {"access_token": "1234", expires_in: Time.current.to_i }.to_json, headers: response_headers)
+
+        stub_request(:get, /debug_token/).
+         to_return(status: 200, body: {'data': {'expires_at': (Time.current + 10.days).to_i}}.to_json, headers: response_headers)
         message = create(
           :message, message_type: :outgoing, content: 'test', content_type: 'input_select',
                     content_attributes: { 
