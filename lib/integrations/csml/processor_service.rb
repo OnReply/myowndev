@@ -106,7 +106,7 @@ class Integrations::Csml::ProcessorService < Integrations::BotProcessorService
         inbox_id: conversation.inbox_id,
         content: message_payload['content']['title'],
         content_type: 'input_select',
-        content_attributes: { items: buttons },
+        content_attributes: { items: buttons, message_payload: message_payload },
         sender: agent_bot
       }
     )
