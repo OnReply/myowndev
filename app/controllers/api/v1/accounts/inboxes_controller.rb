@@ -86,6 +86,28 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
     render status: :ok, json: { message: I18n.t('messages.inbox_deletetion_response') }
   end
 
+  def template
+    fetch_channel
+    @template = permit_template_params
+    attach_image_to_template if params[:header_type] == "image"
+    response = @channel.create_template(@template)
+    if response.success?
+      render status: :ok, json: { message: I18n.t('messages.inbox_deletetion_response') }
+    else 
+      render status: :ok, json: { error: response["error"]["error_user_msg"] }
+    end
+  end
+
+  def delete_template
+    fetch_channel
+    response = @channel.delete_template(params[:name])
+    if response.success?
+      render status: :ok, json: { message: I18n.t('messages.inbox_deletetion_response') }
+    else 
+      render status: :ok, json: { error: response["error"]["error_user_msg"] }
+    end
+  end
+
   def refresh_token
     begin
       unless params[:refreshed]
@@ -158,6 +180,34 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
     else
       []
     end
+  end
+
+  def permit_template_params
+    template_hash = JSON.parse(params.require(:template))
+
+    ActionController::Parameters.new(template_hash).permit(
+      :category,
+      :language,
+      :name,
+      components: [
+        :format,
+        :type,
+        :text
+      ]
+    )
+  end
+
+  def fetch_channel
+    @channel = @inbox.channel
+  end
+
+  def attach_image_to_template
+    image = @channel.template_images.attach(params[:image])
+    url = url_for(@channel.template_images.last)
+    @template["components"].prepend({"type": "HEADER",
+      "format": "IMAGE", "example": {
+        "header_handle": [url]
+      }})
   end
 end
 

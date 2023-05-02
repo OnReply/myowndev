@@ -31,6 +31,7 @@ class Channel::Whatsapp < ApplicationRecord
   validates :provider, inclusion: { in: PROVIDERS }
   validates :phone_number, presence: true, uniqueness: true
   validate :validate_provider_config
+  has_many_attached :template_images
 
   after_create :after_create_methods
   after_update :should_extend_token, if: :saved_change_to_provider_config?
@@ -60,6 +61,8 @@ class Channel::Whatsapp < ApplicationRecord
   delegate :sync_templates, to: :provider_service
   delegate :media_url, to: :provider_service
   delegate :api_headers, to: :provider_service
+  delegate :create_template, to: :provider_service
+  delegate :delete_template, to: :provider_service
   delegate :extend_token_life, to: :provider_service
   delegate :sync_token_expiry_date, to: :provider_service
   delegate :refresh_token, to: :provider_service

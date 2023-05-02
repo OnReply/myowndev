@@ -359,6 +359,9 @@
     <div v-if="selectedTabKey === 'botConfiguration'">
       <bot-configuration :inbox="inbox" />
     </div>
+    <div v-if="selectedTabKey === 'templates'">
+      <whatsapp-template :inbox="inbox" />
+    </div>
   </div>
 </template>
 
@@ -378,6 +381,7 @@ import ConfigurationPage from './settingsPage/ConfigurationPage';
 import CollaboratorsPage from './settingsPage/CollaboratorsPage';
 import WidgetBuilder from './WidgetBuilder';
 import BotConfiguration from './components/BotConfiguration';
+import WhatsappTemplate from './components/WhatsappTemplate';
 import { FEATURE_FLAGS } from '../../../../featureFlags';
 
 export default {
@@ -392,6 +396,7 @@ export default {
     SettingsSection,
     WeeklyAvailability,
     WidgetBuilder,
+    WhatsappTemplate,
   },
   mixins: [alertMixin, configMixin, inboxMixin],
   data() {
@@ -484,7 +489,15 @@ export default {
           },
         ];
       }
-
+      if (this.isAWhatsAppCloudChannel) {
+        visibleToAllChannelTabs = [
+          ...visibleToAllChannelTabs,
+          {
+            key: 'templates',
+            name: this.$t('INBOX_MGMT.TABS.TEMPLATES'),
+          },
+        ];
+      }
       if (
         this.isFeatureEnabledonAccount(
           this.accountId,

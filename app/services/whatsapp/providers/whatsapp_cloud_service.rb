@@ -40,6 +40,23 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
     "#{api_base_path}/v13.0/#{media_id}"
   end
 
+  def create_template(template)
+    response = HTTParty.post(
+      "#{business_account_path}/message_templates",
+      headers: api_headers,
+      body: template.to_json
+    )
+    response
+  end
+
+  def delete_template(name)
+    response = HTTParty.delete(
+      "#{business_account_path}/message_templates?name=#{name}",
+      headers: api_headers
+    )
+    response
+  end
+
   def extend_token_life
     response = HTTParty.get("#{api_base_path}/v16.0/oauth/access_token?grant_type=fb_exchange_token&client_id=#{GlobalConfigService.load('FB_APP_ID', nil)}&client_secret=#{GlobalConfigService.load('FB_APP_SECRET', nil)}&fb_exchange_token=#{whatsapp_channel.provider_config['api_key']}")
     whatsapp_channel.provider_config['api_key'] = response["access_token"]
