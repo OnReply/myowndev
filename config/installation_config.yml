@@ -11,7 +11,7 @@
 - name: WIDGET_BRAND_URL
   value: 'https://social-bot.io'
 - name: BRAND_NAME
-  value: 'Social Bot'
+  value: 'Social-Bot'
 - name: TERMS_URL
   value: 'https://social-bot.io/terms-of-service'
 - name: PRIVACY_URL
@@ -69,6 +69,6 @@
 - name: CHATWOOT_CLOUD_PLANS
   value: hacker
 - name: DEPLOYMENT_ENV
-  value: self-hosted
+  value: cloud
 - name: CSML_EDITOR_HOST
-  value: self-hosted
+  value:

@@ -160,6 +160,22 @@ RSpec.describe Conversation, type: :model do
         .with(described_class::CONVERSATION_UPDATED, kind_of(Time), conversation: conversation, notifiable_assignee_change: true)
     end
 
+    it 'will run conversation_updated event for conversation_language in additional_attributes' do
+      conversation.additional_attributes[:conversation_language] = 'es'
+      conversation.save!
+      changed_attributes = conversation.previous_changes
+      expect(Rails.configuration.dispatcher).to have_received(:dispatch)
+        .with(described_class::CONVERSATION_UPDATED, kind_of(Time), conversation: conversation, notifiable_assignee_change: false,
+                                                                    changed_attributes: changed_attributes, performed_by: nil)
+    end
+
+    it 'will not run conversation_updated event for bowser_language in additional_attributes' do
+      conversation.additional_attributes[:browser_language] = 'es'
+      conversation.save!
+      expect(Rails.configuration.dispatcher).not_to have_received(:dispatch)
+        .with(described_class::CONVERSATION_UPDATED, kind_of(Time), conversation: conversation, notifiable_assignee_change: true)
+    end
+
     it 'creates conversation activities' do
       conversation.update(
         status: :resolved,
@@ -624,10 +640,10 @@ RSpec.describe Conversation, type: :model do
   end
 
   describe 'validate valid referer url' do
-    let(:conversation) { create(:conversation, additional_attributes: { referer: 'https://social-bot.io/' }) }
+    let(:conversation) { create(:conversation, additional_attributes: { referer: 'https://www.chatwoot.com/' }) }
 
     it 'returns nil' do
-      expect(conversation['additional_attributes']['referer']).to eq('https://social-bot.io/')
+      expect(conversation['additional_attributes']['referer']).to eq('https://www.chatwoot.com/')
     end
   end
 
