@@ -26,9 +26,10 @@ class Inboxes extends ApiClient {
 
   createTemplate(inboxId, template, headerType, image) {
     var params_template = template
-    params_template.components = template.components.filter(component=> component.text)
+    params_template.components = template.components.filter(component => component.text)
     const formData = new FormData();
     if (headerType == 'image') {
+      params_template.components = template.components.filter(component => component.type != 'HEADER')
       formData.append("image", image);
     }
     formData.append("template", JSON.stringify(params_template));

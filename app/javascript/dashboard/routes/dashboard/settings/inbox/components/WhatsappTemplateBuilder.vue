@@ -149,7 +149,7 @@ export default {
         return {
           name: '',
           category: 'UTILITY',
-          language: 'en',
+          language: 'ar',
           components: [],
         };
       },

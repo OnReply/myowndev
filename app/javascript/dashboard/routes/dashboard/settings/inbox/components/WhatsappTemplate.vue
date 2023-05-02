@@ -3,7 +3,7 @@
     <div class="add-button-div">
       <woot-submit-button
         button-text="Create New template"
-        @click="openModal(defaultTempate); editMode=false;"
+        @click="openModal(JSON.parse(JSON.stringify(defaultTempate))); editMode=false;"
       />
     </div>
     <div class="mt-2">
@@ -96,7 +96,7 @@ export default {
             text: "",
           },
         ],
-        language: "en_US",
+        language: "ar",
         name: "",
       },
       editMode: false
@@ -116,6 +116,7 @@ export default {
       const response = await InboxesAPI.createTemplate(this.inbox.id, this.template, this.$refs.templateBuilder.headerType, this.$refs.templateBuilder.imageFile)
       if(response.data.message) {
         this.showAlert(this.$t('WHATSAPP_TEMPLATES.BUILDER.SUCCESSFUL_SUBMISSION'))
+        this.template = this.defaultTempate;
       } else {
         this.showAlert(response.data.error)
       }
