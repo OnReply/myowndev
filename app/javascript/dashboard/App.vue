@@ -32,6 +32,7 @@ import {
   registerSubscription,
   verifyServiceWorkerExistence,
 } from './helper/pushHelper';
+import { refreshToken } from './store/modules/conversations/helpers/tokenRefresh';
 
 export default {
   name: 'App',
@@ -83,6 +84,7 @@ export default {
     currentAccountId() {
       if (this.currentAccountId) {
         this.initializeAccount();
+        refreshToken(this.currentAccountId);
       }
     },
   },

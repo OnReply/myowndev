@@ -95,4 +95,5 @@ json.provider resource.channel.try(:provider)
 if resource.whatsapp?
   json.message_templates resource.channel.try(:message_templates)
   json.provider_config resource.channel.try(:provider_config) if Current.account_user&.administrator?
+  json.reauthorization_required (resource.channel.provider_config['token_expiry_date'].to_date - Date.today).to_i < 7 if resource.channel.provider == 'whatsapp_cloud' && resource.channel.provider_config['token_expiry_date'].present? && resource.channel.provider_config['token_expiry_date'] != 'never'
 end
