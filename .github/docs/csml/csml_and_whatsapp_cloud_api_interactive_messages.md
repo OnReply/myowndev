@@ -4,13 +4,13 @@
 - https://docs.csml.dev/language/sending-receiving-messages/message-payloads
 - https://developers.facebook.com/docs/whatsapp/on-premises/reference/messages#section-object
 - https://developers.facebook.com/docs/whatsapp/guides/interactive-messages/#como-usar
-
+- https://developers.facebook.com/docs/whatsapp/cloud-api/reference/media#supported-media-types
 
 # How to User
 
 ## Quick buttons
 
-Quetion up to 3 options
+- Quetion up to 3 options
 
 <img src="/.github/docs/csml/2023-05-01_18-38.png"/>
 
@@ -35,6 +35,71 @@ say Question(
 | header | Header... | Message header  (Max 60 characters ) |
 | footer | Footer... | Message footer  (Max 60 characters ) |
 
+
+- Quetion up to 3 options and image
+
+*Image replace header*
+
+<img src="/.github/docs/csml/2023-05-03_22-44.png"/>
+
+CSML Code example:
+```ruby
+say Question(
+    "What would you like to do today?",
+    buttons = [
+      Button("Listen to good music", accepts=["music","listen"]) as music,
+      Button("Manage my Dropbox account", accepts=["dropbox"]) as dropbox,
+      Button("Tell me a joke") as joke
+    ],
+    image="https://i.ibb.co/5RXy9fG/My-project-1.jpg",
+    footer="Footer..."
+  )
+```
+
+- Quetion up to 3 options and video
+
+*Video replace header*
+
+<img src="/.github/docs/csml/2023-05-03_22-48.png"/>
+
+CSML Code example:
+```ruby
+say Question(
+    "What would you like to do today?",
+    buttons = [
+      Button("Listen to good music", accepts=["music","listen"]) as music,
+      Button("Manage my Dropbox account", accepts=["dropbox"]) as dropbox,
+      Button("Tell me a joke") as joke
+    ],
+    video="https://media.giphy.com/media/3oKIPsx2VAYAgEHC12/giphy.mp4",
+    footer="Footer..."
+  )
+```
+
+- Quetion up to 3 options and document
+
+*Document replace header*
+
+<img src="/.github/docs/csml/2023-05-03_22-49.png"/>
+
+CSML Code example:
+```ruby
+say Question(
+    "What would you like to do today?",
+    buttons = [
+      Button("Listen to good music", accepts=["music","listen"]) as music,
+      Button("Manage my Dropbox account", accepts=["dropbox"]) as dropbox,
+      Button("Tell me a joke") as joke
+    ],
+    document="https://nyphil.org/~/media/pdfs/program-notes/1819/Brahms-Symphony-No-4.pdf",
+    document_name="teste.pdf",
+    footer="Footer..."
+  )
+```
+
+Files limitations:
+https://developers.facebook.com/docs/whatsapp/cloud-api/reference/media#supported-media-types
+<img src="/.github/docs/csml/2023-05-03_22-18.png"/>
 
 ## List
 
@@ -73,6 +138,7 @@ say Question(
 | footer | Footer... | Message footer  (Max 60 characters ) |
 
 
+*List buttons support only text in header
 
 
 
