@@ -32,12 +32,19 @@ module Whatsapp::Providers::WhatsappCloudInteractiveMessages::Buttons
 
   def build_buttons_header(message, data)
     image = message.content_attributes.dig('message_payload', 'content', 'image')
+    video = message.content_attributes.dig('message_payload', 'content', 'video')
+    document = message.content_attributes.dig('message_payload', 'content', 'document')
     header = message.content_attributes.dig('message_payload', 'content', 'header')
 
     if image.present?
-      build_image_header(image, data)
+      return build_image_header(image, data)
+    elsif video.present?
+      return build_video_header(video, data)  
+    elsif document.present?
+      document_name = message.content_attributes.dig('message_payload', 'content', 'document_name')
+      return build_document_header(document, document_name, data)
     elsif header.present?
-      build_text_header(header, data)
+      return build_text_header(header, data)
     else
       data
     end

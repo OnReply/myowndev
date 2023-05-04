@@ -12,6 +12,37 @@ module Whatsapp::Providers::WhatsappCloudInteractiveMessages::Base
     end
   end
 
+  def build_video_header(video, data)
+    if video.present?
+      data.merge({
+                   'header': {
+                     'type': 'video',
+                     'video': { 'link': video }
+                   }
+                 })
+    else
+      data
+    end
+  end
+
+  def build_document_header(document, document_name, data)
+    if document.present?
+      if document_name.present?
+        document_name = {'filename': document_name}
+      else
+        document_name = {}
+      end
+      data.merge({
+                   'header': {
+                     'type': 'document',
+                     'document': { 'link': document }.merge(document_name)
+                   }
+                 })
+    else
+      data
+    end
+  end
+
   def build_text_header(header, data)
     if header.present?
       data.merge({
