@@ -13,7 +13,7 @@ module Whatsapp::Providers::WhatsappCloudInteractiveMessages::List
       }
     }
 
-    data = build_header(message, data)
+    data = build_list_header(message, data)
     data = build_footer(message, data)
 
     return data
@@ -70,5 +70,15 @@ module Whatsapp::Providers::WhatsappCloudInteractiveMessages::List
       result
     end
 
+  end
+
+  def build_list_header(message, data)
+    header = message.content_attributes.dig('message_payload', 'content', 'header')
+
+    if header.present?
+      return build_text_header(header, data)
+    else
+      return data
+    end
   end
 end

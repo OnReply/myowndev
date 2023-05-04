@@ -12,7 +12,7 @@ module Whatsapp::Providers::WhatsappCloudInteractiveMessages::Buttons
       }
     }
 
-    data = build_header(message, data)
+    data = build_buttons_header(message, data)
     data = build_footer(message, data)
 
     return data
@@ -29,6 +29,19 @@ module Whatsapp::Providers::WhatsappCloudInteractiveMessages::Buttons
           "title": "#{item["content"]["title"].truncate(20, :omission => "")}"
         }
       }
+    end
+  end
+
+  def build_buttons_header(message, data)
+    image = message.content_attributes.dig('message_payload', 'content', 'image')
+    header = message.content_attributes.dig('message_payload', 'content', 'header')
+
+    if image.present?
+      return build_image_header(image, data)
+    elsif header.present?
+      return build_text_header(header, data)
+    else
+      return data
     end
   end
 end
