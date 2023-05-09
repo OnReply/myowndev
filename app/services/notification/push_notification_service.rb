@@ -33,12 +33,13 @@ class Notification::PushNotificationService
   def push_message
     {
       title: notification.push_message_title,
-      tag: "#{notification.notification_type}_#{conversation.display_id}_#{notification.id}",
+      tag: "#{notification.notification_type}_#{conversation&.display_id}_#{notification.id}",
       url: push_url
     }
   end
 
   def push_url
+    return '' if notification.primary_actor_type == 'Article'
     app_account_conversation_url(account_id: conversation.account_id, id: conversation.display_id)
   end
 

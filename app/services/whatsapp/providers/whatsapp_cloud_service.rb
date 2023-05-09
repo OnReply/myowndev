@@ -1,4 +1,6 @@
 class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseService
+  prepend ::Whatsapp::Providers::WhatsappCloudInteractiveMessages
+
   def send_message(phone_number, message)
     if message.attachments.present?
       send_attachment_message(phone_number, message)
@@ -55,6 +57,47 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
   def media_url(media_id)
     "#{api_base_path}/v13.0/#{media_id}"
   end
+
+  def create_template(template)
+    response = HTTParty.post(
+      "#{business_account_path}/message_templates",
+      headers: api_headers,
+      body: template.to_json
+    )
+    response
+  end
+
+  def delete_template(name)
+    response = HTTParty.delete(
+      "#{business_account_path}/message_templates?name=#{name}",
+      headers: api_headers
+    )
+    response
+  end
+
+  def extend_token_life
+    response = HTTParty.get("#{api_base_path}/v16.0/oauth/access_token?grant_type=fb_exchange_token&client_id=#{GlobalConfigService.load('FB_APP_ID', nil)}&client_secret=#{GlobalConfigService.load('FB_APP_SECRET', nil)}&fb_exchange_token=#{whatsapp_channel.provider_config['api_key']}")
+    whatsapp_channel.provider_config['api_key'] = response["access_token"]
+    whatsapp_channel.provider_config['token_expiry_date'] =  response["expires_in"].present? ? Time.current + response["expires_in"] : 'never'
+    whatsapp_channel.save!
+  end
+
+  def sync_token_expiry_date
+    return if whatsapp_channel.provider_config['token_expiry_date'] == 'never'
+    response = get_expires_at()
+    whatsapp_channel.provider_config['token_expiry_date'] = response["data"]["expires_at"] == 0 ? 'never' : Time.at(response["data"]["expires_at"]).utc
+    whatsapp_channel.save!
+  end
+
+  def refresh_token
+    response = HTTParty.get("#{api_base_path}/v16.0/me?access_token=#{whatsapp_channel.provider_config['api_key']}")
+  end
+
+  def get_expires_at
+    HTTParty.get("#{api_base_path}/v16.0/debug_token?input_token=#{whatsapp_channel.provider_config["api_key"]}&access_token=#{whatsapp_channel.provider_config["api_key"]}")
+  end
+
+  private
 
   def api_base_path
     ENV.fetch('WHATSAPP_CLOUD_BASE_URL', 'https://graph.facebook.com')

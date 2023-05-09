@@ -20,6 +20,28 @@
             "GO_BACK_LABEL": "Go Back",
             "SEND_MESSAGE_LABEL": "Send Message",
             "FORM_ERROR_MESSAGE": "Please fill all variables before sending"
+        },
+        "BUILDER": {
+            "CREATE": "Create new template",
+            "SUCCESSFUL_SUBMISSION": "Template created successfully. It'll appear after syncing. Thanks for your patience.",
+            "SUCCESSFUL_DELETION": "Template deleted successfully. It'll disappear after syncing. Thanks for your patience.",
+            "DELETE": "Delete",
+            "DELETE_DESCRIPTION": "Are you sure you want to delete this template? This action cannot be undone.",
+            "FORM": {
+                "NAME": "Name",
+                "CATEGORY": "Category",
+                "LANGUAGE": "Language",
+                "HEADER_TYPE": "Header type",
+                "HEADER_TYPES": {
+                    "TEXT": "Text",
+                    "IMAGE": "Image"
+                },
+                "HEADER": "Header",
+                "BODY": "Body",
+                "FOOTER": "Footer"
+
+            }
+
         }
     }
 }

@@ -432,7 +432,8 @@
       "PRE_CHAT_FORM": "نموذج ما قبل الدردشة",
       "BUSINESS_HOURS": "ساعات العمل",
       "WIDGET_BUILDER": "منشئ اللايف شات",
-      "BOT_CONFIGURATION": "اعدادات البوت"
+      "BOT_CONFIGURATION": "اعدادات البوت",
+      "TEMPLATES": "القوالب"
     },
     "SETTINGS": "الإعدادات",
     "FEATURES": {

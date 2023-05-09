@@ -432,7 +432,9 @@
       "PRE_CHAT_FORM": "Pre Chat Form",
       "BUSINESS_HOURS": "Business Hours",
       "WIDGET_BUILDER": "Widget Builder",
-      "BOT_CONFIGURATION": "Bot Configuration"
+      "BOT_CONFIGURATION": "Bot Configuration",
+      "TEMPLATES": "Templates"
+
     },
     "SETTINGS": "Settings",
     "FEATURES": {
