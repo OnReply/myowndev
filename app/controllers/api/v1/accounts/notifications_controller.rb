@@ -6,7 +6,7 @@ class Api::V1::Accounts::NotificationsController < Api::V1::Accounts::BaseContro
   before_action :set_current_page, only: [:index]
 
   def index
-    @unread_count = current_user.notifications.where(account_id: current_account.id, read_at: nil).group_by(&:primary_actor_type).transform_values(&:count)
+    @unread_count = current_user.notifications.where(account_id: current_account.id, read_at: nil).group_by(&:primary_actor_type).transform_values(&:count)['Conversation']
     @count = notifications.count
     @notifications = notifications.page(@current_page).per(RESULTS_PER_PAGE)
   end
@@ -32,7 +32,7 @@ class Api::V1::Accounts::NotificationsController < Api::V1::Accounts::BaseContro
     @unread_count = current_user.notifications.where(
       account_id: current_account.id,
       read_at: nil
-    ).group_by(&:primary_actor_type).transform_values(&:count)
+    ).group_by(&:primary_actor_type).transform_values(&:count)['Conversation']
     render json: @unread_count
   end
 
