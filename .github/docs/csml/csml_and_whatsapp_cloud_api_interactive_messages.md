@@ -123,6 +123,27 @@ Quetion up to 13 options
 </p></blockquote></details>
 
 
+<details><summary>Messenger</summary><blockquote><p>
+
+<img width="250" src="/.github/docs/csml/2023-05-06_13-26.png"/>
+
+- Quetion up to 13 options
+
+
+| CSML Field | Example Value | Messenger Field |
+| --- | --- | --- |
+| Question  | What would you like to do today? | Message body (Max 2000 characters) |
+| Button | Listen to good music | List option (Max 20 characters) |
+| header | Header... | Not compatible |
+| footer | Footer.. | Not compatible |
+| footer | Footer.. | Not compatible |
+| image |  | Not compatible  |
+| video |  | Not compatible  |
+| document | | Not compatible  |
+
+</p></blockquote></details>
+
+
 
 ## List
 
@@ -172,6 +193,10 @@ Questions with 4 or more options automatically use List
 Not compatible
 </p></blockquote></details>
 
+<details><summary>Messenger</summary><blockquote>
+Not compatible
+</blockquote></details>
+
 
 # Tests
 
@@ -179,7 +204,7 @@ Not compatible
 - spec/services/whatsapp/interactive_messages/providers/cloud/buttons_spec.rb
 - spec/services/whatsapp/interactive_messages/providers/cloud/list_spec.rb
 - spec/services/instagram/send_on_instagram_service_quick_replies_spec.rb
-
+- spec/services/facebook/send_on_facebook_service_buttons_spec.rb
 
 # Documentations references
 - https://docs.csml.dev/language/sending-receiving-messages/message-payloads

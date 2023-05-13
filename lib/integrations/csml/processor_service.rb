@@ -106,10 +106,21 @@ class Integrations::Csml::ProcessorService < Integrations::BotProcessorService
         inbox_id: conversation.inbox_id,
         content: message_payload['content']['title'],
         content_type: 'input_select',
-        content_attributes: { items: buttons, message_payload: message_payload },
+        content_attributes: { items: buttons }.merge(aditional_attributes(message_payload)),
         sender: agent_bot
       }
     )
+  end
+
+  def aditional_attributes(message_payload)
+    result = { message_payload: message_payload }
+    aditional_attributes = %w[image video document]
+    aditional_attributes.each do |attribute|
+      attribute_value = message_payload.dig('content', attribute)
+      result.merge!({ "#{attribute}": attribute_value }) if attribute_value.present?
+    end
+
+    result
   end
 
   def prepare_attachment(message_payload, message, account_id)
