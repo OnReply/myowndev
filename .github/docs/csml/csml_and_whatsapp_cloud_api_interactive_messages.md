@@ -1,16 +1,9 @@
 
 
-# Documentations references
-- https://docs.csml.dev/language/sending-receiving-messages/message-payloads
-- https://developers.facebook.com/docs/whatsapp/on-premises/reference/messages#section-object
-- https://developers.facebook.com/docs/whatsapp/guides/interactive-messages/#como-usar
-- https://developers.facebook.com/docs/whatsapp/cloud-api/reference/media#supported-media-types
-
 # How to User
 
-## Quick buttons
 
-- Quetion up to 3 options
+## Quick buttons
 
 <img src="/.github/docs/csml/2023-05-01_18-38.png"/>
 
@@ -28,6 +21,16 @@ say Question(
   )
 ```
 
+
+<details>
+  <summary>Whatsapp</summary><blockquote>
+  
+
+  Quetion up to 3 options
+
+<img src="/.github/docs/csml/2023-05-01_18-38.png"/>
+
+
 | CSML Field | Example Value | Whatsapp Field |
 | --- | --- | --- |
 | Question  | What would you like to do today? | Message body (Max 1024 characters) |
@@ -36,7 +39,7 @@ say Question(
 | footer | Footer... | Message footer  (Max 60 characters ) |
 
 
-- Quetion up to 3 options and image
+#### Messages with attachment
 
 *Image replace header*
 
@@ -56,8 +59,6 @@ say Question(
   )
 ```
 
-- Quetion up to 3 options and video
-
 *Video replace header*
 
 <img src="/.github/docs/csml/2023-05-03_22-48.png"/>
@@ -75,8 +76,6 @@ say Question(
     footer="Footer..."
   )
 ```
-
-- Quetion up to 3 options and document
 
 *Document replace header*
 
@@ -101,13 +100,33 @@ Files limitations:
 https://developers.facebook.com/docs/whatsapp/cloud-api/reference/media#supported-media-types
 <img src="/.github/docs/csml/2023-05-03_22-18.png"/>
 
+
+</blockquote></details>
+
+
+<details><summary>Instagram</summary><blockquote><p>
+
+<img src="/.github/docs/csml/instagram_quick_buttons.png"/>
+
+
+Quetion up to 13 options
+
+`This feature is currently available on instagram app`
+
+| CSML Field | Example Value | Instagram Field |
+| --- | --- | --- |
+| Question  | What would you like to do today? | Message body (Max 1000 characters) |
+| Button | Listen to good music | List option (Max 20 characters) |
+| header | Header... | Not compatible |
+| footer | Footer.. | Not compatible |
+
+</p></blockquote></details>
+
+
+
 ## List
 
 <img src="/.github/docs/csml/2023-05-01_18-35.png"/>
-<img src="/.github/docs/csml/2023-05-01_18-15.png"/>
-
-Questions with 4 or more options automatically use List
-List buttons fields in CSML Bot
 
 CSML Code example:
 ```ruby
@@ -119,12 +138,21 @@ say Question(
       Button("Tell me a joke") as joke,
       Button("123 Tell me a joke"),
     ],
-    style="primary",
     action_button="testing..",
     header="Header...",
     footer="Footer..."
   )
 ```
+
+<details><summary>Whatsapp</summary><blockquote><p>
+
+Questions with 4 or more options automatically use List
+
+
+#### Fields
+
+
+<img src="/.github/docs/csml/2023-05-01_18-15.png"/>
 
 
 | CSML Field | Example Value | Whatsapp Field |
@@ -138,8 +166,11 @@ say Question(
 | footer | Footer... | Message footer  (Max 60 characters ) |
 
 
-*List buttons support only text in header
+</p></blockquote></details>
 
+<details><summary>Instagram</summary><blockquote><p>
+Not compatible
+</p></blockquote></details>
 
 
 # Tests
@@ -147,5 +178,11 @@ say Question(
 ## Files
 - spec/services/whatsapp/interactive_messages/providers/cloud/buttons_spec.rb
 - spec/services/whatsapp/interactive_messages/providers/cloud/list_spec.rb
+- spec/services/instagram/send_on_instagram_service_quick_replies_spec.rb
 
 
+# Documentations references
+- https://docs.csml.dev/language/sending-receiving-messages/message-payloads
+- https://developers.facebook.com/docs/whatsapp/on-premises/reference/messages#section-object
+- https://developers.facebook.com/docs/whatsapp/guides/interactive-messages/#como-usar
+- https://developers.facebook.com/docs/messenger-platform/instagram/features/quick-replies?locale=en_US
