@@ -94,6 +94,8 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
   end
 
   def get_expires_at
+    res = HTTParty.get("#{api_base_path}/v16.0/debug_token?input_token=#{whatsapp_channel.provider_config["api_key"]}&access_token=#{ENV['FB_APP_ACCESS_ID']}")
+    return res if res.success?
     HTTParty.get("#{api_base_path}/v16.0/debug_token?input_token=#{whatsapp_channel.provider_config["api_key"]}&access_token=#{whatsapp_channel.provider_config["api_key"]}")
   end
 
