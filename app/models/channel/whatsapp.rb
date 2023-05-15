@@ -79,7 +79,10 @@ class Channel::Whatsapp < ApplicationRecord
   end
 
   def after_create_methods
-    self.extend_token_life() if provider == 'whatsapp_cloud'
+    if(provider == 'whatsapp_cloud')
+      self.extend_token_life()
+      provider_service.get_app_id()
+    end
     self.sync_templates()
   end
 
