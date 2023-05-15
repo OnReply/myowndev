@@ -99,6 +99,18 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
     HTTParty.get("#{api_base_path}/v16.0/debug_token?input_token=#{whatsapp_channel.provider_config["api_key"]}&access_token=#{whatsapp_channel.provider_config["api_key"]}")
   end
 
+  def get_app_id
+    res = HTTParty.get(
+      "#{api_base_path}/v16.0/#{whatsapp_channel.provider_config["business_account_id"]}/subscribed_apps",
+      headers: api_headers
+    )
+    if res.success?
+      app_details = res["data"].find{ |app| app["whatsapp_business_api_data"] }
+      whatsapp_channel.provider_config['app_id'] = app_details["whatsapp_business_api_data"]["id"]
+      whatsapp_channel.save!
+    end
+  end
+
   private
 
   def api_base_path
