@@ -64,9 +64,37 @@ class Integrations::Csml::ProcessorService < Integrations::BotProcessorService
 
     return if csml_messages.blank?
 
-    # We do not support wait, typing now.
-    csml_messages.each do |csml_message|
-      create_messages(csml_message, conversation)
+    if ActiveModel::Type::Boolean.new.cast(ENV.fetch('FEATURE_IMPROVES_CSML', nil)) == true
+      # Support csml wait
+      messages_groups = split_messages_by_wait(csml_messages)
+      process_messages_groups(messages_groups)
+    else
+      # We do not support wait, typing now.
+      csml_messages.each do |csml_message|
+        create_messages(csml_message, conversation)
+      end
+    end
+  end
+
+  def split_messages_by_wait(csml_messages)
+    csml_messages.slice_after do |e|
+      e['payload']['content_type'] == 'wait'
+    end.map(&:to_a)
+  end
+
+  def process_messages_groups(messages_groups)
+    wait = 0
+    messages_groups.each do |g|
+      g.each do |message|
+        wait += message['payload']['content']['duration'] if message['payload']['content_type'] == 'wait'
+
+        if wait < 1000
+          AgentBots::CsmlProcessMessagesJob.perform_now(message, conversation, agent_bot)
+        else
+          seconds = wait / 1000
+          AgentBots::CsmlProcessMessagesJob.set(wait: seconds).perform_later(message, conversation, agent_bot)
+        end
+      end
     end
   end
 
