@@ -514,7 +514,7 @@ export default {
           },
           {
             key: 'profile',
-            name: 'Profile',
+            name: this.$t('INBOX_MGMT.TABS.PROFILE'),
           },
         ];
       }

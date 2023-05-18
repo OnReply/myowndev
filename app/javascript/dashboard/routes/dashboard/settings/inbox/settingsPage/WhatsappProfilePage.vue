@@ -3,40 +3,43 @@
 		<div class="m-2">
 			<div class="input-group-field">
         <label for="name" >
-          Description
+          {{ $t('WHATSAPP_PROFILE.DESCRIPTION.LABEL') }}
           <input
             v-model.trim="profile.description"
             name="name"
             type="text"
 						maxlength="256"
+						:placeholder="$t('WHATSAPP_PROFILE.DESCRIPTION.PLACEHOLDER')"
           />
         </label>
       </div>
 			<div class="input-group-field">
         <label for="name" >
-          About
+          {{ $t("WHATSAPP_PROFILE.ABOUT.LABEL") }}
           <input
             v-model.trim="profile.about"
             name="name"
             type="text"
 						maxlength="139"
+						:placeholder="$t('WHATSAPP_PROFILE.ABOUT.PLACEHOLDER')"
           />
         </label>
       </div>
 			<div class="input-group-field">
         <label for="name" >
-          Address
+          {{ $t("WHATSAPP_PROFILE.ADDRESS.LABEL") }}
           <input
             v-model.trim="profile.address"
             name="name"
             type="text"
 						maxlength="256"
+						:placeholder="$t('WHATSAPP_PROFILE.ADDRESS.PLACEHOLDER')"
           />
         </label>
       </div>
 			<div class="input-group-field row  align-items-center">
 				<label>
-					Profile Picture
+					{{ $t("WHATSAPP_PROFILE.PROFILE_PICTURE.LABEL") }}
 					<img :src="imageUrl" class="profile-pic m-2" alt="">
 					<input
 						id="file"
@@ -50,34 +53,37 @@
 			</div>
 			<div class="input-group-field">
         <label for="name" >
-          Email
+          {{ $t("WHATSAPP_PROFILE.EMAIL.LABEL") }}
           <input
             v-model.trim="profile.email"
             name="name"
             type="email"
 						maxlength="138"
+						:placeholder="$t('WHATSAPP_PROFILE.EMAIL.PLACEHOLDER')"
           />
         </label>
       </div>
 			<div class="input-group-field">
         <label for="name" >
-          websites# 1
+          {{ $t("WHATSAPP_PROFILE.WEBSITE.LABEL") }}
           <input
             v-model.trim="profile.websites[0]"
             name="name"
             type="text"
 						maxlength="256"
+						:placeholder="$t('WHATSAPP_PROFILE.WEBSITE.PLACEHOLDER')"
           />
         </label>
       </div>
 			<div class="input-group-field">
         <label for="name" >
-         	websites# 2
+         	{{ $t("WHATSAPP_PROFILE.WEBSITE.LABEL") }}
           <input
             v-model.trim="profile.websites[1]"
             name="name"
             type="text"
 						maxlength="256"
+						:placeholder="$t('WHATSAPP_PROFILE.WEBSITE.PLACEHOLDER')"
           />
         </label>
       </div>
