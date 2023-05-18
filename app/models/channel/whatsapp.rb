@@ -64,8 +64,8 @@ class Channel::Whatsapp < ApplicationRecord
     end
     res = provider_service.update_whatsapp_profile(handler, profile)
     self.provider_config['profile'] = JSON.parse(profile)
-    pp res.success?
     self.save! if res.success?
+    res
   end
 
   delegate :send_message, to: :provider_service
