@@ -45,9 +45,11 @@ class Inboxes extends CacheEnabledApiClient {
       },
     });
   }
-  UpdateProfilePicture(inboxId, image) {
+  UpdateProfilePicture(inboxId, image, profile) {
     const formData = new FormData();
-    formData.append("image", image);
+    if (image !== '' ||  image !== undefined)
+      formData.append("image", image);
+    formData.append("profile", JSON.stringify(profile))
     return axios.post(`${this.url}/${inboxId}/update_profile_picture`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",

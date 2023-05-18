@@ -57,12 +57,15 @@ class Channel::Whatsapp < ApplicationRecord
     provider_config["last_refresh_at"] == nil || provider_config["last_refresh_at"].to_time < 1.day.ago
   end
 
-  def update_profile_picture(image, image_url)
-    pp image_url
-    upload_id = provider_service.create_upload_session(image.size, image.content_type, image.original_filename.gsub(/\s+/, ""))
-    pp upload_id
-    handler =  provider_service.upload_file(image, image.content_type, upload_id["id"])
-    pp provider_service.update_whatsapp_profile(handler)
+  def update_profile_picture(image, profile) 
+    if image.present?
+      upload_id = provider_service.create_upload_session(image.size, image.content_type, image.original_filename.gsub(/\s+/, ""))
+      handler =  provider_service.upload_file(image, image.content_type, upload_id["id"])
+    end
+    res = provider_service.update_whatsapp_profile(handler, profile)
+    self.provider_config['profile'] = JSON.parse(profile)
+    pp res.success?
+    self.save! if res.success?
   end
 
   delegate :send_message, to: :provider_service

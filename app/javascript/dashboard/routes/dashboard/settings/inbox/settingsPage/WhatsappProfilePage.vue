@@ -1,7 +1,36 @@
 <template>
 	<div>
 		<div class="m-2">
-			
+			<div class="input-group-field">
+        <label for="name" >
+          Description
+          <input
+            v-model.trim="profile.description"
+            name="name"
+            type="text"
+          />
+        </label>
+      </div>
+			<div class="input-group-field">
+        <label for="name" >
+          About
+          <input
+            v-model.trim="profile.about"
+            name="name"
+            type="text"
+          />
+        </label>
+      </div>
+			<div class="input-group-field">
+        <label for="name" >
+          Address
+          <input
+            v-model.trim="profile.address"
+            name="name"
+            type="email"
+          />
+        </label>
+      </div>
 			<div class="input-group-field row  align-items-center">
 				<label>
 					Profile Picture
@@ -16,12 +45,42 @@
 					<slot />
 				</label>
 			</div>
+			<div class="input-group-field">
+        <label for="name" >
+          Email
+          <input
+            v-model.trim="profile.email"
+            name="name"
+            type="email"
+          />
+        </label>
+      </div>
+			<div class="input-group-field">
+        <label for="name" >
+          websites# 1
+          <input
+            v-model.trim="profile.websites[0]"
+            name="name"
+            type="email"
+          />
+        </label>
+      </div>
+			<div class="input-group-field">
+        <label for="name" >
+         	websites# 2
+          <input
+            v-model.trim="profile.websites[1]"
+            name="name"
+            type="email"
+          />
+        </label>
+      </div>
 		</div>
 		<woot-submit-button
 			:button-text="$t('EMAIL_TRANSCRIPT.SUBMIT')"
 			class="m-2"
 			@click="submitForm"
-			:disabled="isDisabled"
+			
 		/>
 	</div>
 </template>
@@ -45,6 +104,14 @@ export default {
 			imageUrl: '',
 			imageFile: '',
 			isDisabled: true,
+			profile: {
+				description: '',
+				about: '',
+				address: '',
+				email: '',
+				websites: ['',''],
+				messaging_product: 'whatsapp'
+			},
 		}
 	},
 	methods: {
@@ -54,7 +121,7 @@ export default {
       this.imageUrl = file? URL.createObjectURL(file) : '';
     },
 		async submitForm() {
-      const response = await InboxesAPI.UpdateProfilePicture(this.inbox.id, this.imageFile)
+      const response = await InboxesAPI.UpdateProfilePicture(this.inbox.id, this.imageFile, this.profile)
       if(response.data.message) {
         this.showAlert(this.$t('WHATSAPP_TEMPLATES.BUILDER.SUCCESSFUL_SUBMISSION'))
       } else {
@@ -66,6 +133,13 @@ export default {
 		inbox: {
 			handler(val){
 				this.imageUrl = val.profile_picture_url
+				this.profile.description = val.provider_config.profile?.description || ''
+				this.profile.about = val.provider_config.profile?.about || ''
+				this.profile.email = val.provider_config.profile?.email || ''
+				this.profile.address = val.provider_config.profile?.address || ''
+				this.profile.websites[0] = val.provider_config.profile?.websites[0] || ''
+				this.profile.websites[1] = val.provider_config.profile?.websites[1] || ''
+				
 			},
 			deep: true,
 			immediate: true, 

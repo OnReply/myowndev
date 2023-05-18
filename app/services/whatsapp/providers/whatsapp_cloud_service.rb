@@ -120,13 +120,13 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
     )
   end
 
-  def update_whatsapp_profile(handler)
+  def update_whatsapp_profile(handler, profile)
+    body = JSON.parse(profile)
+    body = body.merge({ 'profile_picture_handle': handler['h'] }) if handler.present?
+
     HTTParty.post("#{phone_id_path}/whatsapp_business_profile",
       headers: api_headers,
-      body: {
-        "messaging_product": "whatsapp",
-        "profile_picture_handle": handler["h"]
-      },
+      body: body,
     )
   end
   private
