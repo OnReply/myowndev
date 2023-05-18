@@ -110,11 +110,21 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
       "#{api_base_path}/v16.0/#{whatsapp_channel.provider_config['business_account_id']}/subscribed_apps",
       headers: api_headers
     )
+    len = res["data"].length - 1
+
+    len.times do |i|
+      delete_connected_app
+    end
+
     if res.success?
-      app_details = res['data'].find { |app| app['whatsapp_business_api_data'] }
+      app_details = res['data'].first
       whatsapp_channel.provider_config['app_id'] = app_details['whatsapp_business_api_data']['id']
       whatsapp_channel.save!
+    else
+      pp "fails for account# #{whatsapp_channel.account.id}"
+      pp res
     end
+
   end
 
   private
@@ -190,5 +200,15 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
         parameters: template_info[:parameters]
       }]
     }
+  end
+
+  def delete_connected_app
+    pp "**************************************************"
+    pp "deleting app in account# #{whatsapp_channel.account.id}"
+    pp HTTParty.delete(
+      "#{api_base_path}/v16.0/#{whatsapp_channel.provider_config['business_account_id']}/subscribed_apps",
+      headers: api_headers
+    )
+    pp "**************************************************"
   end
 end
