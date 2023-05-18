@@ -141,6 +141,7 @@ Rails.application.routes.draw do
             post :set_agent_bot, on: :member
             post :refresh_token, on: :member
             post :template, on: :member
+            post :update_profile_picture, on: :member
             delete :avatar, on: :member
             delete :delete_template, on: :member
           end

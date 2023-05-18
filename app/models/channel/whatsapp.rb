@@ -32,6 +32,7 @@ class Channel::Whatsapp < ApplicationRecord
   validates :phone_number, presence: true, uniqueness: true
   validate :validate_provider_config
   has_many_attached :template_images
+  has_one_attached :profile_picture
 
   after_create :after_create_methods
   after_update :should_extend_token, if: :saved_change_to_provider_config?
@@ -54,6 +55,14 @@ class Channel::Whatsapp < ApplicationRecord
 
   def should_refresh_token?
     provider_config["last_refresh_at"] == nil || provider_config["last_refresh_at"].to_time < 1.day.ago
+  end
+
+  def update_profile_picture(image, image_url)
+    pp image_url
+    upload_id = provider_service.create_upload_session(image.size, image.content_type, image.original_filename.gsub(/\s+/, ""))
+    pp upload_id
+    handler =  provider_service.upload_file(image, image.content_type, upload_id["id"])
+    pp provider_service.update_whatsapp_profile(handler)
   end
 
   delegate :send_message, to: :provider_service

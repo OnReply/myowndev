@@ -124,6 +124,11 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
     channel.save!
   end
 
+  def update_profile_picture
+    fetch_channel
+    @channel.profile_picture.attach(params[:image])
+    @channel.update_profile_picture(params[:image], url_for(@channel.profile_picture))
+  end
   private
 
   def fetch_inbox
