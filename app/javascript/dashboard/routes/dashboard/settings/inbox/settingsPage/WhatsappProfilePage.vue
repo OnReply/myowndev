@@ -8,6 +8,7 @@
             v-model.trim="profile.description"
             name="name"
             type="text"
+						maxlength="256"
           />
         </label>
       </div>
@@ -18,6 +19,7 @@
             v-model.trim="profile.about"
             name="name"
             type="text"
+						maxlength="139"
           />
         </label>
       </div>
@@ -27,7 +29,8 @@
           <input
             v-model.trim="profile.address"
             name="name"
-            type="email"
+            type="text"
+						maxlength="256"
           />
         </label>
       </div>
@@ -52,6 +55,7 @@
             v-model.trim="profile.email"
             name="name"
             type="email"
+						maxlength="138"
           />
         </label>
       </div>
@@ -61,7 +65,8 @@
           <input
             v-model.trim="profile.websites[0]"
             name="name"
-            type="email"
+            type="text"
+						maxlength="256"
           />
         </label>
       </div>
@@ -71,7 +76,8 @@
           <input
             v-model.trim="profile.websites[1]"
             name="name"
-            type="email"
+            type="text"
+						maxlength="256"
           />
         </label>
       </div>
