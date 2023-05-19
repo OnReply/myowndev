@@ -45,6 +45,17 @@ class Inboxes extends CacheEnabledApiClient {
       },
     });
   }
+  UpdateProfilePicture(inboxId, image, profile) {
+    const formData = new FormData();
+    if (image !== '' ||  image !== undefined)
+      formData.append("image", image);
+    formData.append("profile", JSON.stringify(profile))
+    return axios.post(`${this.url}/${inboxId}/update_profile_picture`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
 
   setAgentBot(inboxId, botId) {
     return axios.post(`${this.url}/${inboxId}/set_agent_bot`, {

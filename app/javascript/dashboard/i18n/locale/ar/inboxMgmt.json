@@ -433,7 +433,8 @@
       "BUSINESS_HOURS": "ساعات العمل",
       "WIDGET_BUILDER": "منشئ اللايف شات",
       "BOT_CONFIGURATION": "اعدادات البوت",
-      "TEMPLATES": "القوالب"
+      "TEMPLATES": "القوالب",
+      "PROFILE": "الملف الشخصي"
     },
     "SETTINGS": "الإعدادات",
     "FEATURES": {

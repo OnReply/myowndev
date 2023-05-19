@@ -54,6 +54,14 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
     { 'Authorization' => "Bearer #{whatsapp_channel.provider_config['api_key']}", 'Content-Type' => 'application/json' }
   end
 
+  def media_headers(type)
+    { 
+      'Authorization' => "OAuth #{whatsapp_channel.provider_config['api_key']}", 
+      'Content-Type' => type,
+      'file_offset' => 0
+    }
+  end
+
   def media_url(media_id)
     "#{api_base_path}/v13.0/#{media_id}"
   end
@@ -127,6 +135,28 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
 
   end
 
+  def create_upload_session(size, type, name)
+    HTTParty.post("#{api_base_path}/v16.0/app/uploads?file_length=#{size}&file_type=#{type}&file_name=#{name}",
+      headers: api_headers
+    )
+  end
+
+  def upload_file(file, type, session_id)
+    HTTParty.post("#{api_base_path}/v16.0/#{session_id}",
+      body: File.read(file.tempfile.path),
+      headers: {'Authorization' => "OAuth #{whatsapp_channel.provider_config['api_key']}", 'Content-Type' => "#{type}", 'file_offset' => '0'}
+    )
+  end
+
+  def update_whatsapp_profile(handler, profile)
+    body = JSON.parse(profile)
+    body = body.merge({ 'profile_picture_handle': handler['h'] }) if handler.present?
+
+    HTTParty.post("#{phone_id_path}/whatsapp_business_profile",
+      headers: api_headers,
+      body: body,
+    )
+  end
   private
 
   def api_base_path
@@ -135,7 +165,7 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
 
   # TODO: See if we can unify the API versions and for both paths and make it consistent with out facebook app API versions
   def phone_id_path
-    "#{api_base_path}/v13.0/#{whatsapp_channel.provider_config['phone_number_id']}"
+    "#{api_base_path}/v16.0/#{whatsapp_channel.provider_config['phone_number_id']}"
   end
 
   def business_account_path
@@ -200,6 +230,10 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
         parameters: template_info[:parameters]
       }]
     }
+  end
+
+  def create_session_header
+
   end
 
   def delete_connected_app

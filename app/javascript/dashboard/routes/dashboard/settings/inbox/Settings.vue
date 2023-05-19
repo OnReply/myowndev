@@ -373,6 +373,9 @@
     <div v-if="selectedTabKey === 'templates'">
       <whatsapp-template :inbox="inbox" />
     </div>
+    <div v-if="selectedTabKey === 'profile'">
+      <whatsapp-profile-page :inbox="inbox"/>
+    </div>
   </div>
 </template>
 
@@ -394,6 +397,7 @@ import WidgetBuilder from './WidgetBuilder';
 import BotConfiguration from './components/BotConfiguration';
 import WhatsappTemplate from './components/WhatsappTemplate';
 import { FEATURE_FLAGS } from '../../../../featureFlags';
+import WhatsappProfilePage from './settingsPage/WhatsappProfilePage.vue';
 
 export default {
   components: {
@@ -408,6 +412,7 @@ export default {
     WeeklyAvailability,
     WidgetBuilder,
     WhatsappTemplate,
+    WhatsappProfilePage
   },
   mixins: [alertMixin, configMixin, inboxMixin],
   data() {
@@ -506,6 +511,10 @@ export default {
           {
             key: 'templates',
             name: this.$t('INBOX_MGMT.TABS.TEMPLATES'),
+          },
+          {
+            key: 'profile',
+            name: this.$t('INBOX_MGMT.TABS.PROFILE'),
           },
         ];
       }
