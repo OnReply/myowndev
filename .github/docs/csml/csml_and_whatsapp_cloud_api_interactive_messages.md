@@ -3,6 +3,15 @@
 # How to User
 
 
+| Channel | Support |
+| --- | --- | --- |
+| Whatsapp (CloudAPI)  | ✅ |
+| Whatsapp (360Dialog) | ✅ |
+| Facebook Messenger | ✅ |
+| Instagram | ✅ |
+
+
+
 ## Quick buttons
 
 <img src="/.github/docs/csml/2023-05-01_18-38.png"/>
@@ -205,9 +214,12 @@ Not compatible
 - spec/services/whatsapp/interactive_messages/providers/cloud/list_spec.rb
 - spec/services/instagram/send_on_instagram_service_quick_replies_spec.rb
 - spec/services/facebook/send_on_facebook_service_buttons_spec.rb
+- spec/services/whatsapp/interactive_messages/providers/360_dialog/buttons_spec.rb
+- spec/services/whatsapp/interactive_messages/providers/360_dialog/list_spec.rb
 
 # Documentations references
 - https://docs.csml.dev/language/sending-receiving-messages/message-payloads
 - https://developers.facebook.com/docs/whatsapp/on-premises/reference/messages#section-object
 - https://developers.facebook.com/docs/whatsapp/guides/interactive-messages/#como-usar
 - https://developers.facebook.com/docs/messenger-platform/instagram/features/quick-replies?locale=en_US
+- https://docs.360dialog.com/docs/whatsapp-api/sandbox
