@@ -59,33 +59,36 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
   end
 
   def create_template(template)
-    response = HTTParty.post(
+    HTTParty.post(
       "#{business_account_path}/message_templates",
       headers: api_headers,
       body: template.to_json
     )
-    response
   end
 
   def delete_template(name)
-    response = HTTParty.delete(
+    HTTParty.delete(
       "#{business_account_path}/message_templates?name=#{name}",
       headers: api_headers
     )
-    response
   end
 
   def extend_token_life
-    response = HTTParty.get("#{api_base_path}/v16.0/oauth/access_token?grant_type=fb_exchange_token&client_id=#{GlobalConfigService.load('FB_APP_ID', nil)}&client_secret=#{GlobalConfigService.load('FB_APP_SECRET', nil)}&fb_exchange_token=#{whatsapp_channel.provider_config['api_key']}")
-    whatsapp_channel.provider_config['api_key'] = response["access_token"]
-    whatsapp_channel.provider_config['token_expiry_date'] =  response["expires_in"].present? ? Time.current + response["expires_in"] : 'never'
+    response = HTTParty.get("#{api_base_path}/v16.0/oauth/access_token?grant_type=fb_exchange_token&client_id=#{GlobalConfigService.load('FB_APP_ID',
+                                                                                                                                         nil)}&client_secret=#{GlobalConfigService.load(
+                                                                                                                                           'FB_APP_SECRET', nil
+                                                                                                                                         )}&fb_exchange_token=#{whatsapp_channel.provider_config['api_key']}")
+    whatsapp_channel.provider_config['api_key'] = response['access_token']
+    whatsapp_channel.provider_config['token_expiry_date'] = response['expires_in'].present? ? Time.current + response['expires_in'] : 'never'
     whatsapp_channel.save!
   end
 
   def sync_token_expiry_date
     return if whatsapp_channel.provider_config['token_expiry_date'] == 'never'
-    response = get_expires_at()
-    whatsapp_channel.provider_config['token_expiry_date'] = response["data"]["expires_at"] == 0 ? 'never' : Time.at(response["data"]["expires_at"]).utc
+
+    response = get_expires_at
+    whatsapp_channel.provider_config['token_expiry_date'] =
+      response['data']['expires_at'] == 0 ? 'never' : Time.at(response['data']['expires_at']).utc
     whatsapp_channel.save!
   end
 
@@ -94,9 +97,34 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
   end
 
   def get_expires_at
-    res = HTTParty.get("#{api_base_path}/v16.0/debug_token?input_token=#{whatsapp_channel.provider_config["api_key"]}&access_token=#{ENV['FB_APP_ACCESS_ID']}")
+    res = HTTParty.get("#{api_base_path}/v16.0/debug_token?input_token=#{whatsapp_channel.provider_config['api_key']}&access_token=#{ENV.fetch(
+      'FB_APP_ACCESS_ID', nil
+    )}")
     return res if res.success?
-    HTTParty.get("#{api_base_path}/v16.0/debug_token?input_token=#{whatsapp_channel.provider_config["api_key"]}&access_token=#{whatsapp_channel.provider_config["api_key"]}")
+
+    HTTParty.get("#{api_base_path}/v16.0/debug_token?input_token=#{whatsapp_channel.provider_config['api_key']}&access_token=#{whatsapp_channel.provider_config['api_key']}")
+  end
+
+  def get_app_id
+    res = HTTParty.get(
+      "#{api_base_path}/v16.0/#{whatsapp_channel.provider_config['business_account_id']}/subscribed_apps",
+      headers: api_headers
+    )
+    len = res["data"].length - 1
+
+    len.times do |i|
+      delete_connected_app
+    end
+
+    if res.success?
+      app_details = res['data'].first
+      whatsapp_channel.provider_config['app_id'] = app_details['whatsapp_business_api_data']['id']
+      whatsapp_channel.save!
+    else
+      pp "fails for account# #{whatsapp_channel.account.id}"
+      pp res
+    end
+
   end
 
   private
@@ -172,5 +200,15 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
         parameters: template_info[:parameters]
       }]
     }
+  end
+
+  def delete_connected_app
+    pp "**************************************************"
+    pp "deleting app in account# #{whatsapp_channel.account.id}"
+    pp HTTParty.delete(
+      "#{api_base_path}/v16.0/#{whatsapp_channel.provider_config['business_account_id']}/subscribed_apps",
+      headers: api_headers
+    )
+    pp "**************************************************"
   end
 end
