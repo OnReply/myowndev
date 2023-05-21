@@ -432,14 +432,17 @@
       "PRE_CHAT_FORM": "نموذج ما قبل الدردشة",
       "BUSINESS_HOURS": "ساعات العمل",
       "WIDGET_BUILDER": "منشئ اللايف شات",
-      "BOT_CONFIGURATION": "اعدادات البوت"
+      "BOT_CONFIGURATION": "اعدادات البوت",
+      "TEMPLATES": "القوالب",
+      "PROFILE": "الملف الشخصي"
     },
     "SETTINGS": "الإعدادات",
     "FEATURES": {
       "LABEL": "الخصائص",
       "DISPLAY_FILE_PICKER": "عرض أداة انتقاء الملفات في الـ widget",
       "DISPLAY_EMOJI_PICKER": "عرض منتقي الرموز التعبيرية على الـ widget",
-      "ALLOW_END_CONVERSATION": "السماح للمستخدمين بإنهاء المحادثة من عنصر واجهة المستخدم"
+      "ALLOW_END_CONVERSATION": "السماح للمستخدمين بإنهاء المحادثة من عنصر واجهة المستخدم",
+      "USE_INBOX_AVATAR_FOR_BOT": "Use inbox name and avatar for the bot"
     },
     "SETTINGS_POPUP": {
       "MESSENGER_HEADING": "كود \"الماسنجر\"",

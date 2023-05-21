@@ -1,10 +1,10 @@
 class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
   include Api::V1::InboxesHelper
-  before_action :fetch_inbox, except: [:index, :create]
+  before_action :fetch_inbox, except: [:index, :create, :refresh_token]
   before_action :fetch_agent_bot, only: [:set_agent_bot]
   before_action :validate_limit, only: [:create]
   # we are already handling the authorization in fetch inbox
-  before_action :check_authorization, except: [:show]
+  before_action :check_authorization, except: [:show, :refresh_token]
 
   def index
     @inboxes = policy_scope(Current.account.inboxes.order_by_name.includes(:channel, { avatar_attachment: [:blob] }))
@@ -86,6 +86,54 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
     render status: :ok, json: { message: I18n.t('messages.inbox_deletetion_response') }
   end
 
+  def template
+    fetch_channel
+    @template = permit_template_params
+    attach_image_to_template if params[:header_type] == "image"
+    response = @channel.create_template(@template)
+    if response.success?
+      render status: :ok, json: { message: I18n.t('messages.inbox_deletetion_response') }
+    else 
+      render status: :ok, json: { error: response["error"]["error_user_msg"] }
+    end
+  end
+
+  def delete_template
+    fetch_channel
+    response = @channel.delete_template(params[:name])
+    if response.success?
+      render status: :ok, json: { message: I18n.t('messages.inbox_deletetion_response') }
+    else 
+      render status: :ok, json: { error: response["error"]["error_user_msg"] }
+    end
+  end
+
+  def refresh_token
+    begin
+      unless params[:refreshed]
+        raise " Token couldn't be refreshed Channel: #{inbox.name}"
+      end
+    rescue => e
+      pp 'couldn\'t refresh token'
+      Sentry.capture_exception(e)
+      return
+    end
+    inbox = Current.account.inboxes.find(params[:id])
+    channel = inbox.channel
+    channel.provider_config["refreshed_at"] = Time.current
+    channel.save!
+  end
+
+  def update_profile_picture
+    fetch_channel
+    @channel.profile_picture.attach(params[:image]) if params[:image].present? 
+    response = @channel.update_profile_picture(params[:image], params[:profile])
+    if response.success?
+      render status: :ok , json: {message: "OK"}
+    else 
+      render status: :ok, json: { error: response["error"]["message"] }
+    end
+  end
   private
 
   def fetch_inbox
@@ -142,6 +190,34 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
     else
       []
     end
+  end
+
+  def permit_template_params
+    template_hash = JSON.parse(params.require(:template))
+
+    ActionController::Parameters.new(template_hash).permit(
+      :category,
+      :language,
+      :name,
+      components: [
+        :format,
+        :type,
+        :text
+      ]
+    )
+  end
+
+  def fetch_channel
+    @channel = @inbox.channel
+  end
+
+  def attach_image_to_template
+    image = @channel.template_images.attach(params[:image])
+    url = url_for(@channel.template_images.last)
+    @template["components"].prepend({"type": "HEADER",
+      "format": "IMAGE", "example": {
+        "header_handle": [url]
+      }})
   end
 end
 

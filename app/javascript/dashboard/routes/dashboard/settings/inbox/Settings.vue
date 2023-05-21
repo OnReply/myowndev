@@ -320,6 +320,17 @@
             {{ $t('INBOX_MGMT.FEATURES.ALLOW_END_CONVERSATION') }}
           </label>
         </div>
+        <div v-if="isAWebWidgetInbox" class="settings-item settings-item">
+          <input
+            v-model="selectedFeatureFlags"
+            type="checkbox"
+            value="use_inbox_avatar_for_bot"
+            @input="handleFeatureFlag"
+          />
+          <label for="emoji_picker">
+            {{ $t('INBOX_MGMT.FEATURES.USE_INBOX_AVATAR_FOR_BOT') }}
+          </label>
+        </div>
 
         <woot-submit-button
           v-if="isAPIInbox"
@@ -359,6 +370,12 @@
     <div v-if="selectedTabKey === 'botConfiguration'">
       <bot-configuration :inbox="inbox" />
     </div>
+    <div v-if="selectedTabKey === 'templates'">
+      <whatsapp-template :inbox="inbox" />
+    </div>
+    <div v-if="selectedTabKey === 'profile'">
+      <whatsapp-profile-page :inbox="inbox"/>
+    </div>
   </div>
 </template>
 
@@ -378,7 +395,9 @@ import ConfigurationPage from './settingsPage/ConfigurationPage';
 import CollaboratorsPage from './settingsPage/CollaboratorsPage';
 import WidgetBuilder from './WidgetBuilder';
 import BotConfiguration from './components/BotConfiguration';
+import WhatsappTemplate from './components/WhatsappTemplate';
 import { FEATURE_FLAGS } from '../../../../featureFlags';
+import WhatsappProfilePage from './settingsPage/WhatsappProfilePage.vue';
 
 export default {
   components: {
@@ -392,6 +411,8 @@ export default {
     SettingsSection,
     WeeklyAvailability,
     WidgetBuilder,
+    WhatsappTemplate,
+    WhatsappProfilePage
   },
   mixins: [alertMixin, configMixin, inboxMixin],
   data() {
@@ -484,7 +505,19 @@ export default {
           },
         ];
       }
-
+      if (this.isAWhatsAppCloudChannel) {
+        visibleToAllChannelTabs = [
+          ...visibleToAllChannelTabs,
+          {
+            key: 'templates',
+            name: this.$t('INBOX_MGMT.TABS.TEMPLATES'),
+          },
+          {
+            key: 'profile',
+            name: this.$t('INBOX_MGMT.TABS.PROFILE'),
+          },
+        ];
+      }
       if (
         this.isFeatureEnabledonAccount(
           this.accountId,

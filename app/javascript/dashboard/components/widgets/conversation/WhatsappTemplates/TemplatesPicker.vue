@@ -10,7 +10,7 @@
         class="templates__search-input"
       />
     </div>
-    <div class="template__list-container">
+    <div :class="classes">
       <div v-for="(template, i) in filteredTemplateMessages" :key="template.id">
         <button
           class="template__list-item"
@@ -21,10 +21,16 @@
               <p class="label-title">
                 {{ template.name }}
               </p>
-              <span class="label-lang label">
-                {{ $t('WHATSAPP_TEMPLATES.PICKER.LABELS.LANGUAGE') }} :
-                {{ template.language }}
-              </span>
+              <div>
+                <span class="label-lang label">
+                  {{ $t('WHATSAPP_TEMPLATES.PICKER.LABELS.LANGUAGE') }} :
+                  {{ template.language }}
+                </span>
+                <span class="label-lang label status-label">
+                  {{ $t('WHATSAPP_TEMPLATES.PICKER.LABELS.LANGUAGE') }} :
+                  {{ template.status }}
+                </span>
+              </div>
             </div>
             <div>
               <p class="strong">
@@ -62,6 +68,14 @@ export default {
       type: Number,
       default: undefined,
     },
+    classes: {
+      type: String,
+      default: 'template__list-container',
+    },
+    filterTemplates: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -71,7 +85,14 @@ export default {
   computed: {
     whatsAppTemplateMessages() {
       // TODO: Remove the last filter when we support all formats
-      return this.$store.getters['inboxes/getWhatsAppTemplates'](this.inboxId)
+      var filteredMessages = this.$store.getters[
+        'inboxes/getWhatsAppTemplates'
+      ](this.inboxId);
+      if (!this.filterTemplates) {
+        return filteredMessages;
+      }
+
+      return filteredMessages
         .filter(template => template.status.toLowerCase() === 'approved')
         .filter(template => {
           return template.components.every(component => {
@@ -169,5 +190,15 @@ hr {
   border-bottom: 1px solid var(--s-100);
   margin: var(--space-one) auto;
   max-width: 95%;
+}
+
+.max-h-full {
+  max-height: 100% !important;
+}
+
+.status-label {
+  border-radius: 12px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 </style>

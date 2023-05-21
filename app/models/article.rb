@@ -59,6 +59,10 @@ class Article < ApplicationRecord
   validates :content, presence: true
   validate :video_url_platform
 
+  # ensuring that the position is always set correctly
+  before_create :add_position_to_article
+  after_save :category_id_changed_action, if: :saved_change_to_category_id?
+
   enum status: { draft: 0, published: 1, archived: 2 }
 
   scope :search_by_category_slug, ->(category_slug) { where(categories: { slug: category_slug }) if category_slug.present? }
@@ -66,6 +70,7 @@ class Article < ApplicationRecord
   scope :search_by_author, ->(author_id) { where(author_id: author_id) if author_id.present? }
   scope :search_by_status, ->(status) { where(status: status) if status.present? }
   scope :order_by_updated_at, -> { reorder(updated_at: :desc) }
+  scope :order_by_position, -> { reorder(position: :asc) }
 
   after_update :create_notification, if: :saved_change_to_status?
 
@@ -135,6 +140,14 @@ class Article < ApplicationRecord
       locale: category.locale
     }
   end
+  
+  def self.update_positions(positions_hash)
+    positions_hash.each do |article_id, new_position|
+      # Find the article by its ID and update its position
+      article = Article.find(article_id)
+      article.update!(position: new_position)
+    end
+  end
 
   def find_embed_video_url
     id = ::ParseVideoUrlService.new(video_url: self.video_url, platform: self.find_platform).execute
@@ -142,6 +155,40 @@ class Article < ApplicationRecord
   end
 
   private
+
+  def category_id_changed_action
+    # We need to update the position of the article in the new category
+    return unless persisted?
+
+    # this means the article is just created
+    # and the category_id is newly set
+    # and the position is already present
+    return if created_at_before_last_save.nil? && position.present? && category_id_before_last_save.nil?
+
+    update_article_position_in_category
+  end
+
+  def add_position_to_article
+    # on creation if a position is already present, ignore it
+    return if position.present?
+
+    update_article_position_in_category
+  end
+
+  def update_article_position_in_category
+    max_position = Article.where(category_id: category_id, account_id: account_id).maximum(:position)
+
+    new_position = max_position.present? ? max_position + 10 : 10
+
+    # update column to avoid validations if the article is already persisted
+    if persisted?
+      # rubocop:disable Rails/SkipsModelValidations
+      update_column(:position, new_position)
+      # rubocop:enable Rails/SkipsModelValidations
+    else
+      self.position = new_position
+    end
+  end
 
   def ensure_account_id
     self.account_id = portal&.account_id

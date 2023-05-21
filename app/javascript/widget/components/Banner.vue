@@ -24,7 +24,7 @@ export default {
       this.showBannerMessage = true;
       setTimeout(() => {
         this.showBannerMessage = false;
-      }, 1000);
+      }, 3000);
     });
   },
 };

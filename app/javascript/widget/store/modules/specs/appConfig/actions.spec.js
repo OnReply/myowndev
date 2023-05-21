@@ -4,9 +4,9 @@ const commit = jest.fn();
 describe('#actions', () => {
   describe('#setReferrerHost', () => {
     it('creates actions properly', () => {
-      actions.setReferrerHost({ commit }, 'social-bot.io');
+      actions.setReferrerHost({ commit }, 'www.chatwoot.com');
       expect(commit.mock.calls).toEqual([
-        ['SET_REFERRER_HOST', 'social-bot.io'],
+        ['SET_REFERRER_HOST', 'www.chatwoot.com'],
       ]);
     });
   });
