@@ -10,6 +10,7 @@
 #  slug                  :string           not null
 #  status                :integer
 #  title                 :string
+#  video_url             :string           default("")
 #  views                 :integer
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
@@ -28,6 +29,8 @@
 #
 class Article < ApplicationRecord
   include PgSearch::Model
+
+  ALLOWED_PLATFORMS = %w[youtube loom]
 
   has_many :associated_articles,
            class_name: :Article,
@@ -54,6 +57,7 @@ class Article < ApplicationRecord
   validates :author_id, presence: true
   validates :title, presence: true
   validates :content, presence: true
+  validate :video_url_platform
 
   # ensuring that the position is always set correctly
   before_create :add_position_to_article
@@ -69,6 +73,12 @@ class Article < ApplicationRecord
   scope :order_by_position, -> { reorder(position: :asc) }
 
   after_update :create_notification, if: :saved_change_to_status?
+
+  def video_url_platform
+    return unless video_url.present?
+    errors.add(:video_url, 'wrong website platform to embed video') unless ALLOWED_PLATFORMS.include?(find_platform.to_s)
+  end
+
 
   # TODO: if text search slows down https://www.postgresql.org/docs/current/textsearch-features.html#TEXTSEARCH-UPDATE-TRIGGERS
   pg_search_scope(
@@ -139,6 +149,11 @@ class Article < ApplicationRecord
     end
   end
 
+  def find_embed_video_url
+    id = ::ParseVideoUrlService.new(video_url: self.video_url, platform: self.find_platform).execute
+    generate_src_url(id, self.find_platform)
+  end
+
   private
 
   def category_id_changed_action
@@ -185,5 +200,22 @@ class Article < ApplicationRecord
 
   def create_notification
     ::Article::NotifyUser.perform_later(self) if published? && notifications.empty? && author.super_admin?
+  end
+
+  
+  def find_platform 
+    if video_url.include?('youtube')
+      return :youtube
+    elsif video_url.include?('loom')
+      return :loom
+    end
+  end
+  
+  def generate_src_url(id,platform)
+    if(platform == :youtube)
+      "https://www.youtube.com/embed/#{id}"
+    elsif(platform == :loom)
+      "https://www.loom.com/embed/#{id}"
+    end
   end
 end
