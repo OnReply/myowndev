@@ -145,7 +145,6 @@ Quetion up to 13 options
 | Button | Listen to good music | List option (Max 20 characters) |
 | header | Header... | Not compatible |
 | footer | Footer.. | Not compatible |
-| footer | Footer.. | Not compatible |
 | image |  | Not compatible  |
 | video |  | Not compatible  |
 | document | | Not compatible  |
@@ -163,9 +162,9 @@ Quetion up to 13 options
 | Button | Listen to good music | List option  |
 | header | Header... | Not compatible |
 | footer | Footer.. | Not compatible |
-| image | https://i.ibb.co/5RXy9fG/My-project-1.jpg |   |
-| video | https://media.giphy.com/media/3oKIPsx2VAYAgEHC12/giphy.mp4  |  |
-| document | https://nyphil.org/~/media/pdfs/program-notes/1819/Brahms-Symphony-No-4.pdf |  |
+| image | https://i.ibb.co/5RXy9fG/My-project-1.jpg | Compatible  |
+| video | https://media.giphy.com/media/3oKIPsx2VAYAgEHC12/giphy.mp4  | Compatible |
+| document | https://nyphil.org/~/media/pdfs/program-notes/1819/Brahms-Symphony-No-4.pdf | Compatible |
 
 </p></blockquote></details>
 
