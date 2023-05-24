@@ -1,12 +1,15 @@
 class Api::V1::Accounts::NotificationsController < Api::V1::Accounts::BaseController
-  RESULTS_PER_PAGE = 15
+  RESULTS_PER_PAGE = 25
 
   before_action :fetch_notification, only: [:update]
   before_action :set_primary_actor, only: [:read_all]
   before_action :set_current_page, only: [:index]
 
   def index
-    @unread_count = current_user.notifications.where(account_id: current_account.id, read_at: nil).count
+    user_agent = request.user_agent
+    @unread_count = current_user.notifications.where(account_id: current_account.id,
+                                                     read_at: nil).group_by(&:primary_actor_type).transform_values(&:count)
+    @unread_count = @unread_count['Conversation'] if user_agent =~ /iPhone|iPad|iPod/ || user_agent =~ /CFNetwork/ || user_agent =~ /Android/
     @count = notifications.count
     @notifications = notifications.page(@current_page).per(RESULTS_PER_PAGE)
   end
@@ -29,7 +32,12 @@ class Api::V1::Accounts::NotificationsController < Api::V1::Accounts::BaseContro
   end
 
   def unread_count
-    @unread_count = current_user.notifications.where(account_id: current_account.id, read_at: nil).count
+    user_agent = request.user_agent
+    @unread_count = current_user.notifications.where(
+      account_id: current_account.id,
+      read_at: nil
+    ).group_by(&:primary_actor_type).transform_values(&:count)
+    @unread_count = @unread_count['Conversation'] if user_agent =~ /iPhone|iPad|iPod/ || user_agent =~ /CFNetwork/ || user_agent =~ /Android/
     render json: @unread_count
   end
 
@@ -52,5 +60,7 @@ class Api::V1::Accounts::NotificationsController < Api::V1::Accounts::BaseContro
 
   def notifications
     @notifications ||= current_user.notifications.where(account_id: current_account.id)
+    @notifications = @notifications.where(primary_actor_type: params[:type]) if params[:type].present? && !@notifications.empty?
+    @notifications
   end
 end

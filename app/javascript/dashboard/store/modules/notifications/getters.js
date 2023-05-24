@@ -12,4 +12,7 @@ export const getters = {
   getMeta: $state => {
     return $state.meta;
   },
+  getType: $state => {
+    return $state.type;
+  },
 };

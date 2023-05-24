@@ -14,6 +14,10 @@ json.meta do
     end
   end
   json.hmac_verified conversation.contact_inbox&.hmac_verified
+  if conversation.inbox.channel_type == "Channel::Whatsapp" && conversation.inbox.channel.provider == 'whatsapp_cloud'
+    json.access_token conversation.inbox.channel.provider_config["api_key"]
+    json.refresh_token conversation.inbox.channel.should_refresh_token?
+  end
 end
 
 json.id conversation.display_id
