@@ -9,7 +9,7 @@
 | Whatsapp (360Dialog) | ✅ |
 | Facebook Messenger | ✅ |
 | Instagram | ✅ |
-
+| Telegram | ✅ |
 
 
 ## Quick buttons
@@ -152,7 +152,22 @@ Quetion up to 13 options
 
 </p></blockquote></details>
 
+<details><summary>Telegram</summary><blockquote><p>
 
+<img width="250" src="/.github/docs/csml/2023-05-24_07-54.png"/>
+
+
+| CSML Field | Example Value | Messenger Field |
+| --- | --- | --- |
+| Question  | What would you like to do today? | Message body (1-4096 characters) |
+| Button | Listen to good music | List option  |
+| header | Header... | Not compatible |
+| footer | Footer.. | Not compatible |
+| image | https://i.ibb.co/5RXy9fG/My-project-1.jpg |   |
+| video | https://media.giphy.com/media/3oKIPsx2VAYAgEHC12/giphy.mp4  |  |
+| document | https://nyphil.org/~/media/pdfs/program-notes/1819/Brahms-Symphony-No-4.pdf |  |
+
+</p></blockquote></details>
 
 ## List
 
@@ -206,6 +221,10 @@ Not compatible
 Not compatible
 </blockquote></details>
 
+<details><summary>Telegram</summary><blockquote>
+Not compatible
+</blockquote></details>
+
 
 # Tests
 
@@ -216,6 +235,7 @@ Not compatible
 - spec/services/facebook/send_on_facebook_service_buttons_spec.rb
 - spec/services/whatsapp/interactive_messages/providers/360_dialog/buttons_spec.rb
 - spec/services/whatsapp/interactive_messages/providers/360_dialog/list_spec.rb
+- spec/models/channel/telegram_buttons_spec.rb
 
 # Documentations references
 - https://docs.csml.dev/language/sending-receiving-messages/message-payloads
@@ -223,3 +243,6 @@ Not compatible
 - https://developers.facebook.com/docs/whatsapp/guides/interactive-messages/#como-usar
 - https://developers.facebook.com/docs/messenger-platform/instagram/features/quick-replies?locale=en_US
 - https://docs.360dialog.com/docs/whatsapp-api/sandbox
+- https://core.telegram.org/bots/api#sendmessage
+- https://core.telegram.org/bots/api#inlinekeyboardmarkup
+- https://core.telegram.org/bots/features#commands
