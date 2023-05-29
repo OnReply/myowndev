@@ -67,8 +67,8 @@
   value:
   locked: false
 - name: CHATWOOT_CLOUD_PLANS
-  value: hacker
+  value:
 - name: DEPLOYMENT_ENV
-  value: cloud
+  value: self-hosted
 - name: CSML_EDITOR_HOST
   value:

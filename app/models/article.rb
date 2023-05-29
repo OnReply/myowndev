@@ -45,7 +45,7 @@ class Article < ApplicationRecord
              inverse_of: :associated_articles,
              optional: true
   belongs_to :account
-  belongs_to :category
+  belongs_to :category, optional: true
   belongs_to :portal
   belongs_to :author, class_name: 'User'
 
@@ -53,7 +53,6 @@ class Article < ApplicationRecord
   before_validation :ensure_article_slug
 
   validates :account_id, presence: true
-  validates :category_id, presence: true
   validates :author_id, presence: true
   validates :title, presence: true
   validates :content, presence: true
