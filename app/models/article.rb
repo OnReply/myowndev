@@ -203,7 +203,7 @@ class Article < ApplicationRecord
 
   
   def find_platform 
-    if video_url.include?('youtube')
+    if video_url.include?('youtube') || video_url.include?('youtu.be')
       return :youtube
     elsif video_url.include?('loom')
       return :loom
