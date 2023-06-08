@@ -72,3 +72,6 @@
   value: self-hosted
 - name: CSML_EDITOR_HOST
   value:
+- name: USER_ONBOARDING_VIDEO_URL
+  value:
+  locked: false

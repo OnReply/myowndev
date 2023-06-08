@@ -28,6 +28,16 @@
             </a>
             <span>🎉</span>
           </p>
+          <iframe
+            v-if="globalConfig.userOnboardingVideoURL"
+            width="560"
+            height="315"
+            :src="globalConfig.userOnboardingVideoURL"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          />
         </div>
         <div class="features-item">
           <h2 class="block-title">
