@@ -217,9 +217,10 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
   def attach_image_to_template
     image = @channel.template_images.attach(params[:image])
     url = url_for(@channel.template_images.last)
+    handler = @channel.upload_media(params[:image])
     @template["components"].prepend({"type": "HEADER",
       "format": "IMAGE", "example": {
-        "header_handle": [url]
+        "header_handle": [handler['h']]
       }})
   end
 end
