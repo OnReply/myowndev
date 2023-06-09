@@ -31,9 +31,18 @@
 
       <settings-section
         :title="$t('INBOX_MGMT.SETTINGS_POPUP.HMAC_VERIFICATION')"
-        :sub-title="$t('INBOX_MGMT.SETTINGS_POPUP.HMAC_DESCRIPTION')"
       >
         <woot-code :script="inbox.hmac_token" />
+        <template #subTitle>
+          {{ $t('INBOX_MGMT.SETTINGS_POPUP.HMAC_DESCRIPTION') }}
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.chatwoot.com/docs/product/channels/live-chat/sdk/identity-validation/"
+          >
+            {{ $t('INBOX_MGMT.SETTINGS_POPUP.HMAC_LINK_TO_DOCS') }}
+          </a>
+        </template>
       </settings-section>
       <settings-section
         :title="$t('INBOX_MGMT.SETTINGS_POPUP.HMAC_MANDATORY_VERIFICATION')"
@@ -122,19 +131,39 @@
         "
       >
         <div v-if="!successfullyUpdated" class="whatsapp-settings--content">
-          <div
-            v-if="!hasLoginStarted"
-            class="login-init text-left medium-8 mb-1 columns p-0"
-          >
-            <a href="#" @click="startLogin()">
-              <img
-                src="~dashboard/assets/images/channels/facebook_login.png"
-                alt="Facebook-logo"
-              />
-            </a>
+          <div v-if="inbox.provider == 'whatsapp_cloud' ">
+            <div
+              v-if="!hasLoginStarted"
+              class="login-init text-left medium-8 mb-1 columns p-0"
+            >
+              <a href="#" @click="startLogin()">
+                <img
+                  src="~dashboard/assets/images/channels/facebook_login.png"
+                  alt="Facebook-logo"
+                />
+              </a>
+            </div>
+            <div v-else class="login-init medium-8 columns p-0">
+              <loading-state v-if="showLoader" :message="emptyStateMessage" />
+            </div>
           </div>
-          <div v-else class="login-init medium-8 columns p-0">
-            <loading-state v-if="showLoader" :message="emptyStateMessage" />
+          <div class="whatsapp-settings--content" v-else>
+            <woot-input
+            v-model.trim="whatsAppInboxAPIKey"
+            type="text"
+            class="input"
+            :placeholder="
+              $t(
+                'INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_SECTION_UPDATE_PLACEHOLDER'
+              )
+            "
+          />
+          <woot-button
+            :disabled="$v.whatsAppInboxAPIKey.$invalid"
+            @click="updateWhatsAppInboxAPIKey"
+          >
+            {{ $t('INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_SECTION_UPDATE_BUTTON') }}
+          </woot-button>
           </div>
         </div>
       </settings-section>
@@ -272,7 +301,7 @@ export default {
       return !this.user_access_token || this.isCreating;
     },
     shouldDisplayUpdateSettings() {
-      return this.inbox.provider_config.token_expiry_date !== 'never';
+      return this.inbox.provider !== 'whatsapp_cloud' || this.inbox.provider_config.token_expiry_date !== 'never';
     },
   },
 };

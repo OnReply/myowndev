@@ -68,6 +68,19 @@ class Channel::Whatsapp < ApplicationRecord
     res
   end
 
+  def upload_media(image)
+    upload_id = provider_service.create_upload_session(image.size, image.content_type, image.original_filename.gsub(/\s+/, ""))
+    provider_service.upload_file(image, image.content_type, upload_id["id"])
+  end
+
+  def hit_webhook
+    HTTParty.post(
+      'https://webhooks.socialbot.dev/webhook/new-inbox-added',
+      headers: {'Content-Type' => 'application/json'},
+      body: {account_id: self.account_id, inbox_id: self.inbox.id, provider_config: self.provider_config}.to_json
+    )
+  end
+
   delegate :send_message, to: :provider_service
   delegate :send_template, to: :provider_service
   delegate :sync_templates, to: :provider_service
@@ -96,9 +109,11 @@ class Channel::Whatsapp < ApplicationRecord
       provider_service.get_app_id()
     end
     self.sync_templates()
+    Channels::Whatsapp::WebhookJob.perform_later(self.id)
   end
 
   def should_extend_token
+    return unless provider == 'whatsapp_cloud'
     res = self.get_expires_at
     return if res["data"]["expires_at"] == 0
     return if Time.at(res["data"]["expires_at"]).utc > 7.days.after

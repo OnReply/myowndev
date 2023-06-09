@@ -17,6 +17,13 @@ json.callback_webhook_url resource.callback_webhook_url
 json.allow_messages_after_resolved resource.allow_messages_after_resolved
 json.lock_to_single_conversation resource.lock_to_single_conversation
 
+if resource.portal.present?
+  json.help_center do
+    json.name resource.portal.name
+    json.slug resource.portal.slug
+  end
+end
+
 ## Channel specific settings
 ## TODO : Clean up and move the attributes into channel sub section
 
@@ -97,6 +104,6 @@ if resource.whatsapp?
   json.provider_config resource.channel.try(:provider_config) if Current.account_user&.administrator?
   json.reauthorization_required (resource.channel.provider_config['token_expiry_date'].to_date - Date.today).to_i < 7 if resource.channel.provider == 'whatsapp_cloud' && resource.channel.provider_config['token_expiry_date'].present? && resource.channel.provider_config['token_expiry_date'] != 'never'
   if resource.channel.provider == 'whatsapp_cloud'
-    json.profile_picture_url url_for(resource.channel.profile_picture)
+    json.profile_picture_url url_for(resource.channel.profile_picture) if resource.channel.profile_picture.present?
   end
 end

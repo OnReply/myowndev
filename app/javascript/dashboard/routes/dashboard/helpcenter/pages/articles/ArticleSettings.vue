@@ -213,7 +213,6 @@ export default {
     },
     handleSearchChange(value) {
       this.tagInputValue = value;
-      console.log("article ", this.article)
     },
     onBlur() {
       if (this.tagInputValue) {
