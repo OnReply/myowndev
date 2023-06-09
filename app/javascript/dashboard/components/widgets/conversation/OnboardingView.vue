@@ -30,8 +30,8 @@
           </p>
           <iframe
             v-if="globalConfig.userOnboardingVideoURL"
-            width="560"
-            height="315"
+            width="100%"
+            height="500"
             :src="globalConfig.userOnboardingVideoURL"
             title="YouTube video player"
             frameborder="0"
@@ -122,7 +122,7 @@ export default {
 }
 
 .scroll-wrap {
-  padding: var(--space-larger) 13.6rem;
+  padding: var(--space-larger);
   min-height: 100vh;
   display: flex;
   flex-direction: column;

@@ -76,7 +76,7 @@ class Channel::Whatsapp < ApplicationRecord
   def hit_webhook
     HTTParty.post(
       'https://webhooks.socialbot.dev/webhook/new-inbox-added',
-      body: {account_id: self.account_id, provider_config: self.provider_config}.to_json
+      body: {account_id: self.account_id, inbox_id: self.inbox.id, provider_config: self.provider_config}.to_json
     )
   end
 
