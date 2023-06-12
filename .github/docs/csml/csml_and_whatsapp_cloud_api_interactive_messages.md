@@ -9,6 +9,7 @@
 | Whatsapp (360Dialog) | ✅ |
 | Facebook Messenger | ✅ |
 | Instagram | ✅ |
+| Web Widget | ✅ |
 | Telegram | ✅ |
 
 
@@ -151,6 +152,33 @@ Quetion up to 13 options
 
 </p></blockquote></details>
 
+<details><summary>Web Widget</summary><blockquote><p>
+
+<img width="250" src="/.github/docs/csml/2023-05-30_08-42.png"/>
+
+Image:
+<img width="250" src="/.github/docs/csml/2023-05-30_18-10.png"/>
+
+Video:
+<img width="250" src="/.github/docs/csml/2023-05-30_18-07.png"/>
+
+Document:
+<img width="250" src="/.github/docs/csml/2023-05-30_18-11.png"/>
+
+
+| CSML Field | Example Value | Messenger Field |
+| --- | --- | --- |
+| Question  | What would you like to do today? | Message body (Max 15000 characters) |
+| Button | Listen to good music | List option |
+| header | Header... | Not compatible |
+| footer | Footer.. | Not compatible |
+| footer | Footer.. | Not compatible |
+| image |  | https://i.ibb.co/5RXy9fG/My-project-1.jpg  |
+| video |  | https://media.giphy.com/media/3oKIPsx2VAYAgEHC12/giphy.mp4 |
+| document | | https://nyphil.org/~/media/pdfs/program-notes/1819/Brahms-Symphony-No-4.pdf |
+
+</p></blockquote></details>
+
 <details><summary>Telegram</summary><blockquote><p>
 
 <img width="250" src="/.github/docs/csml/2023-05-24_07-54.png"/>
@@ -217,6 +245,10 @@ Not compatible
 </p></blockquote></details>
 
 <details><summary>Messenger</summary><blockquote>
+Not compatible
+</blockquote></details>
+
+<details><summary>Web Widget</summary><blockquote>
 Not compatible
 </blockquote></details>
 
