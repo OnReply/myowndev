@@ -17,14 +17,20 @@
     </nav>
     <div class="menu vertical user-menu">
       <primary-nav-item
-        v-if="!isACustomBrandedInstance"
         icon="book-open-globe"
         name="DOCS"
         :open-in-new-page="true"
         :to="helpDocsURL"
       />
-      <notification-bell type="Conversation" @open-notification-panel="openNotificationPanel" />
-      <notification-bell type="Article" icon="article-bell" @open-notification-panel="openNotificationPanel" />
+      <notification-bell
+        type="Conversation"
+        @open-notification-panel="openNotificationPanel"
+      />
+      <notification-bell
+        type="Article"
+        icon="article-bell"
+        @open-notification-panel="openNotificationPanel"
+      />
       <agent-details @toggle-menu="toggleOptions" />
       <options-menu
         :show="showOptionsMenu"
