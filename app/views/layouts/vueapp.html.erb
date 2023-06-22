@@ -47,7 +47,9 @@
         enabledLanguages: <%= available_locales_with_name.to_json.html_safe %>,
         selectedLocale: '<%= I18n.locale %>',
         <% if current_user.present? %>
-          refreshedToken: []
+          refreshedToken: [],
+          ecommereceUrl: '<%= ENV.fetch('ECOMMERECE_URL', nil) %>',
+          randomString: '<%= ENV.fetch('ECOMMERECE_SALT', nil) %>',
         <% end %>
       }
       window.globalConfig = <%= raw @global_config.to_json %>

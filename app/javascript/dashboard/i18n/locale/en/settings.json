@@ -247,7 +247,8 @@
       "TEXT": "Mark offline automatically",
       "INFO_TEXT": "Let the system automatically mark you offline when you aren't using the app or dashboard."
     },
-    "DOCS": "Read docs"
+    "DOCS": "Read docs",
+    "ECOMMERECE": "Ecommerece"
   },
   "BILLING_SETTINGS": {
     "TITLE": "Billing",
