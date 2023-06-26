@@ -58,7 +58,9 @@ export default {
       return (
         this.globalConfig.csmlEditorHost +
         '?dbidentification=' +
-        md5(this.currentAccountId.toString())
+        md5(
+          this.currentAccountId.toString() + window.chatwootConfig.randomString
+        )
       );
     },
   },
