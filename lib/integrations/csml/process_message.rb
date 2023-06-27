@@ -1,17 +1,9 @@
 class Integrations::Csml::ProcessMessage < Integrations::BotProcessorService
-  pattr_initialize [:messages!, :conversation!, :agent_bot!]
+  pattr_initialize [:message!, :conversation!, :agent_bot!]
+  prepend Integrations::Csml::ProcessProductsMessage
 
   def perform
-    message_payload = messages['payload']
-
-    case message_payload['content_type']
-    when 'text'
-      process_text_messages(message_payload, conversation)
-    when 'question'
-      process_question_messages(message_payload, conversation)
-    when 'image'
-      process_image_messages(message_payload, conversation)
-    end
+    create_messages(message, conversation)
   end
 
   private
