@@ -13,7 +13,7 @@ module Whatsapp::Providers::WhatsappCloudInteractiveMessages::Products
       },
       'action': {
         'catalog_id': message.content_attributes['catalog_id'],
-        'sections': build_sections(message)
+        'sections': build_products_sections(message)
       }
     }
 
@@ -32,7 +32,7 @@ module Whatsapp::Providers::WhatsappCloudInteractiveMessages::Products
     end
   end
 
-  def build_sections(message)
+  def build_products_sections(message)
     message.content_attributes['products'].map { | product_list |
       { 'title': product_list['section_title'],
         'product_items': product_list['skus'].map { |sku| {'product_retailer_id': sku} }

@@ -23,7 +23,10 @@ describe Whatsapp::SendOnWhatsappService do
           :message, message_type: :outgoing, content: 'test', content_type: 'integrations',
                     content_attributes: {
                       'type': 'whatsappproducts',
-                      'product_skus': ['5r4tap9sy6'],
+                      'products': [
+                        {'section_title': 'section title', 'skus': ['5r4tap9sy6']}
+                      ],
+                      'header': 'product header',
                       'catalog_id': '1183719818989019',
                       'message_payload' => {"content_type"=>"Component.whatsappproducts", "content"=>{"skus"=>["sku1", "sku2"]}}
                     },
@@ -33,7 +36,7 @@ describe Whatsapp::SendOnWhatsappService do
 
         stub_request(:post, 'https://waba.360dialog.io/v1/messages')
           .with(
-            body: {"messaging_product":"whatsapp","to":"123456789","interactive":{"type":"product_list","body":{"text":"test"},"action":{"catalog_id":"1183719818989019","sections":[{"title":"SECTION_TITLE","product_items":[{"product_retailer_id":"5r4tap9sy6"}]}]}},"type":"interactive"}.to_json
+            body: {"messaging_product":"whatsapp","to":"123456789","interactive":{"type":"product_list","body":{"text":"test"},"header":{"type":"text","text":"product header"},"action":{"catalog_id":"1183719818989019","sections":[{"title":"section title","product_items":[{"product_retailer_id":"5r4tap9sy6"}]}]}},"type":"interactive"}.to_json
           )
           .to_return(status: 200, body: whatsapp_response.to_json, headers: response_headers)
 
