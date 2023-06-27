@@ -17,6 +17,36 @@ class AgentBots::ValidateBotService
       id: agent_bot[:name],
       name: agent_bot[:name],
       default_flow: 'Default',
+      custom_components: {
+        "WhatsappProducts": {
+          "params": [
+            {
+              "catalog_id": {
+                "required": true,
+                "type": "String",
+              }
+            },
+            {
+              "header": {
+                "required": true,
+                "type": "String",
+              }
+            },
+            {
+              "products": {
+                "required": true,
+                "type": "Array",
+              }
+            },
+            {
+              "content": {
+                "required": true,
+                "type": "String",
+              }
+            },
+          ]
+        }
+      },
       flows: [
         {
           id: SecureRandom.uuid,
