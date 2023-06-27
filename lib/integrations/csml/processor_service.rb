@@ -73,6 +73,12 @@ class Integrations::Csml::ProcessorService < Integrations::BotProcessorService
                 "type": "String",
               }
             },
+            {
+              "footer": {
+                "required": false,
+                "type": "String",
+              }
+            },
           ]
         }
       },

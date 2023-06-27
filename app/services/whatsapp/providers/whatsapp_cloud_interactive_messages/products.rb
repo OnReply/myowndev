@@ -2,7 +2,7 @@ module Whatsapp::Providers::WhatsappCloudInteractiveMessages::Products
   include Whatsapp::Providers::WhatsappCloudInteractiveMessages::Base
 
   def build_products_interactive_content(message)
-    {
+    data = {
       'type': 'product_list',
       'body': {
         'text': "#{message.content}"
@@ -16,9 +16,21 @@ module Whatsapp::Providers::WhatsappCloudInteractiveMessages::Products
         'sections': build_sections(message)
       }
     }
+
+    build_products_footer(message, data)
   end
 
   private
+  
+  def build_products_footer(message, data)
+    footer = message.content_attributes.dig('footer')
+
+    if footer.present?
+      data = data.merge({ 'footer': { 'text': footer.truncate(60, :omission => '') } })
+    else
+      data
+    end
+  end
 
   def build_sections(message)
     message.content_attributes['products'].map { | product_list |

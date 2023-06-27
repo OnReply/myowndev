@@ -44,6 +44,12 @@ class AgentBots::ValidateBotService
                 "type": "String",
               }
             },
+            {
+              "footer": {
+                "required": false,
+                "type": "String",
+              }
+            },
           ]
         }
       },
