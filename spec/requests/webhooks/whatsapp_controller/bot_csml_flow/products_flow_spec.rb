@@ -46,7 +46,7 @@ RSpec.describe 'Webhooks::WhatsappController', type: :request do
       {"object"=>"whatsapp_business_account", "entry"=>[{"id"=>"119008101162708", "changes"=>[{"value"=>{"messaging_product"=>"whatsapp", "metadata"=>{"display_phone_number"=>"554198154704", "phone_number_id"=>"110305898707701"}, "contacts"=>[{"profile"=>{"name"=>"Douglas Lara"}, "wa_id"=>"554196910256"}], "messages"=>[{"from"=>"554196910256", "id"=>"wamid.HBgMNTU0MTk2OTEwMjU2FQIAEhgWM0VCMDY1NDk1NTFCNENDNDY3REU2NgA=", "timestamp"=>"1687778555", "text"=>{"body"=>"Hi Testing..."}, "type"=>"text"}]}, "field"=>"messages"}]}], "phone_number"=>"+554198154704", "whatsapp"=>{"object"=>"whatsapp_business_account", "entry"=>[{"id"=>"119008101162708", "changes"=>[{"value"=>{"messaging_product"=>"whatsapp", "metadata"=>{"display_phone_number"=>"554198154704", "phone_number_id"=>"110305898707701"}, "contacts"=>[{"profile"=>{"name"=>"Douglas Lara"}, "wa_id"=>"554196910256"}], "messages"=>[{"from"=>"554196910256", "id"=>"wamid.HBgMNTU0MTk2OTEwMjU2FQIAEhgWM0VCMDY1NDk1NTFCNENDNDY3REU2NgA=", "timestamp"=>"1687778555", "text"=>{"body"=>"Hi Testing..."}, "type"=>"text"}]}, "field"=>"messages"}]}]}}
     }
 
-    
+
     it 'should send products' do
       perform_enqueued_jobs do
         post '/webhooks/whatsapp/+554198154704', params: request_receive_params
@@ -78,6 +78,23 @@ RSpec.describe 'Webhooks::WhatsappController', type: :request do
 
       expect(response).to have_http_status(:success)
       expect(Message.last.content_type).to eq('text')
+    end
+
+    context 'should receive whatsapp products message statuss' do
+      let(:request_receive_params) {
+        {"object"=>"whatsapp_business_account", "entry"=>[{"id"=>"119008101162708", "changes"=>[{"value"=>{"messaging_product"=>"whatsapp", "metadata"=>{"display_phone_number"=>"554198154704", "phone_number_id"=>"110305898707701"}, "contacts"=>[{"profile"=>{"name"=>"Douglas Lara"}, "wa_id"=>"554196910256"}], "messages"=>[{"from"=>"554196910256", "id"=>"wamid.HBgMNTU0MTk2OTEwMjU2FQIAEhgUM0E2MkU1QTA0MjA0MDZFQTc5OEYA", "timestamp"=>"1688122724", "type"=>"order", "order"=>{"catalog_id"=>"1183719818989019", "product_items"=>[{"product_retailer_id"=>"5r4tap9sy6", "quantity"=>2, "item_price"=>5, "currency"=>"USD"}]}}]}, "field"=>"messages"}]}], "phone_number"=>"+554198154704", "whatsapp"=>{"object"=>"whatsapp_business_account", "entry"=>[{"id"=>"119008101162708", "changes"=>[{"value"=>{"messaging_product"=>"whatsapp", "metadata"=>{"display_phone_number"=>"554198154704", "phone_number_id"=>"110305898707701"}, "contacts"=>[{"profile"=>{"name"=>"Douglas Lara"}, "wa_id"=>"554196910256"}], "messages"=>[{"from"=>"554196910256", "id"=>"wamid.HBgMNTU0MTk2OTEwMjU2FQIAEhgUM0E2MkU1QTA0MjA0MDZFQTc5OEYA", "timestamp"=>"1688122724", "type"=>"order", "order"=>{"catalog_id"=>"1183719818989019", "product_items"=>[{"product_retailer_id"=>"5r4tap9sy6", "quantity"=>2, "item_price"=>5, "currency"=>"USD"}]}}]}, "field"=>"messages"}]}]}}
+      }
+
+      it do
+        with_modified_env WHATSAPP_ORDERS_WEBHOOK: 'https://webhooks.socialbot.dev/webhook/new-whatsapp-order-staging' do
+
+          perform_enqueued_jobs do
+            post '/webhooks/whatsapp/+554198154704', params: request_receive_params
+            assert_performed_jobs 1, only: WebhookJob
+          end
+          expect(Message.last.content_type).to eq('integrations')  
+        end
+      end
     end
   end
 end
