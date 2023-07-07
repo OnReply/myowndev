@@ -17,28 +17,28 @@ const runSDK = ({ baseUrl, websiteToken }) => {
     return;
   }
 
-  const chatwootSettings = window.chatwootSettings || {};
-  let locale = chatwootSettings.locale;
+  const socialBotSettings = window.socialBotSettings || {};
+  let locale = socialBotSettings.locale;
 
-  if (chatwootSettings.useBrowserLanguage) {
+  if (socialBotSettings.useBrowserLanguage) {
     locale = window.navigator.language.replace('-', '_');
   }
 
   window.$chatwoot = {
     baseUrl,
     hasLoaded: false,
-    hideMessageBubble: chatwootSettings.hideMessageBubble || false,
+    hideMessageBubble: socialBotSettings.hideMessageBubble || false,
     isOpen: false,
-    position: chatwootSettings.position === 'left' ? 'left' : 'right',
+    position: socialBotSettings.position === 'left' ? 'left' : 'right',
     websiteToken,
     locale,
-    useBrowserLanguage: chatwootSettings.useBrowserLanguage || false,
-    type: getBubbleView(chatwootSettings.type),
-    launcherTitle: chatwootSettings.launcherTitle || '',
-    showPopoutButton: chatwootSettings.showPopoutButton || false,
-    widgetStyle: getWidgetStyle(chatwootSettings.widgetStyle) || 'standard',
+    useBrowserLanguage: socialBotSettings.useBrowserLanguage || false,
+    type: getBubbleView(socialBotSettings.type),
+    launcherTitle: socialBotSettings.launcherTitle || '',
+    showPopoutButton: socialBotSettings.showPopoutButton || false,
+    widgetStyle: getWidgetStyle(socialBotSettings.widgetStyle) || 'standard',
     resetTriggered: false,
-    darkMode: getDarkMode(chatwootSettings.darkMode),
+    darkMode: getDarkMode(socialBotSettings.darkMode),
 
     toggle(state) {
       IFrameHelper.events.toggleBubble(state);
