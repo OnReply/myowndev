@@ -112,8 +112,6 @@ import { mixin as clickaway } from 'vue-clickaway';
 import rtlMixin from 'shared/mixins/rtlMixin';
 
 import NotificationPanelList from './NotificationPanelList';
-import { buildPortalArticleURL } from 'dashboard/helper/portalHelper';
-
 export default {
   components: {
     NotificationPanelList,
@@ -130,7 +128,6 @@ export default {
       meta: 'notifications/getMeta',
       records: 'notifications/getNotifications',
       uiFlags: 'notifications/getUIFlags',
-      type: 'notifications/getType',
     }),
     notificationPanelFooterIconClass() {
       return this.isRTLView
@@ -138,13 +135,13 @@ export default {
         : 'margin-left-minus-slab';
     },
     totalUnreadNotifications() {
-      return this.meta.unreadCount[this.type];
+      return this.meta.unreadCount;
     },
     noUnreadNotificationAvailable() {
-      return this.meta.unreadCount[this.type] === 0;
+      return this.meta.unreadCount === 0;
     },
     getUnreadNotifications() {
-      return this.records.filter(notification => notification.read_at === null && notification.primary_actor_type === this.type);
+      return this.records.filter(notification => notification.read_at === null);
     },
     currentPage() {
       return Number(this.meta.currentPage);
@@ -164,7 +161,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch('notifications/get', { page: 1, type: this.type });
+    this.$store.dispatch('notifications/get', { page: 1});
   },
   methods: {
     onPageChange(page) {
@@ -180,27 +177,13 @@ export default {
       this.$store.dispatch('notifications/read', {
         primaryActorId,
         primaryActorType,
-        unreadCount: this.meta.unreadCount[this.type],
+        unreadCount: this.meta.unreadCount,
       });
-      if (primaryActorType === 'Article') {
-        const url = this.portalLink(notification);
-        window.open(url, '_blank');
-      } else {
-        this.$router.push({
-          name: 'inbox_conversation',
-          params: { conversation_id: conversationId },
-        });
-      }
+      this.$router.push({
+        name: 'inbox_conversation',
+        params: { conversation_id: conversationId },
+      });
       this.$emit('close');
-    },
-    portalLink(notification) {
-      const slug = notification.primary_actor.title;
-      return buildPortalArticleURL(
-        slug,
-        notification.primary_actor.category_slug,
-        notification.primary_actor.locale,
-        notification.primary_actor.id
-      );
     },
     onClickNextPage() {
       if (!this.inLastPage) {

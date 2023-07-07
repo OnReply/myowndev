@@ -39,7 +39,6 @@ class Notification::PushNotificationService
   end
 
   def push_url
-    return '' if notification.primary_actor_type == 'Article'
     app_account_conversation_url(account_id: conversation.account_id, id: conversation.display_id)
   end
 

@@ -2,14 +2,14 @@ import types from '../../mutation-types';
 import NotificationsAPI from '../../../api/notifications';
 
 export const actions = {
-  get: async ({ commit }, { page = 1, type = null } = {}) => {
+  get: async ({ commit }, { page = 1} = {}) => {
     commit(types.SET_NOTIFICATIONS_UI_FLAG, { isFetching: true });
     try {
       const {
         data: {
           data: { payload, meta },
         },
-      } = await NotificationsAPI.get(page, type);
+      } = await NotificationsAPI.get(page);
       commit(types.CLEAR_NOTIFICATIONS);
       commit(types.SET_NOTIFICATIONS, payload);
       commit(types.SET_NOTIFICATIONS_META, meta);
@@ -34,7 +34,7 @@ export const actions = {
   ) => {
     try {
       await NotificationsAPI.read(primaryActorType, primaryActorId);
-      commit(types.SET_NOTIFICATIONS_UNREAD_COUNT, {[primaryActorType]: unreadCount - 1} );
+      commit(types.SET_NOTIFICATIONS_UNREAD_COUNT,  unreadCount - 1 );
       commit(types.UPDATE_NOTIFICATION, primaryActorId);
     } catch (error) {
       throw new Error(error);
@@ -44,11 +44,7 @@ export const actions = {
     commit(types.SET_NOTIFICATIONS_UI_FLAG, { isUpdating: true });
     try {
       await NotificationsAPI.readAll();
-      var data = {
-        "Conversation": 0,
-        "Article": 0
-      }
-      commit(types.SET_NOTIFICATIONS_UNREAD_COUNT, data);
+      commit(types.SET_NOTIFICATIONS_UNREAD_COUNT, 0);
       commit(types.UPDATE_ALL_NOTIFICATIONS);
       commit(types.SET_NOTIFICATIONS_UI_FLAG, { isUpdating: false });
     } catch (error) {
@@ -59,8 +55,5 @@ export const actions = {
 
   addNotification({ commit }, data) {
     commit(types.ADD_NOTIFICATION, data);
-  },
-  changeNotificationType({ commit }, type) {
-    commit(types.CHANGE_NOTIFICATION_TYPE, type);
   },
 };

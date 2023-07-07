@@ -155,7 +155,7 @@ class User < ApplicationRecord
 
   def notifications_meta(account_id)
     {
-      unread_count: notifications.where(account_id: account_id, read_at: nil).group_by(&:primary_actor_type).transform_values(&:count),
+      unread_count: notifications.where(account_id: account_id, read_at: nil).count,
       count: notifications.where(account_id: account_id).count
     }
   end

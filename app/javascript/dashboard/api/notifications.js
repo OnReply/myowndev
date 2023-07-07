@@ -6,10 +6,8 @@ class NotificationsAPI extends ApiClient {
     super('notifications', { accountScoped: true });
   }
 
-  get(page, type) {
-    const url =
-      `${this.url}?page=${page}` + (type !== null ? `&type=${type}` : '');
-    return axios.get(url);
+  get(page) {
+    return axios.get(`${this.url}?page=${page}`);
   }
 
   getNotifications(contactId) {
