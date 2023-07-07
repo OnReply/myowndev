@@ -6,10 +6,7 @@ const state = {
   meta: {
     count: 0,
     currentPage: 1,
-    unreadCount: {
-      Conversation: 0,
-      Article: 0
-    },
+    unreadCount: 0,
   },
   records: {},
   uiFlags: {
@@ -18,7 +15,6 @@ const state = {
     isUpdating: false,
     isUpdatingUnreadCount: false,
   },
-  type: 'Conversation'
 };
 
 export default {

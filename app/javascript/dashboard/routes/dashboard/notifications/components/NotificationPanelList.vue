@@ -37,7 +37,7 @@
             </div>
             <div>
               <thumbnail
-                v-if="notificationItem.primary_actor.meta && notificationItem.primary_actor.meta.assignee"
+                v-if="notificationItem.primary_actor.meta.assignee"
                 :src="notificationItem.primary_actor.meta.assignee.thumbnail"
                 size="16px"
                 :username="notificationItem.primary_actor.meta.assignee.name"

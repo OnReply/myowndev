@@ -1,7 +1,7 @@
 <template>
   <section class="notification--table-wrap">
     <woot-submit-button
-      v-if="notificationMetadata.unreadCount[notificationMetadata.type]"
+      v-if="notificationMetadata.unreadCount"
       class="button nice success button--fixed-top"
       :button-text="$t('NOTIFICATIONS_PAGE.MARK_ALL_DONE')"
       :loading="isUpdating"
@@ -45,7 +45,7 @@
           </td>
           <td class="thumbnail--column">
             <thumbnail
-              v-if="notificationItem.primary_actor.meta && notificationItem.primary_actor.meta.assignee"
+              v-if="notificationItem.primary_actor.meta.assignee"
               :src="notificationItem.primary_actor.meta.assignee.thumbnail"
               size="36px"
               :username="notificationItem.primary_actor.meta.assignee.name"

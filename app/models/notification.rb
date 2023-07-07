@@ -35,8 +35,7 @@ class Notification < ApplicationRecord
     conversation_assignment: 2,
     assigned_conversation_new_message: 3,
     conversation_mention: 4,
-    participating_conversation_new_message: 5,
-    article_creation: 6
+    participating_conversation_new_message: 5
   }.freeze
 
   enum notification_type: NOTIFICATION_TYPES
@@ -47,7 +46,7 @@ class Notification < ApplicationRecord
   # https://stackoverflow.com/a/1834250/939299
   default_scope { order(id: :desc) }
 
-  PRIMARY_ACTORS = %w[Conversation Article].freeze
+  PRIMARY_ACTORS = ['Conversation'].freeze
 
   def push_event_data
     # Secondary actor could be nil for cases like system assigning conversation
@@ -106,8 +105,6 @@ class Notification < ApplicationRecord
       )
     when 'conversation_mention'
       "[##{conversation&.display_id}] #{transform_user_mention_content primary_actor&.content}"
-    when 'article_creation'
-      I18n.t('notifications.notification_title.article_creation', name: primary_actor.portal.name)
     else
       ''
     end
