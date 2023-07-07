@@ -1,5 +1,6 @@
 class Integrations::Csml::ProcessorService < Integrations::BotProcessorService
   pattr_initialize [:event_name!, :event_data!, :agent_bot!]
+  prepend Integrations::Csml::ProcessProductsMessage
 
   private
 
@@ -45,6 +46,42 @@ class Integrations::Csml::ProcessorService < Integrations::BotProcessorService
       id: "chatwoot-csml-bot-#{agent_bot.id}",
       name: "chatwoot-csml-bot-#{agent_bot.id}",
       default_flow: 'chatwoot_bot_flow',
+      custom_components: {
+        "WhatsappProducts": {
+          "params": [
+            {
+              "catalog_id": {
+                "required": true,
+                "type": "String",
+              }
+            },
+            {
+              "header": {
+                "required": true,
+                "type": "String",
+              }
+            },
+            {
+              "products": {
+                "required": true,
+                "type": "Array",
+              }
+            },
+            {
+              "content": {
+                "required": true,
+                "type": "String",
+              }
+            },
+            {
+              "footer": {
+                "required": false,
+                "type": "String",
+              }
+            },
+          ]
+        }
+      },
       flows: [
         {
           id: "chatwoot-csml-bot-flow-#{agent_bot.id}-inbox-#{conversation.inbox.id}",

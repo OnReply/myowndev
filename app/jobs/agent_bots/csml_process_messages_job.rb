@@ -1,9 +1,9 @@
 class AgentBots::CsmlProcessMessagesJob < ApplicationJob
   queue_as :high
 
-  def perform(messages, conversation, agent_bot)
+  def perform(message, conversation, agent_bot)
     Integrations::Csml::ProcessMessage.new(
-      messages: messages,
+      message: message,
       conversation: conversation,
       agent_bot: agent_bot
     ).perform

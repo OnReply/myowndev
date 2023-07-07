@@ -257,6 +257,34 @@ Not compatible
 </blockquote></details>
 
 
+## Products
+
+CSML Code example:
+```ruby
+start:
+  say "Hello stranger! 👋"
+  say Component.WhatsappProducts(
+    content="testing body",
+    header="testing2",
+    catalog_id="1183719818989019",
+    products=[{"section_title": "section title...", "skus": ["5r4tap9sy6"]}],
+    footer="footer testing.."
+    )
+  goto end
+
+```
+
+<img src="/.github/docs/csml/2023-06-27_00-32.png"/>
+<img src="/.github/docs/csml/2023-06-27_00-53.png"/>
+
+| CSML Field | Example Value | Whatsapp Field | Required |
+| --- | --- | --- | --- |
+| content  | testing body | Message body (Max 1024 characters) | Yes |
+| header | testing2|  | Yes
+| catalog_id | 1183719818989019|  | Yes
+| products | `{"section_title": "section title...", "skus": ["5r4tap9sy6"]}` | Maximum 30 products and 10 sections  | Yes |
+| footer | footer testing..| Maximum 60 characters. | No |
+
 # Tests
 
 ## Files
@@ -267,6 +295,9 @@ Not compatible
 - spec/services/whatsapp/interactive_messages/providers/360_dialog/buttons_spec.rb
 - spec/services/whatsapp/interactive_messages/providers/360_dialog/list_spec.rb
 - spec/models/channel/telegram_buttons_spec.rb
+- spec/services/whatsapp/interactive_messages/providers/360_dialog/products_spec.rb
+- spec/services/whatsapp/interactive_messages/providers/cloud/products_spec.rb
+- spec/requests/webhooks/whatsapp_controller/bot_csml_flow/products_flow_spec.rb
 
 # Documentations references
 - https://docs.csml.dev/language/sending-receiving-messages/message-payloads
@@ -277,3 +308,4 @@ Not compatible
 - https://core.telegram.org/bots/api#sendmessage
 - https://core.telegram.org/bots/api#inlinekeyboardmarkup
 - https://core.telegram.org/bots/features#commands
+- https://developers.facebook.com/docs/whatsapp/guides/commerce-guides/share-products-with-customers/
