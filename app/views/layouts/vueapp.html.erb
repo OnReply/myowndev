@@ -46,10 +46,10 @@
         <% end %>
         enabledLanguages: <%= available_locales_with_name.to_json.html_safe %>,
         selectedLocale: '<%= I18n.locale %>',
+        ecommereceUrl: '<%= ENV.fetch('ECOMMERECE_URL', nil) %>',
+        randomString: '<%= ENV.fetch('ECOMMERECE_SALT', nil) %>',
         <% if current_user.present? %>
           refreshedToken: [],
-          ecommereceUrl: '<%= ENV.fetch('ECOMMERECE_URL', nil) %>',
-          randomString: '<%= ENV.fetch('ECOMMERECE_SALT', nil) %>',
         <% end %>
       }
       window.globalConfig = <%= raw @global_config.to_json %>
