@@ -3,6 +3,10 @@
 class PublicController < ActionController::Base
   include RequestExceptionHandler
 
+  def unauthorized
+    @image_url = GlobalConfig.get("UNAUTHORIZED_IMAGE_URL").values.first
+  end
+
   private
 
   def ensure_custom_domain_request
