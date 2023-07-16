@@ -126,9 +126,9 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
 
   def update_profile_picture
     fetch_channel
-    @channel.profile_picture.attach(params[:image]) if params[:image].present? 
     response = @channel.update_profile_picture(params[:image], params[:profile])
     if response.success?
+      @channel.profile_picture.attach(params[:image]) if params[:image].present?
       render status: :ok , json: {message: "OK"}
     else 
       render status: :ok, json: { error: response["error"]["message"] }
