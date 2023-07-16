@@ -75,23 +75,12 @@
           />
         </label>
       </div>
-			<div class="input-group-field">
-        <label for="name" >
-         	{{ $t("WHATSAPP_PROFILE.WEBSITE.LABEL") }}
-          <input
-            v-model.trim="profile.websites[1]"
-            name="name"
-            type="text"
-						maxlength="256"
-						:placeholder="$t('WHATSAPP_PROFILE.WEBSITE.PLACEHOLDER')"
-          />
-        </label>
-      </div>
 		</div>
 		<woot-submit-button
 			:button-text="$t('EMAIL_TRANSCRIPT.SUBMIT')"
 			class="m-2"
 			@click="submitForm"
+			:disabled="isDisabled"
 			
 		/>
 	</div>
@@ -121,7 +110,7 @@ export default {
 				about: '',
 				address: '',
 				email: '',
-				websites: ['',''],
+				websites: [''],
 				messaging_product: 'whatsapp'
 			},
 		}
@@ -133,12 +122,14 @@ export default {
       this.imageUrl = file? URL.createObjectURL(file) : '';
     },
 		async submitForm() {
+			this.isDisabled = true
       const response = await InboxesAPI.UpdateProfilePicture(this.inbox.id, this.imageFile, this.profile)
       if(response.data.message) {
         this.showAlert(this.$t('WHATSAPP_TEMPLATES.BUILDER.SUCCESSFUL_SUBMISSION'))
       } else {
         this.showAlert(response.data.error)
       }
+			this.isDisabled = false
     },
 	},
 	watch: {
@@ -159,10 +150,19 @@ export default {
 		imageFile(newVal){
 			if(newVal === undefined){
 				this.imageUrl = this.inbox.profile_picture_url
-				this.isDisabled = true
 			} else {
 				this.isDisabled = false
 			}
+		},
+		profile: {
+			handler(newVal){
+				if(newVal.about == ''){
+					this.isDisabled = true
+				} else {
+					this.isDisabled = false
+				}
+			},
+			deep: true
 		}
 	}
 }
