@@ -1,4 +1,5 @@
 module Integrations::Csml::ProcessProductsMessage
+  include Integrations::Csml::ProcessFileMessage
 
   def create_messages(message, conversation)
     message_payload = message['payload']
@@ -12,6 +13,8 @@ module Integrations::Csml::ProcessProductsMessage
       process_products_messages(message_payload, conversation)
     when 'image'
       process_image_messages(message_payload, conversation)
+    when 'file'
+      process_file_messages(message_payload, conversation)
     end
   end
 
