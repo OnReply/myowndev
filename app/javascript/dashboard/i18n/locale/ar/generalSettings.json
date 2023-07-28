@@ -83,7 +83,8 @@
       "conversation_assignment": "تم تعيين المحادثة",
       "assigned_conversation_new_message": "رسالة جديدة",
       "participating_conversation_new_message": "رسالة جديدة",
-      "conversation_mention": "إشارة"
+      "conversation_mention": "إشارة",
+      "article_creation": "مقال جديد"
     }
   },
   "NETWORK": {

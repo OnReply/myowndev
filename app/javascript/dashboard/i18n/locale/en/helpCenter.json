@@ -67,6 +67,10 @@
         "META_TAGS": {
           "LABEL": "Meta tags",
           "PLACEHOLDER": "Add meta tags separated by comma..."
+        },
+        "EMBED_VIDEO_URL": {
+          "LABEL": "Video URL",
+          "PLACEHOLDER": "Add the Link of video you want to embed to article"
         }
       },
       "BUTTONS": {
