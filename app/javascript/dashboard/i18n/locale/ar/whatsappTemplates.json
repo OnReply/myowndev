@@ -38,7 +38,35 @@
                 },
                 "HEADER": "العنوان",
                 "BODY": "المحتوى",
-                "FOOTER": "تذييل الصفحة"
+                "FOOTER": "تذييل الصفحة",
+                "BUTTONS": {
+                    "BUTTON": "زِرّ (اختياري)",
+                    "BUTTON_TYPE": {
+                        "NONE": "لا شيء",
+                        "QUICK_REPLY": "رد سريع",
+                        "CALL": "اتصال"
+                    },
+                    "BUTTON_TEXT": "نص الزر",
+                    "TYPE_OF_ACTION": {
+                        "LABEL": "نوع الإجراء",
+                        "PHONE_NUMBER": "اتصال برقم الهاتف",
+                        "URL": "زيارة الموقع"
+                    },
+                    "PHONE_NUMBER": {
+                        "LABEL": "رقم الهاتف",
+                        "ERROR": "يرجى إدخال رقم هاتف صحيح"
+                    },
+                    "URL": {
+                        "LABEL": "رابط الموقع",
+                        "ERROR": "الرجاء إدخال رابط صحيح",
+                        "EXAMPLE": "مثال",
+                        "TYPE": {
+                            "STATIC": "ثابت",
+                            "DYNAMIC": "متغير"
+                        }
+                    },
+                    "NEW_BUTTON": "إضافة زر جديد"
+                }
             }
         }
     }

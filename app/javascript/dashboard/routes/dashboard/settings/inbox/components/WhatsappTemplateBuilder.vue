@@ -102,6 +102,164 @@
           />
         </label>
       </div>
+      <div class="input-group-field">
+        <label for="button"> {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.BUTTON') }} </label>
+        <select v-model="buttonType" @change="UpdateDisplaybuttons" class="mx-1" name="buttonType">
+          <option
+            value="none"
+          >
+            {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.BUTTON_TYPE.NONE') }}
+          </option>
+          <option
+            value="QUICK_REPLY"
+          >
+            {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.BUTTON_TYPE.QUICK_REPLY') }}
+          </option>
+          <option
+            value="CALL"
+          >
+            {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.BUTTON_TYPE.CALL') }}
+          </option>
+        </select>
+      </div>
+      <div>
+      <div class="input-group-field" v-if="buttonType!=='never' ">
+        <div v-if="buttonType === 'QUICK_REPLY'">
+          <label for="" v-for="(button, index) in buttonData" v-bind:key="index" :class="{ error: error.text[`${index}`] }">
+            {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.BUTTON_TEXT') }}
+            <div class="parent-div">
+              <input
+                v-model.trim="button.text"
+                type="text"
+                maxlength="60"
+                class="mx-1"
+                
+              />
+              <woot-button
+                color-scheme="secondary"
+                variant="link"
+                size="tiny"
+                icon="dismiss"
+                @click="removeButton(index)"
+                class="mx-1 mt-2"
+                v-if="buttonData.length > 1"
+              />
+            </div>
+            <span v-if="error.text[`${index}`]" class="message">
+              {{ $t('INBOX_MGMT.ADD.WHATSAPP.INBOX_NAME.ERROR') }}
+            </span>
+          </label>
+        </div>
+        <div v-else-if="buttonType === 'CALL'">
+          <label for="" v-for="(button, index) in buttonData"  v-bind:key="index">
+            {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.TYPE_OF_ACTION.LABEL') }}
+            <div class="parent-div input-group-field align-items-center">
+              <div class="flex mt-2">
+                <select v-model="button.type" @change="changeActionType(index, button)" :disabled="disableButtonType" class="mx-1" name="actionType">
+                  <option
+                    value="PHONE_NUMBER"
+                  >
+                    {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.TYPE_OF_ACTION.PHONE_NUMBER') }}
+                  </option>
+                  <option
+                    value="URL"
+                  >
+                    {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.TYPE_OF_ACTION.URL') }}
+                  </option>
+                </select>
+              </div>
+              <div v-if="button.type == 'PHONE_NUMBER'" class="parent-div">
+                <label for="" class="mx-1" :class="{ error: error.text[`${index}`] }">
+                  {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.BUTTON_TEXT') }}
+                  <input
+                  v-model.trim="button.text"
+                  type="text"
+                  maxlength="60"
+                  />
+                  <span v-if="error.text[`${index}`]" class="message">
+                    {{ $t('INBOX_MGMT.ADD.WHATSAPP.INBOX_NAME.ERROR') }}
+                  </span>
+                </label>
+                <label for="" class="mx-1" :class="{ error: error.phone_number }">
+                  {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.PHONE_NUMBER.LABEL') }}
+                  <input
+                  v-model.trim="button.phone_number"
+                  type="number"
+                  maxlength="60"
+                  />
+                  <span v-if="error.phone_number" class="message">
+                  {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.PHONE_NUMBER.ERROR') }}
+                  </span>
+                </label>
+              </div>
+              <div v-else-if="button.type == 'URL'" class="parent-div">
+                <label for="" class="mx-1" :class="{ error: error.text[`${index}`] }">
+                  {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.BUTTON_TEXT') }}
+                  <input
+                  v-model.trim="button.text"
+                  type="text"
+                  maxlength="60"
+                  />
+                  <span v-if="error.text[`${index}`]" class="message">
+                    {{ $t('INBOX_MGMT.ADD.WHATSAPP.INBOX_NAME.ERROR') }}
+                  </span>
+                </label>
+                <div class="flex mt-2 mx-1" >
+                  <select v-model="urlType" class="mx-1" name="urlType">
+                    <option
+                      value="static"
+                    >
+                      {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.URL.TYPE.STATIC') }}
+                    </option>
+                    <option
+                      value="dynamic"
+                    >
+                      {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.URL.TYPE.DYNAMIC') }}
+                    </option>
+                  </select>
+                </div>
+                <label for="" class="mx-1" :class="{ error: error.url }">
+                  {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.URL.LABEL') }}
+                  <input
+                  v-model.trim="button.url"
+                  type="text"
+                  maxlength="60"
+                  class="mx-1"
+                  />
+                  <span v-if="error.url" class="message">
+                  {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.URL.ERROR') }}
+                  </span>
+                </label>
+              </div>
+              <woot-button
+                color-scheme="alert"
+                variant="clear"
+                size="tiny"
+                icon="dismiss"
+                @click="removeButton(index)"
+                class="mx-1 mt-2"
+                v-if="buttonData.length > 1"
+              />
+            </div>
+            <div v-if="button.type == 'URL' && urlType == 'dynamic'">
+              <label for="">
+                  {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.URL.EXAMPLE') }}
+                <input
+                v-model.trim="button.example"
+                type="text"
+                maxlength="60"
+                :class="`example-${index}`"
+                />
+              </label>
+            </div>
+          </label>
+        </div>
+        <button class="button clear" @click="addNewButton" v-if="buttonData.length < maximumButtonsCount">
+          {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.NEW_BUTTON') }}
+        </button>
+      </div>
+
+      </div>
     </div>
     <div class="medium-3 whatsapp-chat-background">
       <div class="first-parent">
@@ -129,10 +287,12 @@
 <script>
 import facebookLanguageList from '../../../../../helper/facebookLanguagesList.json';
 import { required } from 'vuelidate/lib/validators';
+import Vue from 'vue';
 import InboxesAPI from '../../../../../api/inboxes';
 
 export default {
-  components: {
+  computed: {
+   
   },
   props: {
     inboxId: {
@@ -162,7 +322,14 @@ export default {
       }
     },
     headerValue: { required },
-    bodyValue: { required }
+    bodyValue: { required },
+    buttonData: {
+      ...function () {
+        return this.buttonValidations.reduce((merged, curr) => {
+          return { ...merged, ...curr };
+        }, {});
+      },
+    }
   },
   data() {
     return {
@@ -175,7 +342,18 @@ export default {
       headerType: 'text',
       displayHeaderInputField: true,
       imageUrl: '',
-      imageFile: ''
+      imageFile: '',
+      buttonType: 'none',
+      maximumButtonsCount: 2,
+      buttonData:[],
+      actionType:[],
+      urlType: 'static',
+      disableButtonType: false,
+      error: {
+        phone_number: false,
+        url: false,
+        text: {}
+      }
     };
   },
   mounted() {
@@ -227,7 +405,7 @@ export default {
       this.imageUrl = file? URL.createObjectURL(file) : '';
     },
     shouldDisableSubmitButton() {
-      let disableSubmitButton = this.$v.template.name.$invalid || this.IsHeaderValueInvalid() || this.$v.bodyValue.$invalid
+      let disableSubmitButton = this.$v.template.name.$invalid || this.IsHeaderValueInvalid() || this.$v.bodyValue.$invalid || this.buttonValidations()
       this.$emit('disable-submit-button', disableSubmitButton)
     },
     IsHeaderValueInvalid() {
@@ -237,6 +415,95 @@ export default {
         return this.imageFile == '';
       }
     },
+    UpdateDisplaybuttons() {
+      if(this.buttonType == 'QUICK_REPLY') {
+        this.maximumButtonsCount = 3
+        this.buttonData = [{"type": "QUICK_REPLY","text": ""}]
+      } 
+      else {
+        this.maximumButtonsCount = 2
+        this.buttonData = [{"type":"PHONE_NUMBER","text": "", "phone_number": ''}]
+      }
+    },
+    addNewButton() {
+      if(this.buttonType == 'QUICK_REPLY') {
+        this.buttonData.push({"type": "QUICK_REPLY","text": ""})
+      } else if(this.buttonType == 'CALL') {
+        if(this.buttonData[0].type == 'URL') {
+          this.buttonData.push({"type": "PHONE_NUMBER","text": "", "phone_number": ''})
+        } else {
+           this.buttonData.push({"type": "URL","text": "", "url": ''})
+        }
+        this.disableButtonType = true
+      }
+    },
+    removeButton(index) {
+      this.buttonData.splice(index, 1);
+      if(this.buttonType == "CALL"){
+        this.disableButtonType = false
+      }
+    },
+    changeActionType(index, button) {
+      if(button.type == 'PHONE_NUMBER') {
+        Vue.delete(button,'url')
+        button.text = ''
+        Vue.set(button,'phone_number', '')
+      } else {
+        Vue.delete(button, 'phone_number')
+        Vue.set(button,'url','')
+        button.text = ''
+      }
+    },
+    isFieldRequired(index) {
+      const validations = this.buttonValidations[index];
+      return Object.values(validations).some((rule) => rule.required);
+    },
+    buttonValidations() {
+      if (this.buttonType == 'none')
+      {
+        return false;
+      }
+      var test =  this.buttonData.map((button, index) => {
+        
+        if(button.text == '')
+        {
+          this.error.text[`${index}`]=true
+          return true
+        } else {
+         this.error.text[`${index}`]=false 
+        }
+        if (this.buttonType === "CALL") {
+          if (button.type === "PHONE_NUMBER" ) {
+            if (!this.isValidPhoneNumber(button.phone_number)){
+              this.error.phone_number = true;
+              return true;
+            } else {
+              this.error.phone_number = false
+            }
+          } else if (button.type === "URL") {
+            if(!this.isValidPhoneURL(button.url)) {
+              this.error.url = true;
+              return true;
+            } else {
+              this.error.url = false;
+            }
+            if(this.urlType == 'dynamic' && button.example == '') {
+              return true
+            }
+          }
+        }
+        return false; // For other cases or when buttonType is 'never'
+      });
+      return test.some((value) => value === true)
+    },
+    isValidPhoneNumber(phoneNumber) {
+      const phoneNumberRegex = /^\d{5,15}$/;
+      return phoneNumberRegex.test(phoneNumber);
+    },
+    isValidPhoneURL(url) {
+      const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,})([\/\w .-]*)*\/?$/i;
+      return urlRegex.test(url);
+    }
   },
   watch: {
     template: {
@@ -250,7 +517,14 @@ export default {
     },
     headerType: function() {
       this.shouldDisableSubmitButton();
-    }
+    },
+    buttonData: {
+      handler() {
+        console.log('chnage in button')
+        this.shouldDisableSubmitButton();
+      },
+      deep: true,
+    },
   }
 };
 </script>
@@ -320,5 +594,21 @@ export default {
 }
 .template-body{
   white-space: pre-line;
+}
+.required-field:required {
+  border-color: red; /* Optional: Apply a red border to the required fields */
+}
+.flex {
+  display: flex;
+}
+.align-items-end{
+  align-items: end;
+}
+.mx-1{
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+.mt-2{
+  margin-top: 2.5rem;
 }
 </style>

@@ -197,7 +197,6 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
 
   def permit_template_params
     template_hash = JSON.parse(params.require(:template))
-
     ActionController::Parameters.new(template_hash).permit(
       :category,
       :language,
@@ -205,7 +204,14 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
       components: [
         :format,
         :type,
-        :text
+        :text,
+        buttons: [
+          :text,
+          :type,
+          :phone_number,
+          :url,
+          example: []
+        ]
       ]
     )
   end
