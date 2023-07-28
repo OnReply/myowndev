@@ -125,7 +125,7 @@
       <div>
       <div class="input-group-field" v-if="buttonType!=='never' ">
         <div v-if="buttonType === 'QUICK_REPLY'">
-          <label for="" v-for="(button, index) in buttonData" v-bind:key="index">
+          <label for="" v-for="(button, index) in buttonData" v-bind:key="index" :class="{ error: error.text[`${index}`] }">
             Button Text
             <div class="parent-div">
               <input
@@ -142,15 +142,19 @@
                 icon="dismiss"
                 @click="removeButton(index)"
                 class="mx-1 mt-2"
+                v-if="buttonData.length > 1"
               />
             </div>
+            <span v-if="error.text[`${index}`]" class="message">
+              {{ $t('INBOX_MGMT.ADD.WHATSAPP.INBOX_NAME.ERROR') }}
+            </span>
           </label>
         </div>
         <div v-else-if="buttonType === 'CALL'">
           <label for="" v-for="(button, index) in buttonData"  v-bind:key="index">
             Type of action
             <div class="parent-div input-group-field align-items-center">
-              <div class="flex align-items-end">
+              <div class="flex mt-2">
                 <select v-model="button.type" @change="changeActionType(index, button)" :disabled="disableButtonType" class="mx-1" name="actionType">
                   <option
                     value="PHONE_NUMBER"
@@ -165,34 +169,42 @@
                 </select>
               </div>
               <div v-if="button.type == 'PHONE_NUMBER'" class="parent-div">
-                <label for="" class="mx-1">
+                <label for="" class="mx-1" :class="{ error: error.text[`${index}`] }">
                   Button Text
                   <input
                   v-model.trim="button.text"
                   type="text"
                   maxlength="60"
-                  
                   />
+                  <span v-if="error.text[`${index}`]" class="message">
+                    {{ $t('INBOX_MGMT.ADD.WHATSAPP.INBOX_NAME.ERROR') }}
+                  </span>
                 </label>
-                <label for="" class="mx-1">
+                <label for="" class="mx-1" :class="{ error: error.phone_number }">
                   Phone Number
                   <input
                   v-model.trim="button.phone_number"
-                  type="text"
+                  type="number"
                   maxlength="60"
                   />
+                  <span v-if="error.phone_number" class="message">
+                    enter valid phone number
+                  </span>
                 </label>
               </div>
               <div v-else-if="button.type == 'URL'" class="parent-div">
-                <label for="" class="mx-1">
+                <label for="" class="mx-1" :class="{ error: error.text[`${index}`] }">
                   Button Text
                   <input
                   v-model.trim="button.text"
                   type="text"
                   maxlength="60"
                   />
+                  <span v-if="error.text[`${index}`]" class="message">
+                    {{ $t('INBOX_MGMT.ADD.WHATSAPP.INBOX_NAME.ERROR') }}
+                  </span>
                 </label>
-                <div class="flex align-items-end mx-1" >
+                <div class="flex mt-2 mx-1" >
                   <select v-model="urlType" class="mx-1" name="urlType">
                     <option
                       value="static"
@@ -206,7 +218,7 @@
                     </option>
                   </select>
                 </div>
-                <label for="" class="mx-1">
+                <label for="" class="mx-1" :class="{ error: error.url }">
                   URL
                   <input
                   v-model.trim="button.url"
@@ -214,6 +226,9 @@
                   maxlength="60"
                   class="mx-1"
                   />
+                  <span v-if="error.url" class="message">
+                    enter valid URL
+                  </span>
                 </label>
               </div>
               <woot-button
@@ -223,6 +238,7 @@
                 icon="dismiss"
                 @click="removeButton(index)"
                 class="mx-1 mt-2"
+                v-if="buttonData.length > 1"
               />
             </div>
             <div v-if="button.type == 'URL' && urlType == 'dynamic'">
@@ -238,7 +254,7 @@
             </div>
           </label>
         </div>
-        <button class="button  " @click="addNewButton" v-if="buttonData.length < maximumButtonsCount"> Add new Button</button>
+        <button class="button clear" @click="addNewButton" v-if="buttonData.length < maximumButtonsCount"> Add new Button</button>
       </div>
 
       </div>
@@ -330,7 +346,12 @@ export default {
       buttonData:[],
       actionType:[],
       urlType: 'static',
-      disableButtonType: false
+      disableButtonType: false,
+      error: {
+        phone_number: false,
+        url: false,
+        text: {}
+      }
     };
   },
   mounted() {
@@ -444,15 +465,25 @@ export default {
         
         if(button.text == '')
         {
+          this.error.text[`${index}`]=true
           return true
+        } else {
+         this.error.text[`${index}`]=false 
         }
         if (this.buttonType === "CALL") {
           if (button.type === "PHONE_NUMBER" ) {
-            if ( button.phone_number == '')
-            return true;
-          } else if (button.type === "URL") {
-            if(button.url == '') {
+            if (!this.isValidPhoneNumber(button.phone_number)){
+              this.error.phone_number = true;
               return true;
+            } else {
+              this.error.phone_number = false
+            }
+          } else if (button.type === "URL") {
+            if(!this.isValidPhoneURL(button.url)) {
+              this.error.url = true;
+              return true;
+            } else {
+              this.error.url = false;
             }
             if(this.urlType == 'dynamic' && button.example == '') {
               return true
@@ -463,6 +494,14 @@ export default {
       });
       return test.some((value) => value === true)
     },
+    isValidPhoneNumber(phoneNumber) {
+      const phoneNumberRegex = /^\d{5,15}$/;
+      return phoneNumberRegex.test(phoneNumber);
+    },
+    isValidPhoneURL(url) {
+      const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,})([\/\w .-]*)*\/?$/i;
+      return urlRegex.test(url);
+    }
   },
   watch: {
     template: {
