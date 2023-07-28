@@ -38,7 +38,35 @@
                 },
                 "HEADER": "Header",
                 "BODY": "Body",
-                "FOOTER": "Footer"
+                "FOOTER": "Footer",
+                "BUTTONS": {
+                    "BUTTON": "Button (Optional)",
+                    "BUTTON_TYPE": {
+                        "NONE": "None",
+                        "QUICK_REPLY": "Quick Reply",
+                        "CALL": "Call"
+                    },
+                    "BUTTON_TEXT": "Button Text",
+                    "TYPE_OF_ACTION":{
+                        "LABEL": "Type of Action",
+                        "PHONE_NUMBER": "Call Phone Number",
+                        "URL": "Visit website"
+                    },
+                    "PHONE_NUMBER":{
+                        "LABEL":"Phone Number",
+                        "ERROR": "Enter a valid phone number"
+                    },
+                    "URL":{
+                        "LABEL": "URL",
+                        "ERROR":"enter valid URL",
+                        "EXAMPLE": "Example",
+                        "TYPE":{
+                            "STATIC": "Static",
+                            "DYNAMIC": "Dynamic"
+                        }
+                    },
+                    "NEW_BUTTON": "Add New Button"
+                }
 
             }
 

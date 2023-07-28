@@ -103,22 +103,22 @@
         </label>
       </div>
       <div class="input-group-field">
-        <label for="button"> Button (Optional) </label>
+        <label for="button"> {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.BUTTON') }} </label>
         <select v-model="buttonType" @change="UpdateDisplaybuttons" class="mx-1" name="buttonType">
           <option
             value="none"
           >
-            None
+            {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.BUTTON_TYPE.NONE') }}
           </option>
           <option
             value="QUICK_REPLY"
           >
-            Quick Reply
+            {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.BUTTON_TYPE.QUICK_REPLY') }}
           </option>
           <option
             value="CALL"
           >
-            Call to Action
+            {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.BUTTON_TYPE.CALL') }}
           </option>
         </select>
       </div>
@@ -126,7 +126,7 @@
       <div class="input-group-field" v-if="buttonType!=='never' ">
         <div v-if="buttonType === 'QUICK_REPLY'">
           <label for="" v-for="(button, index) in buttonData" v-bind:key="index" :class="{ error: error.text[`${index}`] }">
-            Button Text
+            {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.BUTTON_TEXT') }}
             <div class="parent-div">
               <input
                 v-model.trim="button.text"
@@ -152,25 +152,25 @@
         </div>
         <div v-else-if="buttonType === 'CALL'">
           <label for="" v-for="(button, index) in buttonData"  v-bind:key="index">
-            Type of action
+            {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.TYPE_OF_ACTION.LABEL') }}
             <div class="parent-div input-group-field align-items-center">
               <div class="flex mt-2">
                 <select v-model="button.type" @change="changeActionType(index, button)" :disabled="disableButtonType" class="mx-1" name="actionType">
                   <option
                     value="PHONE_NUMBER"
                   >
-                    Call Phone Number
+                    {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.TYPE_OF_ACTION.PHONE_NUMBER') }}
                   </option>
                   <option
                     value="URL"
                   >
-                    Visit website
+                    {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.TYPE_OF_ACTION.URL') }}
                   </option>
                 </select>
               </div>
               <div v-if="button.type == 'PHONE_NUMBER'" class="parent-div">
                 <label for="" class="mx-1" :class="{ error: error.text[`${index}`] }">
-                  Button Text
+                  {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.BUTTON_TEXT') }}
                   <input
                   v-model.trim="button.text"
                   type="text"
@@ -181,20 +181,20 @@
                   </span>
                 </label>
                 <label for="" class="mx-1" :class="{ error: error.phone_number }">
-                  Phone Number
+                  {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.PHONE_NUMBER.LABEL') }}
                   <input
                   v-model.trim="button.phone_number"
                   type="number"
                   maxlength="60"
                   />
                   <span v-if="error.phone_number" class="message">
-                    enter valid phone number
+                  {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.PHONE_NUMBER.ERROR') }}
                   </span>
                 </label>
               </div>
               <div v-else-if="button.type == 'URL'" class="parent-div">
                 <label for="" class="mx-1" :class="{ error: error.text[`${index}`] }">
-                  Button Text
+                  {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.BUTTON_TEXT') }}
                   <input
                   v-model.trim="button.text"
                   type="text"
@@ -209,17 +209,17 @@
                     <option
                       value="static"
                     >
-                      Static
+                      {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.URL.TYPE.STATIC') }}
                     </option>
                     <option
                       value="dynamic"
                     >
-                      dynamic
+                      {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.URL.TYPE.DYNAMIC') }}
                     </option>
                   </select>
                 </div>
                 <label for="" class="mx-1" :class="{ error: error.url }">
-                  URL
+                  {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.URL.LABEL') }}
                   <input
                   v-model.trim="button.url"
                   type="text"
@@ -227,7 +227,7 @@
                   class="mx-1"
                   />
                   <span v-if="error.url" class="message">
-                    enter valid URL
+                  {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.URL.ERROR') }}
                   </span>
                 </label>
               </div>
@@ -243,7 +243,7 @@
             </div>
             <div v-if="button.type == 'URL' && urlType == 'dynamic'">
               <label for="">
-                Example
+                  {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.URL.EXAMPLE') }}
                 <input
                 v-model.trim="button.example"
                 type="text"
@@ -254,7 +254,9 @@
             </div>
           </label>
         </div>
-        <button class="button clear" @click="addNewButton" v-if="buttonData.length < maximumButtonsCount"> Add new Button</button>
+        <button class="button clear" @click="addNewButton" v-if="buttonData.length < maximumButtonsCount">
+          {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.NEW_BUTTON') }}
+        </button>
       </div>
 
       </div>
