@@ -102,6 +102,146 @@
           />
         </label>
       </div>
+      <div class="input-group-field">
+        <label for="button"> Button (Optional) </label>
+        <select v-model="buttonType" @change="UpdateDisplaybuttons" class="mx-1" name="buttonType">
+          <option
+            value="none"
+          >
+            None
+          </option>
+          <option
+            value="QUICK_REPLY"
+          >
+            Quick Reply
+          </option>
+          <option
+            value="CALL"
+          >
+            Call to Action
+          </option>
+        </select>
+      </div>
+      <div>
+      <div class="input-group-field" v-if="buttonType!=='never' ">
+        <div v-if="buttonType === 'QUICK_REPLY'">
+          <label for="" v-for="(button, index) in buttonData" v-bind:key="index">
+            Button Text
+            <div class="parent-div">
+              <input
+                v-model.trim="button.text"
+                type="text"
+                maxlength="60"
+                class="mx-1"
+                
+              />
+              <woot-button
+                color-scheme="secondary"
+                variant="link"
+                size="tiny"
+                icon="dismiss"
+                @click="removeButton(index)"
+                class="mx-1 mt-2"
+              />
+            </div>
+          </label>
+        </div>
+        <div v-else-if="buttonType === 'CALL'">
+          <label for="" v-for="(button, index) in buttonData"  v-bind:key="index">
+            Type of action
+            <div class="parent-div input-group-field align-items-center">
+              <div class="flex align-items-end">
+                <select v-model="button.type" @change="changeActionType(index, button)" :disabled="disableButtonType" class="mx-1" name="actionType">
+                  <option
+                    value="PHONE_NUMBER"
+                  >
+                    Call Phone Number
+                  </option>
+                  <option
+                    value="URL"
+                  >
+                    Visit website
+                  </option>
+                </select>
+              </div>
+              <div v-if="button.type == 'PHONE_NUMBER'" class="parent-div">
+                <label for="" class="mx-1">
+                  Button Text
+                  <input
+                  v-model.trim="button.text"
+                  type="text"
+                  maxlength="60"
+                  
+                  />
+                </label>
+                <label for="" class="mx-1">
+                  Phone Number
+                  <input
+                  v-model.trim="button.phone_number"
+                  type="text"
+                  maxlength="60"
+                  />
+                </label>
+              </div>
+              <div v-else-if="button.type == 'URL'" class="parent-div">
+                <label for="" class="mx-1">
+                  Button Text
+                  <input
+                  v-model.trim="button.text"
+                  type="text"
+                  maxlength="60"
+                  />
+                </label>
+                <div class="flex align-items-end mx-1" >
+                  <select v-model="urlType" class="mx-1" name="urlType">
+                    <option
+                      value="static"
+                    >
+                      Static
+                    </option>
+                    <option
+                      value="dynamic"
+                    >
+                      dynamic
+                    </option>
+                  </select>
+                </div>
+                <label for="" class="mx-1">
+                  URL
+                  <input
+                  v-model.trim="button.url"
+                  type="text"
+                  maxlength="60"
+                  class="mx-1"
+                  />
+                </label>
+              </div>
+              <woot-button
+                color-scheme="alert"
+                variant="clear"
+                size="tiny"
+                icon="dismiss"
+                @click="removeButton(index)"
+                class="mx-1 mt-2"
+              />
+            </div>
+            <div v-if="button.type == 'URL' && urlType == 'dynamic'">
+              <label for="">
+                Example
+                <input
+                v-model.trim="button.example"
+                type="text"
+                maxlength="60"
+                :class="`example-${index}`"
+                />
+              </label>
+            </div>
+          </label>
+        </div>
+        <button class="button clear" @click="addNewButton" v-if="buttonData.length < maximumButtonsCount"> Add new Button</button>
+      </div>
+
+      </div>
     </div>
     <div class="medium-3 whatsapp-chat-background">
       <div class="first-parent">
@@ -129,10 +269,12 @@
 <script>
 import facebookLanguageList from '../../../../../helper/facebookLanguagesList.json';
 import { required } from 'vuelidate/lib/validators';
+import Vue from 'vue';
 import InboxesAPI from '../../../../../api/inboxes';
 
 export default {
-  components: {
+  computed: {
+   
   },
   props: {
     inboxId: {
@@ -162,7 +304,14 @@ export default {
       }
     },
     headerValue: { required },
-    bodyValue: { required }
+    bodyValue: { required },
+    buttonData: {
+      ...function () {
+        return this.buttonValidations.reduce((merged, curr) => {
+          return { ...merged, ...curr };
+        }, {});
+      },
+    }
   },
   data() {
     return {
@@ -175,7 +324,13 @@ export default {
       headerType: 'text',
       displayHeaderInputField: true,
       imageUrl: '',
-      imageFile: ''
+      imageFile: '',
+      buttonType: 'none',
+      maximumButtonsCount: 2,
+      buttonData:[],
+      actionType:[],
+      urlType: 'static',
+      disableButtonType: false
     };
   },
   mounted() {
@@ -227,7 +382,7 @@ export default {
       this.imageUrl = file? URL.createObjectURL(file) : '';
     },
     shouldDisableSubmitButton() {
-      let disableSubmitButton = this.$v.template.name.$invalid || this.IsHeaderValueInvalid() || this.$v.bodyValue.$invalid
+      let disableSubmitButton = this.$v.template.name.$invalid || this.IsHeaderValueInvalid() || this.$v.bodyValue.$invalid || this.buttonValidations()
       this.$emit('disable-submit-button', disableSubmitButton)
     },
     IsHeaderValueInvalid() {
@@ -236,6 +391,77 @@ export default {
       } else {
         return this.imageFile == '';
       }
+    },
+    UpdateDisplaybuttons() {
+      if(this.buttonType == 'QUICK_REPLY') {
+        this.maximumButtonsCount = 3
+        this.buttonData = [{"type": "QUICK_REPLY","text": ""}]
+      } 
+      else {
+        this.maximumButtonsCount = 2
+        this.buttonData = [{"type":"PHONE_NUMBER","text": "", "phone_number": ''}]
+      }
+    },
+    addNewButton() {
+      if(this.buttonType == 'QUICK_REPLY') {
+        this.buttonData.push({"type": "QUICK_REPLY","text": ""})
+      } else if(this.buttonType == 'CALL') {
+        if(this.buttonData[0].type == 'URL') {
+          this.buttonData.push({"type": "PHONE_NUMBER","text": "", "phone_number": ''})
+        } else {
+           this.buttonData.push({"type": "URL","text": "", "url": ''})
+        }
+        this.disableButtonType = true
+      }
+    },
+    removeButton(index) {
+      this.buttonData.splice(index, 1);
+      if(this.buttonType == "CALL"){
+        this.disableButtonType = false
+      }
+    },
+    changeActionType(index, button) {
+      if(button.type == 'PHONE_NUMBER') {
+        Vue.delete(button,'url')
+        button.text = ''
+        Vue.set(button,'phone_number', '')
+      } else {
+        Vue.delete(button, 'phone_number')
+        Vue.set(button,'url','')
+        button.text = ''
+      }
+    },
+    isFieldRequired(index) {
+      const validations = this.buttonValidations[index];
+      return Object.values(validations).some((rule) => rule.required);
+    },
+    buttonValidations() {
+      if (this.buttonType == 'none')
+      {
+        return false;
+      }
+      var test =  this.buttonData.map((button, index) => {
+        debugger
+        if(button.text == '')
+        {
+          return true
+        }
+        if (this.buttonType === "CALL") {
+          if (button.type === "PHONE_NUMBER" ) {
+            if ( button.phone_number == '')
+            return true;
+          } else if (button.type === "URL") {
+            if(button.url == '') {
+              return true;
+            }
+            if(this.urlType == 'dynamic' && button.example == '') {
+              return true
+            }
+          }
+        }
+        return false; // For other cases or when buttonType is 'never'
+      });
+      return test.some((value) => value === true)
     },
   },
   watch: {
@@ -250,7 +476,14 @@ export default {
     },
     headerType: function() {
       this.shouldDisableSubmitButton();
-    }
+    },
+    buttonData: {
+      handler() {
+        console.log('chnage in button')
+        this.shouldDisableSubmitButton();
+      },
+      deep: true,
+    },
   }
 };
 </script>
@@ -320,5 +553,21 @@ export default {
 }
 .template-body{
   white-space: pre-line;
+}
+.required-field:required {
+  border-color: red; /* Optional: Apply a red border to the required fields */
+}
+.flex {
+  display: flex;
+}
+.align-items-end{
+  align-items: end;
+}
+.mx-1{
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+.mt-2{
+  margin-top: 2.5rem;
 }
 </style>

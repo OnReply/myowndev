@@ -113,7 +113,7 @@ export default {
       this.showWhatsAppTemplatesBuilderModal = false;
     },
     async submitForm() {
-      const response = await InboxesAPI.createTemplate(this.inbox.id, this.template, this.$refs.templateBuilder.headerType, this.$refs.templateBuilder.imageFile)
+      const response = await InboxesAPI.createTemplate(this.inbox.id, this.template, this.$refs.templateBuilder.headerType, this.$refs.templateBuilder.imageFile, this.$refs.templateBuilder.buttonType, this.$refs.templateBuilder.buttonData)
       if(response.data.message) {
         this.showAlert(this.$t('WHATSAPP_TEMPLATES.BUILDER.SUCCESSFUL_SUBMISSION'))
         this.template = this.defaultTempate;

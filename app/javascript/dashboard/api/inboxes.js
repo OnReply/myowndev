@@ -29,13 +29,16 @@ class Inboxes extends CacheEnabledApiClient {
     return axios.get(`${this.url}/${inboxId}/agent_bot`);
   }
 
-  createTemplate(inboxId, template, headerType, image) {
+  createTemplate(inboxId, template, headerType, image, buttonType, buttonData) {
     var params_template = template
     params_template.components = template.components.filter(component => component.text)
     const formData = new FormData();
     if (headerType == 'image') {
       params_template.components = template.components.filter(component => component.type != 'HEADER')
       formData.append("image", image);
+    }
+    if (buttonType !== 'none') {
+      params_template.components.push({"type": "BUTTONS", "buttons": buttonData})
     }
     formData.append("template", JSON.stringify(params_template));
     formData.append("header_type", headerType);
