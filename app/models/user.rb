@@ -170,3 +170,5 @@ class User < ApplicationRecord
     macros.personal.destroy_all
   end
 end
+
+User.include_mod_with('Audit::User')
