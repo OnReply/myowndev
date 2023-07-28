@@ -238,7 +238,7 @@
             </div>
           </label>
         </div>
-        <button class="button clear" @click="addNewButton" v-if="buttonData.length < maximumButtonsCount"> Add new Button</button>
+        <button class="button  " @click="addNewButton" v-if="buttonData.length < maximumButtonsCount"> Add new Button</button>
       </div>
 
       </div>
@@ -441,7 +441,7 @@ export default {
         return false;
       }
       var test =  this.buttonData.map((button, index) => {
-        debugger
+        
         if(button.text == '')
         {
           return true
