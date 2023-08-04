@@ -4,6 +4,8 @@ class Account::ContactsExportJob < ApplicationJob
   def perform(account_id, column_names)
     account = Account.find(account_id)
     headers = valid_headers(column_names)
+    # Add labels to csv
+    headers = headers.append('labels_list', 'conversations_labels_list')
     generate_csv(account, headers)
     file_url = account_contact_export_url(account)
 
