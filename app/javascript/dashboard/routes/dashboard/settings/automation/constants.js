@@ -108,6 +108,11 @@ export const AUTOMATIONS = {
         name: 'Send Attachment',
         attributeI18nKey: 'SEND_ATTACHMENT',
       },
+      {
+        key: 'send_whatsapp_template',
+        name: 'Send Whatsapp Template',
+        attributeI18nKey: 'SEND_WHATSAPP_TEMPLATE',
+      },
     ],
   },
   conversation_created: {
@@ -600,5 +605,10 @@ export const AUTOMATION_ACTION_TYPES = [
     key: 'change_priority',
     label: 'Change Priority',
     inputType: 'search_select',
+  },
+  {
+    key: 'send_whatsapp_template',
+    label: 'Select Whatsapp Template',
+    inputType: 'template_picker',
   },
 ];

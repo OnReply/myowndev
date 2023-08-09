@@ -73,6 +73,11 @@
             v-model="action_params"
             :initial-file-name="initialFileName"
           />
+          <templates-picker
+            v-else-if="inputType === 'template_picker'"
+            classes="template__list-container"
+            @onSelect="selectTemplate"
+          />
         </div>
       </div>
       <woot-button
@@ -109,11 +114,13 @@
 import AutomationActionTeamMessageInput from './AutomationActionTeamMessageInput.vue';
 import AutomationActionFileInput from './AutomationFileInput.vue';
 import WootMessageEditor from 'dashboard/components/widgets/WootWriter/Editor';
+import TemplatesPicker from './conversation/WhatsappTemplates/TemplatesPicker.vue';
 export default {
   components: {
     AutomationActionTeamMessageInput,
     AutomationActionFileInput,
     WootMessageEditor,
+    TemplatesPicker
   },
   props: {
     value: {
@@ -195,6 +202,9 @@ export default {
     resetAction() {
       this.$emit('resetAction');
     },
+    selectTemplate(template) {
+      console.log(template)
+    }
   },
 };
 </script>
