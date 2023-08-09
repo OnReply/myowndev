@@ -85,9 +85,15 @@ export default {
   computed: {
     whatsAppTemplateMessages() {
       // TODO: Remove the last filter when we support all formats
-      var filteredMessages = this.$store.getters[
-        'inboxes/getWhatsAppTemplates'
-      ](this.inboxId);
+      if(this.inboxId !== undefined) {
+        var filteredMessages = this.$store.getters[
+          'inboxes/getWhatsAppTemplates'
+        ](this.inboxId);
+      } else {
+        var filteredMessages = this.$store.getters[
+          'automations/getTemplates'
+        ]
+      }
       if (!this.filterTemplates) {
         return filteredMessages;
       }
