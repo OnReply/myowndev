@@ -73,11 +73,25 @@
             v-model="action_params"
             :initial-file-name="initialFileName"
           />
-          <templates-picker
-            v-else-if="inputType === 'template_picker'"
-            classes="template__list-container"
-            @onSelect="selectTemplate"
-          />
+          <div v-else-if="inputType === 'template_picker'">
+            <woot-button
+              variant="clear"
+              class="w-full"
+              @click="showTemplateModal = true"
+            >
+              Select Template
+            </woot-button>
+
+            <woot-modal
+              :show="showTemplateModal"
+              :on-close="closeTemlateModal"
+            >
+              <templates-picker
+                classes="template__list-container"
+                @onSelect="selectTemplate"
+              />
+            </woot-modal>
+          </div>
         </div>
       </div>
       <woot-button
@@ -121,6 +135,11 @@ export default {
     AutomationActionFileInput,
     WootMessageEditor,
     TemplatesPicker
+  },
+  data() {
+    return {
+      showTemplateModal: false,
+    }
   },
   props: {
     value: {
@@ -203,7 +222,11 @@ export default {
       this.$emit('resetAction');
     },
     selectTemplate(template) {
-      console.log(template)
+      this.showTemplateModal = false;
+      this.action_params = JSON.stringify(template)
+    },
+    closeTemlateModal() {
+      this.showTemplateModal = false;
     }
   },
 };
