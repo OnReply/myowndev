@@ -229,6 +229,13 @@ export default {
       this.showTemplateModal = false;
     }
   },
+  watch: {
+    action_name(newValue) {
+      if(newValue == 'send_whatsapp_template') {
+        this.$emit('addWhatsappDefaultCondition');
+      }
+    }
+  },
 };
 </script>
 
