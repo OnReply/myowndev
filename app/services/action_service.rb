@@ -66,6 +66,32 @@ class ActionService
     end
   end
 
+  def send_whatsapp_template(_params)
+    data = JSON.parse(_params.first)
+    params = ActionController::Parameters.new(
+      "content" => data["components"][1]["text"],
+      "cc_emails" => "",
+      "bcc_emails" => "",
+      "template_params" => {
+        "name" => data["name"],
+        "category" => data["category"],
+        "language" => data["language"],
+        "processed_params" => {}
+      },
+      "format" => "json",
+      "controller" => "api/v1/accounts/conversations/messages",
+      "action" => "create",
+      "account_id" => @conversation.account_id,
+      "conversation_id" => @conversation.id,
+      "message" => {
+        "content" => data["components"][1]["text"]
+      }
+    )
+    user = Conversation.last.account.administrators.last
+    mb = Messages::MessageBuilder.new(user, @conversation, params)
+    @message = mb.perform
+  end
+
   private
 
   def agent_belongs_to_inbox?(agent_ids)
