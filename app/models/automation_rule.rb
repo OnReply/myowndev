@@ -27,6 +27,7 @@ class AutomationRule < ApplicationRecord
   validate :json_actions_format
   validate :query_operator_presence
   validates :account_id, presence: true
+  validate :send_whatsapp_template_conditions
 
   scope :active, -> { where(active: true) }
 
@@ -74,6 +75,20 @@ class AutomationRule < ApplicationRecord
 
     operators = conditions.select { |obj, _| obj['query_operator'].nil? }
     errors.add(:conditions, 'Automation conditions should have query operator.') if operators.length > 1
+  end
+
+  def send_whatsapp_template_conditions
+    if actions.any? { |action| action['action_name'] == 'send_whatsapp_template' }
+      (errors.add(:wrong_conditions) && return) unless conditions.any? { |condition| condition['attribute_key'] == 'inbox_id' }
+      if event_name == 'message_created'
+        (errors.add(:select_message_type) && return) unless conditions.any? { |condition| condition['attribute_key'] == 'message_type' }
+        if conditions.any? { |condition| condition['values'].include?('incoming') } &&
+          conditions.any? { |condition| condition['values'].include?('outgoing') }
+          errors.add(:infinite_loop)
+          return
+       end
+      end
+    end
   end
 end
 
