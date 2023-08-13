@@ -27,13 +27,14 @@ class AutomationRule < ApplicationRecord
   validate :json_actions_format
   validate :query_operator_presence
   validates :account_id, presence: true
+  validate :send_whatsapp_template_conditions
 
   scope :active, -> { where(active: true) }
 
   CONDITIONS_ATTRS = %w[content email country_code status message_type browser_language assignee_id team_id referer city company inbox_id
                         mail_subject phone_number priority conversation_language].freeze
   ACTIONS_ATTRS = %w[send_message add_label send_email_to_team assign_team assign_agent send_webhook_event mute_conversation send_attachment
-                     change_status resolve_conversation snooze_conversation change_priority send_email_transcript].freeze
+                     change_status resolve_conversation snooze_conversation change_priority send_email_transcript send_whatsapp_template].freeze
 
   def file_base_data
     files.map do |file|
@@ -74,6 +75,20 @@ class AutomationRule < ApplicationRecord
 
     operators = conditions.select { |obj, _| obj['query_operator'].nil? }
     errors.add(:conditions, 'Automation conditions should have query operator.') if operators.length > 1
+  end
+
+  def send_whatsapp_template_conditions
+    if actions.any? { |action| action['action_name'] == 'send_whatsapp_template' }
+      (errors.add(:wrong_conditions) && return) unless conditions.any? { |condition| condition['attribute_key'] == 'inbox_id' }
+      if event_name == 'message_created'
+        (errors.add(:select_message_type) && return) unless conditions.any? { |condition| condition['attribute_key'] == 'message_type' }
+        if conditions.any? { |condition| condition['values'].include?('incoming') } &&
+          conditions.any? { |condition| condition['values'].include?('outgoing') }
+          errors.add(:infinite_loop)
+          return
+       end
+      end
+    end
   end
 end
 

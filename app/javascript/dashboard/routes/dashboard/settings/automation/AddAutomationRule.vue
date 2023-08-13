@@ -72,6 +72,8 @@
                 getCustomAttributeType(automation.conditions[i].attribute_key)
               "
               :v="$v.automation.conditions.$each[i]"
+              :has-whatsapp-action="automation.actions.some(action => action.action_name === 'send_whatsapp_template') "
+              :is-event-message-created="automation.event_name == 'message_created'"
               @resetFilter="resetFilter(i, automation.conditions[i])"
               @removeFilter="removeFilter(i)"
             />
@@ -109,6 +111,7 @@
               :v="$v.automation.actions.$each[i]"
               @resetAction="resetAction(i)"
               @removeAction="removeAction(i)"
+              @addWhatsappDefaultCondition="addWhatsappDefaultCondition()"
             />
             <div class="filter-actions">
               <woot-button
@@ -175,19 +178,26 @@ export default {
       automation: {
         name: null,
         description: null,
-        event_name: 'conversation_created',
+        event_name: 'message_created',
         conditions: [
           {
-            attribute_key: 'status',
+            attribute_key: 'message_type',
             filter_operator: 'equal_to',
-            values: '',
+            values: {"id":"incoming","name":"Incoming Message"},
             query_operator: 'and',
             custom_attribute_type: '',
           },
+          {
+            attribute_key: "inbox_id",
+            custom_attribute_type: "",
+            filter_operator: "equal_to",
+            query_operator: "and",
+            values: ""
+          }
         ],
         actions: [
           {
-            action_name: 'assign_agent',
+            action_name: 'send_whatsapp_template',
             action_params: [],
           },
         ],

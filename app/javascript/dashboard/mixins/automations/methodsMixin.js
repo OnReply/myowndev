@@ -288,5 +288,29 @@ export default {
         ...manifestedCustomAttributes
       );
     },
+    addWhatsappDefaultCondition() {
+      const inbox_object = {
+        attribute_key: "inbox_id",
+        custom_attribute_type: "",
+        filter_operator: "equal_to",
+        query_operator: "and",
+        values: ""
+      }
+      const message_object = {
+        attribute_key: "message_type",
+        custom_attribute_type: "",
+        filter_operator: "equal_to",
+        query_operator: "and",
+        values: ""
+      }
+      if (!this.automation.conditions.some(condition => condition.attribute_key === 'inbox_id')) {
+        this.automation.conditions.push(inbox_object);
+      }
+      if (this.automation.event_name == 'message_created') {
+        if (!this.automation.conditions.some(condition => condition.attribute_key === 'message_type')) {
+          this.automation.conditions.push(message_object);
+        }
+      }
+    }
   },
 };

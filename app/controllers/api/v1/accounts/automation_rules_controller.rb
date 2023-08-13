@@ -4,6 +4,7 @@ class Api::V1::Accounts::AutomationRulesController < Api::V1::Accounts::BaseCont
 
   def index
     @automation_rules = Current.account.automation_rules
+    @templates = Current.account.whatsapp_channels.pluck(:message_templates).flatten.compact
   end
 
   def show; end

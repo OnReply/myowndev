@@ -26,6 +26,7 @@
           v-else
           v-model="attributeKey"
           class="filter__question"
+          :disabled="hasWhatsappAction &&(attributeKey == 'inbox_id' || (isEventMessageCreated && attributeKey == 'message_type'))"
           @change="resetFilter()"
         >
           <option
@@ -105,6 +106,7 @@
           icon="dismiss"
           variant="clear"
           color-scheme="secondary"
+          :disabled="hasWhatsappAction &&(attributeKey == 'inbox_id' || (isEventMessageCreated && attributeKey == 'message_type'))"
           @click="removeFilter"
         />
       </div>
@@ -161,6 +163,14 @@ export default {
     v: {
       type: Object,
       default: () => null,
+    },
+    hasWhatsappAction: {
+      type: Boolean,
+      default: false
+    },
+    isEventMessageCreated: {
+      type: Boolean,
+      default: false
     },
     showUserInput: {
       type: Boolean,
@@ -249,6 +259,8 @@ export default {
   },
   methods: {
     removeFilter() {
+      if(this.hasWhatsappAction && this.attributeKey == 'inbox_id') return;
+      if(this.hasWhatsappAction && this.isEventMessageCreated && this.attributeKey == 'message_type') return;
       this.$emit('removeFilter');
     },
     resetFilter() {
