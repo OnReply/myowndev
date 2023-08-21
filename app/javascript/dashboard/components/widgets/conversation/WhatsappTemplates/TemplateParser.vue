@@ -37,6 +37,9 @@
         accept="image/png, image/jpeg"
         @change="handleImageUpload"
       />
+      <p v-if="$v.$dirty && $v.$invalid" class="error">
+        {{ $t('WHATSAPP_TEMPLATES.PARSER.ATTACH_IMAGE_ERROR') }}
+      </p>
     </div>
     <footer>
       <woot-button variant="smooth" @click="$emit('resetTemplate')">
@@ -67,6 +70,11 @@ export default {
       requiredIfKeysPresent: requiredIf('variables'),
       allKeysRequired,
     },
+    imageFile: {
+     required: requiredIf(function() {
+        return this.image
+      })
+    }
   },
   data() {
     return {
