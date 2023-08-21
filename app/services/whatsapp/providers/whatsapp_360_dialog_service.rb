@@ -115,10 +115,7 @@ class Whatsapp::Providers::Whatsapp360DialogService < Whatsapp::Providers::BaseS
         policy: 'deterministic',
         code: template_info[:lang_code]
       },
-      components: [{
-        type: 'body',
-        parameters: template_info[:parameters]
-      }]
+      components: get_template_components(template_info)
     }
   end
 
@@ -136,5 +133,29 @@ class Whatsapp::Providers::Whatsapp360DialogService < Whatsapp::Providers::BaseS
     )
 
     process_response(response)
+  end
+  def get_template_components(template_info)
+    template = []
+
+    if template_info[:image_url].present?
+      template << {
+        type: "header",
+        parameters: [
+          {
+            "type": "image",
+            "image": {
+              "link": template_info[:image_url]
+            }
+          }
+        ]
+      }
+    end
+
+    template << {
+      type: 'body',
+      parameters: template_info[:parameters]
+    }
+
+    template
   end
 end
