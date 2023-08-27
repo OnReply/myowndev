@@ -153,7 +153,7 @@ export default {
       this.$v.$touch();
       if (this.$v.$invalid) return;
       const automation = generateAutomationPayload(this.automation);
-      this.$emit('saveAutomation', automation, this.mode);
+      this.$emit('saveAutomation', automation, this.mode, this.image);
     },
     resetFilter(index, currentCondition) {
       this.automation.conditions[index].filter_operator = this.automationTypes[
@@ -311,6 +311,9 @@ export default {
           this.automation.conditions.push(message_object);
         }
       }
+    },
+    changeImage(image) {
+      this.image = image
     }
   },
 };

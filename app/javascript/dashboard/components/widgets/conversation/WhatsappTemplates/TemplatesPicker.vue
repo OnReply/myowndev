@@ -97,7 +97,6 @@ export default {
       if (!this.filterTemplates) {
         return filteredMessages;
       }
-
       return filteredMessages
         .filter(template => template.status.toLowerCase() === 'approved')
         .filter(template => {

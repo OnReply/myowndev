@@ -4,7 +4,7 @@ class Api::V1::Accounts::AutomationRulesController < Api::V1::Accounts::BaseCont
 
   def index
     @automation_rules = Current.account.automation_rules
-    @templates = Current.account.whatsapp_channels.pluck(:message_templates).flatten.compact
+    @templates = Current.account.whatsapp_channels.pluck(:message_templates).flatten.compact.reject(&:empty?)
   end
 
   def show; end
@@ -56,6 +56,7 @@ class Api::V1::Accounts::AutomationRulesController < Api::V1::Accounts::BaseCont
 
   def process_attachments
     actions = @automation_rule.actions.filter_map { |k, _v| k if k['action_name'] == 'send_attachment' }
+    attach_image
     return if actions.blank?
 
     actions.each do |action|
@@ -84,5 +85,9 @@ class Api::V1::Accounts::AutomationRulesController < Api::V1::Accounts::BaseCont
 
   def fetch_automation_rule
     @automation_rule = Current.account.automation_rules.find_by(id: params[:id])
+  end
+  def attach_image
+    return unless params[:image].present?
+    @automation_rule.image.attach(params[:image])
   end
 end

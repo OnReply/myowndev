@@ -109,6 +109,7 @@
                 showActionInput(automation.actions[i].action_name)
               "
               :v="$v.automation.actions.$each[i]"
+              @changeImage="changeImage"
               @resetAction="resetAction(i)"
               @removeAction="removeAction(i)"
               @addWhatsappDefaultCondition="addWhatsappDefaultCondition()"
@@ -205,6 +206,7 @@ export default {
       showDeleteConfirmationModal: false,
       allCustomAttributes: [],
       mode: 'create',
+      image: null,
     };
   },
   computed: {

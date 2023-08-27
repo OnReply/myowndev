@@ -87,8 +87,15 @@
               :on-close="closeTemlateModal"
             >
               <templates-picker
+                v-if="!selectedTemplate"
                 classes="template__list-container"
-                @onSelect="selectTemplate"
+                @onSelect="showParser"
+              />
+              <template-parser
+                v-else
+                :template="selectedTemplate"
+                @resetTemplate="onResetTemplate"
+                @sendMessage="onSendMessage"
               />
             </woot-modal>
           </div>
@@ -129,16 +136,20 @@ import AutomationActionTeamMessageInput from './AutomationActionTeamMessageInput
 import AutomationActionFileInput from './AutomationFileInput.vue';
 import WootMessageEditor from 'dashboard/components/widgets/WootWriter/Editor';
 import TemplatesPicker from './conversation/WhatsappTemplates/TemplatesPicker.vue';
+import TemplateParser from './conversation/WhatsappTemplates/TemplateParser.vue';
 export default {
   components: {
     AutomationActionTeamMessageInput,
     AutomationActionFileInput,
     WootMessageEditor,
-    TemplatesPicker
+    TemplatesPicker,
+    TemplateParser,
   },
   data() {
     return {
       showTemplateModal: false,
+      selectedTemplate: false,
+      imageFile: null,
     }
   },
   props: {
@@ -221,9 +232,18 @@ export default {
     resetAction() {
       this.$emit('resetAction');
     },
-    selectTemplate(template) {
+    showParser(template) {
+      this.selectedTemplate = template;
+    },
+    onSendMessage(template) {
       this.showTemplateModal = false;
-      this.action_params = JSON.stringify(template)
+      const {image, ...params} = template;
+      this.action_params = JSON.stringify(params);
+      this.$emit('changeImage', image)
+      // this.action_params = JSON.stringify(template)
+    },
+    onResetTemplate(){
+      this.selectedTemplate = false;
     },
     closeTemlateModal() {
       this.showTemplateModal = false;
@@ -235,6 +255,7 @@ export default {
         this.$emit('addWhatsappDefaultCondition');
       }
     }
+
   },
 };
 </script>
