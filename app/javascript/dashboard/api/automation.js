@@ -16,6 +16,16 @@ class AutomationsAPI extends ApiClient {
       },
     });
   }
+
+  update(automationId, data) {
+    const formData = serialize(data)
+    // Recursively traverse the data object and append values to formData
+    return axios.patch(`${this.url}/${automationId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
   clone(automationId) {
     return axios.post(`${this.url}/${automationId}/clone`);
   }
