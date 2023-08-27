@@ -67,25 +67,34 @@ class ActionService
   end
 
   def send_whatsapp_template(_params)
+    uploaded_file = nil
+    if @rule.image.attached?
+      image = Tempfile.new(["copy_", ".#{@rule.image.filename.extension}"])
+      image.binmode
+      image.write(@rule.image.download)
+      image.close
+      uploaded_file = ActionDispatch::Http::UploadedFile.new(
+        tempfile: image,
+        filename: 'copy.png',   # Provide a desired filename
+        type: @rule.image.blob.content_type       # Provide the actual content type
+      )
+    end
     data = JSON.parse(_params.first)
     params = ActionController::Parameters.new(
-      "content" => data["components"][1]["text"],
-      "cc_emails" => "",
-      "bcc_emails" => "",
+      "content" => data["message"],
+      "image" => uploaded_file,
       "template_params" => {
-        "name" => data["name"],
-        "category" => data["category"],
-        "language" => data["language"],
-        "processed_params" => {}
+        "name" => data["templateParams"]["name"],
+        "category" => data["templateParams"]["category"],
+        "language" => data["templateParams"]["language"],
+        "processed_params" => data["templateParams"]["processed_params"],
+        "namespace" => "undefined"
       },
       "format" => "json",
       "controller" => "api/v1/accounts/conversations/messages",
       "action" => "create",
       "account_id" => @conversation.account_id,
       "conversation_id" => @conversation.id,
-      "message" => {
-        "content" => data["components"][1]["text"]
-      }
     )
     user = Conversation.last.account.administrators.last
     mb = Messages::MessageBuilder.new(user, @conversation, params)

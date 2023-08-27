@@ -22,6 +22,7 @@ class AutomationRule < ApplicationRecord
 
   belongs_to :account
   has_many_attached :files
+  has_one_attached :image
 
   validate :json_conditions_format
   validate :json_actions_format
@@ -78,13 +79,14 @@ class AutomationRule < ApplicationRecord
   end
 
   def send_whatsapp_template_conditions
+    (errors.add(:wrong_conditions, 'bla bla bla')&& return) if actions.count { |action| action['action_name'] == 'send_whatsapp_template' } > 1
     if actions.any? { |action| action['action_name'] == 'send_whatsapp_template' }
-      (errors.add(:wrong_conditions) && return) unless conditions.any? { |condition| condition['attribute_key'] == 'inbox_id' }
+      (errors.add(:wrong_conditions, 'Select Inbox ') && return) unless conditions.any? { |condition| condition['attribute_key'] == 'inbox_id' }
       if event_name == 'message_created'
-        (errors.add(:select_message_type) && return) unless conditions.any? { |condition| condition['attribute_key'] == 'message_type' }
+        (errors.add(:select_message_type, 'Select Message type') && return) unless conditions.any? { |condition| condition['attribute_key'] == 'message_type' }
         if conditions.any? { |condition| condition['values'].include?('incoming') } &&
           conditions.any? { |condition| condition['values'].include?('outgoing') }
-          errors.add(:infinite_loop)
+          errors.add(:infinite_loop, 'These condition will create infinite loop')
           return
        end
       end

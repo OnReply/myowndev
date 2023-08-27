@@ -69,6 +69,8 @@
               "
               :show-query-operator="i !== automation.conditions.length - 1"
               :v="$v.automation.conditions.$each[i]"
+              :has-whatsapp-action="automation.actions.some(action => action.action_name === 'send_whatsapp_template')"
+              :is-event-message-created="automation.event_name == 'message_created'"
               @resetFilter="resetFilter(i, automation.conditions[i])"
               @removeFilter="removeFilter(i)"
             />
@@ -101,8 +103,10 @@
               :show-action-input="showActionInput(action.action_name)"
               :v="$v.automation.actions.$each[i]"
               :initial-file-name="getFileName(action, automation.files)"
+              @changeImage="changeImage"
               @resetAction="resetAction(i)"
               @removeAction="removeAction(i)"
+              @addWhatsappDefaultCondition="addWhatsappDefaultCondition()"
             />
             <div class="filter-actions">
               <woot-button
@@ -178,6 +182,7 @@ export default {
       showDeleteConfirmationModal: false,
       allCustomAttributes: [],
       mode: 'edit',
+      image: null,
     };
   },
   computed: {

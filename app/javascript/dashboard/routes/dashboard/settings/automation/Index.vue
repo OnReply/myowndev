@@ -223,8 +223,9 @@ export default {
         this.showAlert(this.$t('AUTOMATION.CLONE.API.ERROR_MESSAGE'));
       }
     },
-    async submitAutomation(payload, mode) {
+    async submitAutomation(payload, mode, image) {
       try {
+        payload["image"] = image
         const action =
           mode === 'edit' ? 'automations/update' : 'automations/create';
         const successMessage =
