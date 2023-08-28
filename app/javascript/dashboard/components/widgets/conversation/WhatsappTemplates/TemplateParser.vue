@@ -46,7 +46,7 @@
         {{ $t('WHATSAPP_TEMPLATES.PARSER.GO_BACK_LABEL') }}
       </woot-button>
       <woot-button @click="sendMessage">
-        {{ $t('WHATSAPP_TEMPLATES.PARSER.SEND_MESSAGE_LABEL') }}
+        {{ buttonText == 'automation'?  $t('WHATSAPP_TEMPLATES.PARSER.SELECT_TEMPLATE') : $t('WHATSAPP_TEMPLATES.PARSER.SEND_MESSAGE_LABEL') }}
       </woot-button>
     </footer>
   </div>
@@ -64,6 +64,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    buttonText: {
+      type: String,
+      default: 'conversation'
+    }
   },
   validations: {
     processedParams: {

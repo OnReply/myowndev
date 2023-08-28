@@ -94,6 +94,7 @@
               <template-parser
                 v-else
                 :template="selectedTemplate"
+                :button-text="'automation'"
                 @resetTemplate="onResetTemplate"
                 @sendMessage="onSendMessage"
               />

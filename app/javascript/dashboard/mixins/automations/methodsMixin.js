@@ -314,6 +314,14 @@ export default {
     },
     changeImage(image) {
       this.image = image
-    }
+    },
+    shouldDisable(index, key){
+      if(key !== 'message_type' && key !== 'inbox_id') return false;
+      const indexesWithTargetValue = this.automation.conditions
+      .map((object, index) => (object.attribute_key === key ? index : -1))
+      .filter(index => index !== -1);
+      if (indexesWithTargetValue.length == 0) return false
+      return index == indexesWithTargetValue[0]
+    },
   },
 };

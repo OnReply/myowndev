@@ -95,9 +95,9 @@ class ActionService
       "action" => "create",
       "account_id" => @conversation.account_id,
       "conversation_id" => @conversation.id,
+      "sender_type" => "AgentBot"
     )
-    user = Conversation.last.account.administrators.last
-    mb = Messages::MessageBuilder.new(user, @conversation, params)
+    mb = Messages::MessageBuilder.new(nil, @conversation, params)
     @message = mb.perform
   end
 

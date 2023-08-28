@@ -20,7 +20,8 @@
             "GO_BACK_LABEL": "Go Back",
             "SEND_MESSAGE_LABEL": "Send Message",
             "FORM_ERROR_MESSAGE": "Please fill all variables before sending",
-            "ATTACH_IMAGE_ERROR": "Please Attach image before sending"
+            "ATTACH_IMAGE_ERROR": "Please Attach image before sending",
+            "SELECT_TEMPLATE": "Select Template"
         },
         "BUILDER": {
             "CREATE": "Create new template",

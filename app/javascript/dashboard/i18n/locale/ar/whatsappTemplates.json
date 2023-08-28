@@ -20,7 +20,8 @@
             "GO_BACK_LABEL": "العودة للخلف",
             "SEND_MESSAGE_LABEL": "إرسال الرسالة",
             "FORM_ERROR_MESSAGE": "يرجى ملء جميع المتغيرات قبل الإرسال",
-            "ATTACH_IMAGE_ERROR": "الرجاء إرفاق الصورة قبل الإرسال"
+            "ATTACH_IMAGE_ERROR": "الرجاء إرفاق الصورة قبل الإرسال",
+            "SELECT_TEMPLATE": "اختر قالب"
         },
         "BUILDER": {
             "CREATE": "إنشاء قالب جديد",
