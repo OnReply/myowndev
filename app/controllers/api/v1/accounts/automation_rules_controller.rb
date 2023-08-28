@@ -87,7 +87,10 @@ class Api::V1::Accounts::AutomationRulesController < Api::V1::Accounts::BaseCont
     @automation_rule = Current.account.automation_rules.find_by(id: params[:id])
   end
   def attach_image
-    return unless params[:image].present?
-    @automation_rule.image.attach(params[:image])
+    if params[:image].present?
+      @automation_rule.image.attach(params[:image])
+    elsif @automation_rule.image.attached?
+      @automation_rule.image.purge
+    end
   end
 end

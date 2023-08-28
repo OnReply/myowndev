@@ -69,6 +69,7 @@
               "
               :show-query-operator="i !== automation.conditions.length - 1"
               :v="$v.automation.conditions.$each[i]"
+              :should-disable="shouldDisable(i,automation.conditions[i].attribute_key)"
               :has-whatsapp-action="automation.actions.some(action => action.action_name === 'send_whatsapp_template')"
               :is-event-message-created="automation.event_name == 'message_created'"
               @resetFilter="resetFilter(i, automation.conditions[i])"
