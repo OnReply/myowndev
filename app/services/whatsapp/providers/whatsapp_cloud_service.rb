@@ -167,7 +167,7 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
     HTTParty.post(
       url,
       headers: {'Content-Type' => 'application/json'},
-      body: { inbox_id: whatsapp_channel.inbox.id, api_key: whatsapp_channel.provider_config["api_key"]}.to_json
+      body: { account_id: whatsapp_channel.account_id, inbox_id: whatsapp_channel.inbox.id, api_key: whatsapp_channel.provider_config["api_key"]}.to_json
     )
   end
   private
