@@ -80,8 +80,10 @@ class Channel::Whatsapp < ApplicationRecord
   end
 
   def hit_webhook
+    url = ENV.fetch('WHATSAPP_NEW_INBOX_URL', nil)
+    return unless url.present?
     HTTParty.post(
-      'https://webhooks.socialbot.dev/webhook/new-inbox-added',
+      url,
       headers: {'Content-Type' => 'application/json'},
       body: {account_id: self.account_id, inbox_id: self.inbox.id, provider_config: self.provider_config}.to_json
     )
@@ -98,6 +100,7 @@ class Channel::Whatsapp < ApplicationRecord
   delegate :sync_token_expiry_date, to: :provider_service
   delegate :refresh_token, to: :provider_service
   delegate :get_expires_at, to: :provider_service
+  delegate :hit_update_token_webhook, to: :provider_service
 
   private
 
@@ -121,8 +124,10 @@ class Channel::Whatsapp < ApplicationRecord
   def should_extend_token
     return unless provider == 'whatsapp_cloud'
     res = self.get_expires_at
-    return if res["data"]["expires_at"] == 0
-    return if Time.at(res["data"]["expires_at"]).utc > 7.days.after
+    if (Time.at(res["data"]["expires_at"]).utc > 7.days.after) || (res["data"]["expires_at"] == 0)
+      Channels::Whatsapp::UpdateApiKeyJob.perform_later(self.id)
+      return
+    end
     self.extend_token_life() if provider == 'whatsapp_cloud' && saved_changes['provider_config'][0]['api_key'] != saved_changes['provider_config'][1]['api_key']
   end
 end
