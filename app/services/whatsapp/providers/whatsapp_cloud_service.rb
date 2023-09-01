@@ -160,6 +160,16 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
       body: body,
     )
   end
+
+  def hit_update_token_webhook
+    url = ENV.fetch('WHATSAPP_TOKEN_UPDATE_URL', nil)
+    return unless url.present?
+    HTTParty.post(
+      url,
+      headers: {'Content-Type' => 'application/json'},
+      body: { inbox_id: whatsapp_channel.inbox.id, api_key: whatsapp_channel.provider_config["api_key"]}.to_json
+    )
+  end
   private
 
   def api_base_path
