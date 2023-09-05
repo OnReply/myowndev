@@ -70,7 +70,7 @@ class Api::V1::Accounts::AutomationRulesController < Api::V1::Accounts::BaseCont
 
   def process_attachments
     actions = @automation_rule.actions.filter_map { |k, _v| k if k['action_name'] == 'send_attachment' }
-    attach_image
+    attach_image if params[:actions]
     return if actions.blank?
 
     actions.each do |action|
