@@ -76,6 +76,7 @@ class AutomationRule < ApplicationRecord
 
     operators = conditions.select { |obj, _| obj['query_operator'].nil? }
     errors.add(:conditions, 'Automation conditions should have query operator.') if operators.length > 1
+    errors.add(:conditions, 'Automation conditions should have values.') if conditions.any? { |obj, _| obj['values'].nil? }
   end
 
   def send_whatsapp_template_conditions

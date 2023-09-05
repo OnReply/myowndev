@@ -18,9 +18,28 @@ class AutomationsAPI extends ApiClient {
   }
 
   update(automationId, data) {
-    const formData = serialize(data)
+    if ('conditions' in data) {
+      data.conditions = data.conditions.map(condition => {
+        const sortedKeys = Object.keys(condition).sort();
+        const sortedCondition = sortedKeys.reduce((sortedObj, key) => {
+          sortedObj[key] = condition[key];
+          return sortedObj;
+        }, {});
+        return sortedCondition;
+      });
+    }
+    if ('actions' in data) {
+      data.actions = data.actions.map(action => {
+        const sortedKeys = Object.keys(action).sort();
+        const sortedAction = sortedKeys.reduce((sortedObj, key) => {
+          sortedObj[key] = action[key];
+          return sortedObj;
+        }, {});
+        return sortedAction;
+      });
+    }
     // Recursively traverse the data object and append values to formData
-    return axios.patch(`${this.url}/${automationId}`, formData, {
+    return axios.patch(`${this.url}/${automationId}`, serialize(data), {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
