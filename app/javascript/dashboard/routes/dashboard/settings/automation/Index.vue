@@ -186,6 +186,12 @@ export default {
       this.showAddPopup = false;
     },
     openEditPopup(response) {
+      response.actions = response.actions.map(action => {
+        if (action.action_name === 'send_whatsapp_template') {
+          return { ...action, action_params: [] };
+        }
+        return action;
+      });
       this.selectedResponse = response;
       this.showEditPopup = true;
     },

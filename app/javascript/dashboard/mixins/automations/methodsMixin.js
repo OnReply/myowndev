@@ -210,7 +210,7 @@ export default {
       return conditions;
     },
     generateActionsArray(action) {
-      const params = action.action_params;
+      const params = action.action_params || [];
       let actionParams = [];
       const inputType = this.automationActionTypes.find(
         item => item.key === action.action_name
@@ -232,7 +232,7 @@ export default {
     manifestActions(automation) {
       let actionParams = [];
       const actions = automation.actions.map(action => {
-        if (action.action_params.length) {
+        if ((action.action_params || []).length) {
           actionParams = this.generateActionsArray(action);
         }
         return {
