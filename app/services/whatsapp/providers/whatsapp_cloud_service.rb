@@ -121,13 +121,13 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
       "#{api_base_path}/v16.0/#{whatsapp_channel.provider_config['business_account_id']}/subscribed_apps",
       headers: api_headers
     )
-    len = res["data"].length - 1
-
-    len.times do |i|
-      delete_connected_app
-    end
-
     if res.success?
+      len = res["data"].length - 1
+
+      len.times do |i|
+        delete_connected_app
+      end
+
       app_details = res['data'].first
       whatsapp_channel.provider_config['app_id'] = app_details['whatsapp_business_api_data']['id']
       whatsapp_channel.save!
