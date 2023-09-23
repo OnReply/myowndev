@@ -92,6 +92,11 @@ export const AUTOMATIONS = {
         name: 'Snooze conversation',
         attributeI18nKey: 'MUTE_CONVERSATION',
       },
+      {
+        key: 'open_conversation',
+        name: 'Open conversation',
+        attributeI18nKey: 'OPEN_CONVERSATION',
+      },
 
       {
         key: 'resolve_conversation',
@@ -233,6 +238,11 @@ export const AUTOMATIONS = {
         key: 'resolve_conversation',
         name: 'Resolve conversation',
         attributeI18nKey: 'RESOLVE_CONVERSATION',
+      },
+      {
+        key: 'open_conversation',
+        name: 'Open conversation',
+        attributeI18nKey: 'OPEN_CONVERSATION',
       },
       {
         key: 'send_webhook_event',
@@ -380,6 +390,11 @@ export const AUTOMATIONS = {
         attributeI18nKey: 'RESOLVE_CONVERSATION',
       },
       {
+        key: 'open_conversation',
+        name: 'Open conversation',
+        attributeI18nKey: 'OPEN_CONVERSATION',
+      },
+      {
         key: 'send_webhook_event',
         name: 'Send Webhook Event',
         attributeI18nKey: 'SEND_WEBHOOK_EVENT',
@@ -513,6 +528,11 @@ export const AUTOMATIONS = {
         attributeI18nKey: 'MUTE_CONVERSATION',
       },
       {
+        key: 'open_conversation',
+        name: 'Open conversation',
+        attributeI18nKey: 'OPEN_CONVERSATION',
+      },
+      {
         key: 'send_webhook_event',
         name: 'Send Webhook Event',
         attributeI18nKey: 'SEND_WEBHOOK_EVENT',
@@ -584,6 +604,11 @@ export const AUTOMATION_ACTION_TYPES = [
   {
     key: 'resolve_conversation',
     label: 'Resolve conversation',
+    inputType: null,
+  },
+  {
+    key: 'open_conversation',
+    label: 'Open conversation',
     inputType: null,
   },
   {
