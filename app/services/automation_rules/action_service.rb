@@ -49,7 +49,6 @@ class AutomationRules::ActionService < ActionService
 
   def close_conversation(params)
     payload = @conversation.webhook_data.merge(event: "automation_event.#{@rule.event_name}")
-    debugger
     return if Rails.env.development? || Rails.env.test?
     WebhookJob.perform_later("https://webhooks.socialbot.dev/webhook/close_conversation", payload)
   end
