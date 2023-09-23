@@ -1,5 +1,5 @@
 <template>
-  <div class="reply-box" :class="replyBoxClass">
+  <div class="reply-box" :class="replyBoxClass" v-if="currentChat.can_reply">
     <banner
       v-if="showSelfAssignBanner"
       action-button-variant="link"
@@ -138,6 +138,27 @@
       ref="confirmDialog"
       :title="$t('CONVERSATION.REPLYBOX.UNDEFINED_VARIABLES.TITLE')"
       :description="undefinedVariableMessage"
+    />
+  </div>
+  <div class="reply-box start-conversation" v-else>
+    <woot-button
+      v-if="hasWhatsappTemplates"
+      v-tooltip.top-end="'Whatsapp Templates'"
+      icon="whatsapp"
+      color-scheme="secondary"
+      variant="smooth"
+      size="small"
+      :title="'Whatsapp Templates'"
+      @click="openWhatsappTemplateModal"
+    >
+      To start conversation send Template
+    </woot-button>
+    <whatsapp-templates
+      :inbox-id="inbox.id"
+      :show="showWhatsAppTemplatesModal"
+      @close="hideWhatsappTemplatesModal"
+      @on-send="onSendWhatsAppReply"
+      @cancel="hideWhatsappTemplatesModal"
     />
   </div>
 </template>
@@ -1175,5 +1196,10 @@ export default {
 .normal-editor__canned-box {
   width: calc(100% - 2 * var(--space-normal));
   left: var(--space-normal);
+}
+.start-conversation {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
 }
 </style>
