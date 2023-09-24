@@ -186,6 +186,24 @@ export default {
       image: null,
     };
   },
+  created() {
+    const isFeatureEnabledonAccount = this.$store.getters['accounts/isFeatureEnabledonAccount'];
+    const id = this.$store.getters['getCurrentAccountId'];
+    const ecomActions = 
+    [
+      {
+        key: 'close_conversation',
+        label: 'Close Conversation',
+        inputType: null,
+      }
+    ]
+    const lastObject = this.automationActionTypes[this.automationActionTypes.length - 1];
+
+    if( isFeatureEnabledonAccount(id, 'ecommerece') && lastObject.key !== 'close_conversation' )
+    {
+      this.automationActionTypes.push(...ecomActions)
+    }
+  },
   computed: {
     hasAutomationMutated() {
       if (
