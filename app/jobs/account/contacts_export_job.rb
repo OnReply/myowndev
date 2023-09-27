@@ -1,21 +1,26 @@
 class Account::ContactsExportJob < ApplicationJob
   queue_as :low
 
-  def perform(account_id, column_names)
+  def perform(account_id, column_names, filter_label = nil)
     account = Account.find(account_id)
     headers = valid_headers(column_names)
     # Add labels to csv
     headers = headers.append('labels_list', 'conversations_labels_list')
-    generate_csv(account, headers)
+    generate_csv(account, headers, filter_label)
     file_url = account_contact_export_url(account)
 
     AdministratorNotifications::ChannelNotificationsMailer.with(account: account).contact_export_complete(file_url)&.deliver_later
   end
 
-  def generate_csv(account, headers)
+  def generate_csv(account, headers, filter_label)
     csv_data = CSV.generate do |csv|
       csv << headers
-      account.contacts.each do |contact|
+      if filter_label.blank?
+        contacts = account.contacts
+      else
+        contacts = account.contacts.tagged_with(filter_label)
+      end
+      contacts.each do |contact|
         csv << headers.map { |header| contact.send(header) }
       end
     end

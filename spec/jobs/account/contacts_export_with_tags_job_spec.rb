@@ -56,6 +56,19 @@ RSpec.describe Account::ContactsExportJob do
           expect([first_row['labels_list'], last_row['labels_list']]).to contain_exactly(first_contact.labels_list, last_contact.labels_list)
           expect([first_row['phone_number'], last_row['phone_number']]).to contain_exactly(first_contact.phone_number, last_contact.phone_number)
         end
+
+        it 'should filter' do
+          described_class.perform_now(account.id, [], 'tag1')
+
+          csv_data = CSV.parse(account.contacts_export.download, headers: true)
+          first_row = csv_data[0]
+          last_row = csv_data[csv_data.length - 1]
+          first_contact = account.contacts.first
+          last_contact = account.contacts.last
+
+          expect(csv_data.length).to eq(1)
+          expect([first_row['labels_list']]).to contain_exactly(first_contact.labels_list)
+        end
       end
     end
 
