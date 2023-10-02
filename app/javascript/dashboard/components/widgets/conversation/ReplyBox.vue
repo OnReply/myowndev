@@ -140,19 +140,75 @@
       :description="undefinedVariableMessage"
     />
   </div>
-  <div class="reply-box start-conversation" v-else>
+  <div class="reply-box" v-else>
+    <reply-top-panel
+      :mode="replyType"
+      :set-reply-mode="setReplyMode"
+      :is-message-length-reaching-threshold="isMessageLengthReachingThreshold"
+      :characters-remaining="charactersRemaining"
+      :popout-reply-box="popoutReplyBox"
+      @click="$emit('click')"
+    />
+    <woot-message-editor
+      v-if="replyType === 'NOTE'"
+      v-model="message"
+      :editor-id="editorStateId"
+      class="input"
+      :is-private="isOnPrivateNote"
+      :placeholder="messagePlaceHolder"
+      :update-selection-with="updateEditorSelectionWith"
+      :min-height="4"
+      :enable-variables="true"
+      :variables="messageVariables"
+      @typing-off="onTypingOff"
+      @typing-on="onTypingOn"
+      @focus="onFocus"
+      @blur="onBlur"
+      @toggle-user-mention="toggleUserMention"
+      @toggle-canned-menu="toggleCannedMenu"
+      @toggle-variables-menu="toggleVariablesMenu"
+      @clear-selection="clearEditorSelection"
+    />
     <woot-button
-      v-if="hasWhatsappTemplates"
+      v-else-if="hasWhatsappTemplates"
       v-tooltip.top-end="'Whatsapp Templates'"
       icon="whatsapp"
       color-scheme="secondary"
       variant="smooth"
       size="small"
       :title="'Whatsapp Templates'"
+      class="start-conversation"
       @click="openWhatsappTemplateModal"
     >
       To start conversation send Template
     </woot-button>
+    <reply-bottom-panel
+      v-if="replyType == 'NOTE'"
+      :conversation-id="conversationId"
+      :enable-multiple-file-upload="enableMultipleFileUpload"
+      :has-whatsapp-templates="hasWhatsappTemplates"
+      :inbox="inbox"
+      :is-on-private-note="isOnPrivateNote"
+      :is-recording-audio="isRecordingAudio"
+      :is-send-disabled="isReplyButtonDisabled"
+      :mode="replyType"
+      :on-file-upload="onFileUpload"
+      :on-send="onSendReply"
+      :recording-audio-duration-text="recordingAudioDurationText"
+      :recording-audio-state="recordingAudioState"
+      :send-button-text="replyButtonLabel"
+      :show-audio-recorder="showAudioRecorder"
+      :show-editor-toggle="isAPIInbox && !isOnPrivateNote"
+      :show-emoji-picker="showEmojiPicker"
+      :show-file-upload="showFileUpload"
+      :toggle-audio-recorder-play-pause="toggleAudioRecorderPlayPause"
+      :toggle-audio-recorder="toggleAudioRecorder"
+      :toggle-emoji-picker="toggleEmojiPicker"
+      :message="message"
+      @selectWhatsappTemplate="openWhatsappTemplateModal"
+      @toggle-editor="toggleRichContentEditor"
+      @replace-text="replaceText"
+    />
     <whatsapp-templates
       :inbox-id="inbox.id"
       :show="showWhatsAppTemplatesModal"
@@ -1199,7 +1255,6 @@ export default {
 }
 .start-conversation {
   display: flex;
-  justify-content: center;
-  padding: 1rem;
+  margin: 1rem auto !important;
 }
 </style>
