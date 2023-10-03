@@ -11,11 +11,33 @@ module Integrations::Csml::ProcessProductsMessage
       process_question_messages(message_payload, conversation)
     when 'Component.whatsappproducts'
       process_products_messages(message_payload, conversation)
+    when 'Component.transferteam'
+      process_assign_team(message_payload, conversation)
     when 'image'
       process_image_messages(message_payload, conversation)
     when 'file'
       process_file_messages(message_payload, conversation)
     end
+  end
+  
+  def process_assign_team(message_payload, conversation)
+    conversation.messages.create!(
+      {
+        message_type: :outgoing,
+        account_id: conversation.account_id,
+        inbox_id: conversation.inbox_id,
+        content: "Assign team id #{message_payload['content']['id']}",
+        content_type: 'integrations',
+        content_attributes: { 
+          type: 'transferteam',
+          id: message_payload['content']['id'],
+          message_payload: message_payload,
+        },
+        sender: agent_bot
+      }
+    )
+
+    AgentBots::ActionService.new(conversation.account, conversation).assign_team([message_payload['content']['id'].to_i])
   end
 
   def process_products_messages(message_payload, conversation)

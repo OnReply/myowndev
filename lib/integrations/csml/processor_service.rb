@@ -80,6 +80,16 @@ class Integrations::Csml::ProcessorService < Integrations::BotProcessorService
               }
             },
           ]
+        },
+        "TransferTeam": {
+          "params": [
+            {
+              "id": {
+                "required": true,
+                "type": "String",
+              }
+            }
+          ]
         }
       },
       flows: [
