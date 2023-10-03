@@ -285,6 +285,19 @@ start:
 | products | `{"section_title": "section title...", "skus": ["5r4tap9sy6"]}` | Maximum 30 products and 10 sections  | Yes |
 | footer | footer testing..| Maximum 60 characters. | No |
 
+
+## Assign team
+CSML Code example:
+```ruby
+start:
+  say "Hello stranger! 👋"
+  say Component.TransferTeam(id="1")
+  goto end
+
+```
+
+
+
 # Tests
 
 ## Files
