@@ -19,8 +19,8 @@ describe Integrations::Csml::ProcessorService do
       allow(CsmlEngine).to receive(:new).and_return(csml_client)
     end
 
-    context 'should transfer team' do
-      it 'creates a question message' do
+    context 'should process assign team' do
+      it 'valid team id' do
         csml_response = ActiveSupport::HashWithIndifferentAccess.new(
           messages: [{
             payload: {
@@ -35,6 +35,24 @@ describe Integrations::Csml::ProcessorService do
         expect(conversation.messages.last.content_type).to eql('integrations')
         expect(conversation.messages.last.content_attributes.to_s).to include('Component.transferteam')
         expect(conversation.reload.team_id).to eql(team.id)
+      end
+
+      it 'invalid team id' do
+        invalid_team_id = team.id+999
+        csml_response = ActiveSupport::HashWithIndifferentAccess.new(
+          messages: [{
+            payload: {
+              content_type: 'Component.transferteam',
+              content: { id: invalid_team_id}
+            }
+          }]
+        )
+        allow(csml_client).to receive(:run).and_return(csml_response)
+        processor.perform
+        expect(conversation.messages.last.content).to eql("Assign team id #{invalid_team_id} failed")
+        expect(conversation.messages.last.content_type).to eql('integrations')
+        expect(conversation.messages.last.content_attributes.to_s).to include('Component.transferteam')
+        expect(conversation.reload.team_id).to eql(nil)
       end
     end
   end
