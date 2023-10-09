@@ -71,7 +71,7 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
     fetch_channel
     @template = permit_template_params
     attach_image_to_template if params[:header_type] == "image"
-    response = @channel.create_template(@template)
+    response = @template[:id].nil? ? @channel.create_template(@template) : @channel.edit_template(@template)
     if response.success?
       render status: :ok, json: { message: I18n.t('messages.inbox_deletetion_response') }
     else 
@@ -208,6 +208,7 @@ class Api::V1::Accounts::InboxesController < Api::V1::Accounts::BaseController
   def permit_template_params
     template_hash = JSON.parse(params.require(:template))
     ActionController::Parameters.new(template_hash).permit(
+      :id,
       :category,
       :language,
       :name,

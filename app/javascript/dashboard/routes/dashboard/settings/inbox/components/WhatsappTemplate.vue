@@ -34,13 +34,13 @@
         <div class="modal-footer">
           <div class="medium-12 row text-center">
             <woot-submit-button
-              v-if="!editMode"
+              
               :button-text="$t('EMAIL_TRANSCRIPT.SUBMIT')"
               @click="submitForm"
               :disabled="isDisabled"
             />
              <woot-button
-              v-else
+              
               :button-text="$t('EMAIL_TRANSCRIPT.SUBMIT')"
               @click="deleteTemplate"
               color-scheme="alert"
