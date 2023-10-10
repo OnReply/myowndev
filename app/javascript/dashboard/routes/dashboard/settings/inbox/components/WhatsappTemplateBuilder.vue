@@ -50,7 +50,7 @@
           </option>
         </select>
       </div>
-      <div v-if="displayHeaderInputField" class="input-group-field">
+      <div v-if="displayHeaderInputField == 'text'" class="input-group-field">
         <label for="" :class="{ error: $v.headerValue.$error }">
           {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.HEADER') }}
           <input
@@ -64,7 +64,7 @@
           </span>
         </label>
       </div>
-      <div v-else class="input-group-field row">
+      <div v-else-if="displayHeaderInputField == 'image'" class="input-group-field row">
         <label>
           <input
             id="file"
@@ -265,11 +265,11 @@
       <div class="first-parent">
         <div class="second-parent">
           <div class="third-parent">
-            <div class="bg-white rounded padding-1">
-              <div v-if="displayHeaderInputField" class="bold padding-left-1">
+            <div class="bg-white rounded relative padding-1">
+              <div v-if="displayHeaderInputField == 'text'" class="bold padding-left-1">
                 {{ headerValue }}
               </div>
-              <div v-else>
+              <div v-else-if="displayHeaderInputField == 'image'">
                 <img :src="imageUrl" alt="">
               </div>
               <div class="padding-1 template-body">
@@ -340,7 +340,7 @@ export default {
       footerValue: '',
       nameError: false,
       headerType: 'text',
-      displayHeaderInputField: true,
+      displayHeaderInputField: 'text',
       imageUrl: '',
       imageFile: '',
       buttonType: 'none',
@@ -363,7 +363,12 @@ export default {
     getComponentValues() {
       this.template.components.forEach(component => {
         if (component.type === 'HEADER') {
-          this.headerValue = component.text;
+          if (component.format == "TEXT")
+            this.headerValue = component.text;
+          else if (component.format == 'IMAGE'){
+            this.displayHeaderInputField = this.headerType = 'image';
+            if (component.example)  this.imageUrl = component.example.header_handle[0]
+          }
         } else if (component.type === 'BODY') {
           this.bodyValue = component.text;
         } else if (component.type === 'FOOTER') {
@@ -397,7 +402,7 @@ export default {
       this.$v.template.name.$touch()
     },
     UpdateDisplayHeaderInputField() {
-      this.displayHeaderInputField = this.headerType == 'text';
+      this.displayHeaderInputField = this.headerType;
     },
     async handleImageUpload(event) {
       const [file] = event.target.files;
@@ -520,7 +525,6 @@ export default {
     },
     buttonData: {
       handler() {
-        console.log('chnage in button')
         this.shouldDisableSubmitButton();
       },
       deep: true,
@@ -567,6 +571,7 @@ export default {
   box-sizing: border-box;
   display: inline-block;
   font-family: BlinkMacSystemFont, -apple-system, Roboto, Arial, sans-serif;
+  min-width: 30%;
   max-width: 100%;
   position: relative;
 }
@@ -593,7 +598,7 @@ export default {
   font-weight: bold;
 }
 .template-body{
-  white-space: pre-line;
+  
 }
 .required-field:required {
   border-color: red; /* Optional: Apply a red border to the required fields */
@@ -610,5 +615,8 @@ export default {
 }
 .mt-2{
   margin-top: 2.5rem;
+}
+.relative {
+  position: relative;
 }
 </style>
