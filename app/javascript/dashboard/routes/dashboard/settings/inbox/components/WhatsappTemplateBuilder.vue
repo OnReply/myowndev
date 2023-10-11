@@ -184,7 +184,7 @@
                   {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.PHONE_NUMBER.LABEL') }}
                   <input
                   v-model.trim="button.phone_number"
-                  type="number"
+                  type="text"
                   maxlength="60"
                   />
                   <span v-if="error.phone_number" class="message">
@@ -275,7 +275,10 @@
               <div class="padding-1 template-body">
                 {{ bodyValue }}
               </div>
-              <time aria-hidden="true" class="_6xe5">07:26</time>
+              <div class="_6xe5">
+                {{ footerValue }}
+                <time aria-hidden="true">07:26</time>
+              </div>
             </div>
           </div>
         </div>
@@ -373,6 +376,11 @@ export default {
           this.bodyValue = component.text;
         } else if (component.type === 'FOOTER') {
           this.footerValue = component.text;
+        } else if (component.type === "BUTTONS") {
+          
+          this.buttonData = component.buttons
+          this.buttonType = component.buttons[0].type == "QUICK_REPLY"? "QUICK_REPLY" : "CALL"
+          this.maximumButtonsCount = this.buttonType == "CALL" ? 2 : 3
         }
       });
     },
@@ -502,7 +510,7 @@ export default {
       return test.some((value) => value === true)
     },
     isValidPhoneNumber(phoneNumber) {
-      const phoneNumberRegex = /^\d{5,15}$/;
+      const phoneNumberRegex = /^[0-9\-\+]{9,15}$/;
       return phoneNumberRegex.test(phoneNumber);
     },
     isValidPhoneURL(url) {
