@@ -61,7 +61,17 @@ class AgentBots::ValidateBotService
               }
             }
           ]
-        }
+        },
+        "TransferAgent": {
+          "params": [
+            {
+              "id": {
+                "required": true,
+                "type": "String",
+              }
+            }
+          ]
+        },
       },
       flows: [
         {

@@ -90,7 +90,17 @@ class Integrations::Csml::ProcessorService < Integrations::BotProcessorService
               }
             }
           ]
-        }
+        },
+        "TransferAgent": {
+          "params": [
+            {
+              "id": {
+                "required": true,
+                "type": "String",
+              }
+            }
+          ]
+        },
       },
       flows: [
         {

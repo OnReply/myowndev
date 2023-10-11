@@ -13,13 +13,37 @@ module Integrations::Csml::ProcessProductsMessage
       process_products_messages(message_payload, conversation)
     when 'Component.transferteam'
       process_assign_team(message_payload, conversation)
-    when 'Component.transferuser'
-      process_assign_user(message_payload, conversation)
+    when 'Component.transferagent'
+      process_assign_agent(message_payload, conversation)
     when 'image'
       process_image_messages(message_payload, conversation)
     when 'file'
       process_file_messages(message_payload, conversation)
     end
+  end
+
+  def process_assign_agent(message_payload, conversation)
+    if AgentBots::ActionService.new(conversation.account, conversation).assign_agent([message_payload['content']['id'].to_i])
+      content = "Assign agent id #{message_payload['content']['id']}"
+    else
+      content = "Assign agent id #{message_payload['content']['id']} failed"
+    end
+
+    conversation.messages.create!(
+      {
+        message_type: :outgoing,
+        account_id: conversation.account_id,
+        inbox_id: conversation.inbox_id,
+        content: content,
+        content_type: 'integrations',
+        content_attributes: { 
+          type: 'transferagent',
+          id: message_payload['content']['id'],
+          message_payload: message_payload,
+        },
+        sender: agent_bot
+      }
+    )
   end
   
   def process_assign_team(message_payload, conversation)
