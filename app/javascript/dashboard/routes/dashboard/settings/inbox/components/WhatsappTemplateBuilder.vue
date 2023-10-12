@@ -280,6 +280,12 @@
                 <time aria-hidden="true">07:26</time>
               </div>
             </div>
+            <div class="button-div">
+              <div v-for="(button, index) in buttonData" class="span" :key="index">
+                <span class="icon" :class="button.type.toLowerCase().replace(/_/g, '-')"></span>
+                <span >{{button.text}}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -516,6 +522,9 @@ export default {
     isValidPhoneURL(url) {
       const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,})([\/\w .-]*)*\/?$/i;
       return urlRegex.test(url);
+    },
+    getIcon(type) {
+      return 'call-icon'
     }
   },
   watch: {
@@ -579,7 +588,7 @@ export default {
   box-sizing: border-box;
   display: inline-block;
   font-family: BlinkMacSystemFont, -apple-system, Roboto, Arial, sans-serif;
-  min-width: 30%;
+  min-width: 95%;
   max-width: 100%;
   position: relative;
 }
@@ -627,4 +636,41 @@ export default {
 .relative {
   position: relative;
 }
+.button-div {
+  border-top: 1px solid #dadde1;
+  min-width: 100%;
+  padding: 0 8px;
+  .span {
+    border-top: 1px solid #dadde1;
+    color: #00a5f4;
+    font-size: 14px;
+    height: 44px;
+    line-height: 20px;
+    min-width: 100%;
+    white-space: pre-wrap;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+}
+  .icon {
+    background-repeat: no-repeat;
+    background-size: contain;
+    flex-shrink: 0;
+    height: 16px;
+    opacity: .8;
+    width: 16px;
+    margin-right: 4px;
+  }
+  .phone-number {
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yO/r/8o77vvYFLgb.png);
+  }
+  .url {
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/y0/r/OzOCQC-ukqH.png);
+  }
+  .quick-reply {
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/ym/r/a1ABEwh1MaF.png);
+  }
+
 </style>
