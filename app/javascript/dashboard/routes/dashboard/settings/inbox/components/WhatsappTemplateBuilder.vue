@@ -265,18 +265,21 @@
       <div class="first-parent">
         <div class="second-parent">
           <div class="third-parent">
-            <div class="bg-white rounded relative padding-1">
-              <div v-if="displayHeaderInputField == 'text'" class="bold padding-left-1">
+            <div class="bg-white rounded relative padding-1" :class="footerValue.length > 0 ? 'pb-1' : ''">
+              <div v-if="displayHeaderInputField == 'text'" class="bold padding-left-1 header-font">
                 {{ headerValue }}
               </div>
               <div v-else-if="displayHeaderInputField == 'image'">
                 <img :src="imageUrl" alt="">
               </div>
-              <div class="padding-1 template-body">
+              <div class="padding-1 pb-1 body-font">
                 {{ bodyValue }}
               </div>
-              <div class="_6xe5">
+              <div class="footer footer-font">
                 {{ footerValue }}
+                <span></span>
+              </div>
+              <div class="_6xe5">
                 <time aria-hidden="true">07:26</time>
               </div>
             </div>
@@ -614,8 +617,8 @@ export default {
 .bold {
   font-weight: bold;
 }
-.template-body{
-  
+.pb-1{
+  padding-bottom: 3px;
 }
 .required-field:required {
   border-color: red; /* Optional: Apply a red border to the required fields */
@@ -672,5 +675,22 @@ export default {
   .quick-reply {
     background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/ym/r/a1ABEwh1MaF.png);
   }
-
+  .footer {
+    color: rgba(0, 0, 0, .45);
+    font-size: 13px;
+    line-height: 17px;
+    padding: 0 7px 3px 9px;
+    display: flex;
+    flex-flow: column;
+    margin-right: 13%;
+  }
+  .body-font {
+    font-size: 13.6px;
+  }
+  .header-font {
+    font-size: 15px;
+  }
+  .footer-font {
+    font-size: 13px;
+  }
 </style>
