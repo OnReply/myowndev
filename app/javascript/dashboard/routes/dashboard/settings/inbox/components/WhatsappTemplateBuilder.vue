@@ -9,6 +9,7 @@
             name="name"
             type="text"
             @keydown="validateInput"
+            :disabled="editMode"
           />
           <span v-if="$v.template.name.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.INBOX_NAME.ERROR') }}
@@ -17,7 +18,7 @@
       </div>
       <div class="input-group-field">
         <label for="category"> {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.CATEGORY') }} </label>
-        <select v-model="template.category" name="category">
+        <select v-model="template.category" :disabled="editMode && template.status == 'APPROVED'" name="category">
           <option v-for="t in templateTypes" :key="t" :value="t">
             {{ t }}
           </option>
@@ -25,7 +26,7 @@
       </div>
       <div class="input-group-field">
         <label for="language"> {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.LANGUAGE') }} </label>
-        <select v-model="template.language" name="language">
+        <select v-model="template.language" name="language" :disabled="editMode">
           <option
             v-for="language in languages"
             :key="language.code"
@@ -326,6 +327,10 @@ export default {
         };
       },
     },
+    editMode: {
+      type: Boolean,
+      default: false
+    }
   },
   validations: {
     template: {

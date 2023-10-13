@@ -27,6 +27,7 @@
             :inbox-id="inbox.id"
             :show="showWhatsAppTemplatesBuilderModal"
             :template="template"
+            :edit-mode="editMode"
             @disable-submit-button="toggleSubmitButton"
             ref="templateBuilder"
           />
