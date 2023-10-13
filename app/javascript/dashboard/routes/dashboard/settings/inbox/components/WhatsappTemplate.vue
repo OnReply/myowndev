@@ -117,7 +117,7 @@ export default {
       this.isDisabled = true;
       const response = await InboxesAPI.createTemplate(this.inbox.id, this.template, this.$refs.templateBuilder.headerType, this.$refs.templateBuilder.imageFile, this.$refs.templateBuilder.buttonType, this.$refs.templateBuilder.buttonData)
       if(response.data.message) {
-        this.showAlert(this.$t('WHATSAPP_TEMPLATES.BUILDER.SUCCESSFUL_SUBMISSION'))
+        this.showAlert(this.editMode? this.$t('WHATSAPP_TEMPLATES.BUILDER.SUCCESSFUL_EDIT') : this.$t('WHATSAPP_TEMPLATES.BUILDER.SUCCESSFUL_SUBMISSION'))
         this.template = this.defaultTempate;
         this.onClose();
       } else {
