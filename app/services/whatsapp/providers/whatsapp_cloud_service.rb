@@ -77,6 +77,14 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
     )
   end
 
+  def edit_template(template)
+    HTTParty.post(
+      "#{api_base_path}/#{template[:id]}",
+      headers: api_headers,
+      body: template.to_json
+    )
+  end
+
   def delete_template(name)
     HTTParty.delete(
       "#{business_account_path}/message_templates?name=#{name}",

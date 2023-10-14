@@ -95,6 +95,7 @@ class Channel::Whatsapp < ApplicationRecord
   delegate :media_url, to: :provider_service
   delegate :api_headers, to: :provider_service
   delegate :create_template, to: :provider_service
+  delegate :edit_template, to: :provider_service
   delegate :delete_template, to: :provider_service
   delegate :extend_token_life, to: :provider_service
   delegate :sync_token_expiry_date, to: :provider_service

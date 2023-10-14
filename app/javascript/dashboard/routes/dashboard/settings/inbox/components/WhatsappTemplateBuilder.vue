@@ -9,6 +9,7 @@
             name="name"
             type="text"
             @keydown="validateInput"
+            :disabled="editMode"
           />
           <span v-if="$v.template.name.$error" class="message">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.INBOX_NAME.ERROR') }}
@@ -17,7 +18,7 @@
       </div>
       <div class="input-group-field">
         <label for="category"> {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.CATEGORY') }} </label>
-        <select v-model="template.category" name="category">
+        <select v-model="template.category" :disabled="editMode && template.status == 'APPROVED'" name="category">
           <option v-for="t in templateTypes" :key="t" :value="t">
             {{ t }}
           </option>
@@ -25,7 +26,7 @@
       </div>
       <div class="input-group-field">
         <label for="language"> {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.LANGUAGE') }} </label>
-        <select v-model="template.language" name="language">
+        <select v-model="template.language" name="language" :disabled="editMode">
           <option
             v-for="language in languages"
             :key="language.code"
@@ -50,7 +51,7 @@
           </option>
         </select>
       </div>
-      <div v-if="displayHeaderInputField" class="input-group-field">
+      <div v-if="displayHeaderInputField == 'text'" class="input-group-field">
         <label for="" :class="{ error: $v.headerValue.$error }">
           {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.HEADER') }}
           <input
@@ -64,7 +65,7 @@
           </span>
         </label>
       </div>
-      <div v-else class="input-group-field row">
+      <div v-else-if="displayHeaderInputField == 'image'" class="input-group-field row">
         <label>
           <input
             id="file"
@@ -184,7 +185,7 @@
                   {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.BUTTONS.PHONE_NUMBER.LABEL') }}
                   <input
                   v-model.trim="button.phone_number"
-                  type="number"
+                  type="text"
                   maxlength="60"
                   />
                   <span v-if="error.phone_number" class="message">
@@ -265,17 +266,29 @@
       <div class="first-parent">
         <div class="second-parent">
           <div class="third-parent">
-            <div class="bg-white rounded padding-1">
-              <div v-if="displayHeaderInputField" class="bold padding-left-1">
+            <div class="bg-white rounded relative padding-1" :class="footerValue.length > 0 ? 'pb-1' : ''">
+              <div v-if="displayHeaderInputField == 'text'" class="bold padding-left-1 header-font">
                 {{ headerValue }}
               </div>
-              <div v-else>
+              <div v-else-if="displayHeaderInputField == 'image'">
                 <img :src="imageUrl" alt="">
               </div>
-              <div class="padding-1 template-body">
+              <div class="padding-1 pb-1 body-font">
                 {{ bodyValue }}
               </div>
-              <time aria-hidden="true" class="_6xe5">07:26</time>
+              <div class="footer footer-font">
+                {{ footerValue }}
+                <span></span>
+              </div>
+              <div class="_6xe5">
+                <time aria-hidden="true">07:26</time>
+              </div>
+            </div>
+            <div class="button-div">
+              <div v-for="(button, index) in buttonData" class="span" :key="index">
+                <span class="icon" :class="button.type.toLowerCase().replace(/_/g, '-')"></span>
+                <span >{{button.text}}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -314,6 +327,10 @@ export default {
         };
       },
     },
+    editMode: {
+      type: Boolean,
+      default: false
+    }
   },
   validations: {
     template: {
@@ -340,7 +357,7 @@ export default {
       footerValue: '',
       nameError: false,
       headerType: 'text',
-      displayHeaderInputField: true,
+      displayHeaderInputField: 'text',
       imageUrl: '',
       imageFile: '',
       buttonType: 'none',
@@ -363,11 +380,21 @@ export default {
     getComponentValues() {
       this.template.components.forEach(component => {
         if (component.type === 'HEADER') {
-          this.headerValue = component.text;
+          if (component.format == "TEXT")
+            this.headerValue = component.text;
+          else if (component.format == 'IMAGE'){
+            this.displayHeaderInputField = this.headerType = 'image';
+            if (component.example)  this.imageUrl = component.example.header_handle[0]
+          }
         } else if (component.type === 'BODY') {
           this.bodyValue = component.text;
         } else if (component.type === 'FOOTER') {
           this.footerValue = component.text;
+        } else if (component.type === "BUTTONS") {
+          
+          this.buttonData = component.buttons
+          this.buttonType = component.buttons[0].type == "QUICK_REPLY"? "QUICK_REPLY" : "CALL"
+          this.maximumButtonsCount = this.buttonType == "CALL" ? 2 : 3
         }
       });
     },
@@ -397,7 +424,7 @@ export default {
       this.$v.template.name.$touch()
     },
     UpdateDisplayHeaderInputField() {
-      this.displayHeaderInputField = this.headerType == 'text';
+      this.displayHeaderInputField = this.headerType;
     },
     async handleImageUpload(event) {
       const [file] = event.target.files;
@@ -497,12 +524,15 @@ export default {
       return test.some((value) => value === true)
     },
     isValidPhoneNumber(phoneNumber) {
-      const phoneNumberRegex = /^\d{5,15}$/;
+      const phoneNumberRegex = /^[0-9\-\+]{9,15}$/;
       return phoneNumberRegex.test(phoneNumber);
     },
     isValidPhoneURL(url) {
       const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,})([\/\w .-]*)*\/?$/i;
       return urlRegex.test(url);
+    },
+    getIcon(type) {
+      return 'call-icon'
     }
   },
   watch: {
@@ -520,7 +550,6 @@ export default {
     },
     buttonData: {
       handler() {
-        console.log('chnage in button')
         this.shouldDisableSubmitButton();
       },
       deep: true,
@@ -567,6 +596,7 @@ export default {
   box-sizing: border-box;
   display: inline-block;
   font-family: BlinkMacSystemFont, -apple-system, Roboto, Arial, sans-serif;
+  min-width: 95%;
   max-width: 100%;
   position: relative;
 }
@@ -592,8 +622,8 @@ export default {
 .bold {
   font-weight: bold;
 }
-.template-body{
-  white-space: pre-line;
+.pb-1{
+  padding-bottom: 3px;
 }
 .required-field:required {
   border-color: red; /* Optional: Apply a red border to the required fields */
@@ -611,4 +641,61 @@ export default {
 .mt-2{
   margin-top: 2.5rem;
 }
+.relative {
+  position: relative;
+}
+.button-div {
+  border-top: 1px solid #dadde1;
+  min-width: 100%;
+  padding: 0 8px;
+  .span {
+    border-top: 1px solid #dadde1;
+    color: #00a5f4;
+    font-size: 14px;
+    height: 44px;
+    line-height: 20px;
+    min-width: 100%;
+    white-space: pre-wrap;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+}
+  .icon {
+    background-repeat: no-repeat;
+    background-size: contain;
+    flex-shrink: 0;
+    height: 16px;
+    opacity: .8;
+    width: 16px;
+    margin-right: 4px;
+  }
+  .phone-number {
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yO/r/8o77vvYFLgb.png);
+  }
+  .url {
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/y0/r/OzOCQC-ukqH.png);
+  }
+  .quick-reply {
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/ym/r/a1ABEwh1MaF.png);
+  }
+  .footer {
+    color: rgba(0, 0, 0, .45);
+    font-size: 13px;
+    line-height: 17px;
+    padding: 0 7px 3px 9px;
+    display: flex;
+    flex-flow: column;
+    margin-right: 13%;
+  }
+  .body-font {
+    font-size: 13.6px;
+  }
+  .header-font {
+    font-size: 15px;
+  }
+  .footer-font {
+    font-size: 13px;
+  }
 </style>
