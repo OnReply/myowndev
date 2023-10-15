@@ -37,7 +37,8 @@
                 "HEADER_TYPE": "نوع العنوان",
                 "HEADER_TYPES": {
                     "TEXT": "نص",
-                    "IMAGE": "صورة"
+                    "IMAGE": "صورة",
+                    "NONE":"لا شيء"
                 },
                 "HEADER": "العنوان",
                 "BODY": "المحتوى",
