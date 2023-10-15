@@ -36,6 +36,8 @@ class Inboxes extends CacheEnabledApiClient {
     if (headerType == 'image') {
       params_template.components = template.components.filter(component => component.type != 'HEADER')
       formData.append("image", image);
+    } else if (headerType == 'none') {
+      params_template.components = template.components.filter(component => component.type != 'HEADER')
     }
     if (buttonType !== 'none') {
       params_template.components.push({"type": "BUTTONS", "buttons": buttonData})
