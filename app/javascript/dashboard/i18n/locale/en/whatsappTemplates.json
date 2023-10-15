@@ -37,7 +37,8 @@
                 "HEADER_TYPE": "Header type",
                 "HEADER_TYPES": {
                     "TEXT": "Text",
-                    "IMAGE": "Image"
+                    "IMAGE": "Image",
+                    "NONE": "None"
                 },
                 "HEADER": "Header",
                 "BODY": "Body",

@@ -40,6 +40,11 @@
         <label for="language"> {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.HEADER_TYPE') }} </label>
         <select v-model="headerType" @change="UpdateDisplayHeaderInputField" name="headerType">
           <option
+            value="none"
+          >
+            {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.HEADER_TYPES.NONE') }}
+          </option>
+          <option
             value="text"
           >
             {{ $t('WHATSAPP_TEMPLATES.BUILDER.FORM.HEADER_TYPES.TEXT') }}
@@ -356,8 +361,8 @@ export default {
       headerValue: '',
       footerValue: '',
       nameError: false,
-      headerType: 'text',
-      displayHeaderInputField: 'text',
+      headerType: 'none',
+      displayHeaderInputField: 'none',
       imageUrl: '',
       imageFile: '',
       buttonType: 'none',
@@ -381,7 +386,10 @@ export default {
       this.template.components.forEach(component => {
         if (component.type === 'HEADER') {
           if (component.format == "TEXT")
+          {
+            this.displayHeaderInputField = this.headerType = 'text';
             this.headerValue = component.text;
+          }
           else if (component.format == 'IMAGE'){
             this.displayHeaderInputField = this.headerType = 'image';
             if (component.example)  this.imageUrl = component.example.header_handle[0]
@@ -438,7 +446,10 @@ export default {
     IsHeaderValueInvalid() {
       if(this.headerType == 'text') {
         return this.$v.headerValue.$invalid;
-      } else {
+      } else if (this.headerType == 'none') {
+        return false;
+      }
+       else {
         return this.imageFile == '';
       }
     },
