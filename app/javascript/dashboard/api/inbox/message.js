@@ -32,7 +32,7 @@ export const buildCreatePayload = ({
         payload.append(`template_params[${key}]`, templateParams[key])
       }
       for(var key in templateParams['processed_params']) {
-        payload.append(`template_params[processed_params][${key}]`, templateParams[key])
+        payload.append(`template_params[processed_params][${key}]`, templateParams["processed_params"][key])
       }
     }
     if (isPrivate !== undefined) payload.append('private', isPrivate);
