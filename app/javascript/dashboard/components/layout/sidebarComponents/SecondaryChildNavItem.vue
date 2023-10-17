@@ -33,7 +33,7 @@
         <span v-if="count" class="badge" :class="{ secondary: !isActive }">
           {{ count }}
         </span>
-        <span v-if="warningIcon" class="badge--icon">
+        <span v-if="warningIcon" class="badge--icon" @click="startLogin">
           <fluent-icon
             v-tooltip.top-end="$t('SIDEBAR.FACEBOOK_REAUTHORIZE')"
             class="inbox-icon"
@@ -46,6 +46,14 @@
   </router-link>
 </template>
 <script>
+import {
+  loadFBsdk,
+  initFB,
+} from '../../../../shared/helpers/facebookInitializer';
+import { mapGetters } from 'vuex';
+
+import alertMixin from 'shared/mixins/alertMixin';
+
 export default {
   props: {
     to: {
@@ -84,8 +92,19 @@ export default {
       type: Number,
       default: 0,
     },
+    provider: {
+      type: String,
+      default: null
+    },
+    providerConfig: {
+      type: Object,
+      default: null
+    }
   },
   computed: {
+    ...mapGetters({
+      currentUser: 'getCurrentUser',
+    }),
     showIcon() {
       return { 'text-truncate': this.shouldTruncate };
     },
@@ -93,6 +112,78 @@ export default {
       return this.shouldTruncate ? this.label : '';
     },
   },
+  data() {
+    return {
+      hasLoginStarted: false,
+    }
+  },
+  mixins: [alertMixin],
+  mounted() {
+    if (this.provider =="whatsapp_cloud" && this.currentUser.role === 'administrator'){
+
+      loadFBsdk();
+      initFB();
+    }
+  },
+  methods: {
+    startLogin() {
+      if (this.provider =="whatsapp_cloud" && this.currentUser.role === 'administrator' && !this.hasLoginStarted)
+      {
+        this.hasLoginStarted = true;
+        this.tryFBlogin();
+      }
+    },
+    tryFBlogin() {
+      FB.login(
+        response => {
+          if (response.status === 'connected') {
+            // this.isFbConnected = true;
+            this.hasLoginStarted = false;
+            // this.whatsAppInboxAPIKey = response.authResponse.accessToken;
+            this.updateWhatsAppInboxAPIKey(response.authResponse.accessToken);
+          } else if (response.status === 'not_authorized') {
+            // The person is logged into Facebook, but not your app.
+            this.emptyStateMessage = this.$t(
+              'INBOX_MGMT.DETAILS.ERROR_FB_AUTH'
+            );
+          } else {
+            // The person is not logged into Facebook, so we're not sure if
+            // they are logged into this app or not.
+            this.hasLoginStarted = false;
+            this.emptyStateMessage = this.$t(
+              'INBOX_MGMT.DETAILS.ERROR_FB_AUTH'
+            );
+          }
+        },
+        {
+          scope: 'whatsapp_business_management,whatsapp_business_messaging',
+        }
+      );
+    },
+    async updateWhatsAppInboxAPIKey(whatsAppInboxAPIKey) {
+      const pattern = /\/inbox\/(\d+)/;
+      const match = this.to.match(pattern);
+      if (!match) return;
+      try {
+        const payload = {
+          id: match[1],
+          formData: false,
+          channel: {},
+        };
+
+        payload.channel.provider_config = {
+          ...this.providerConfig,
+          api_key: whatsAppInboxAPIKey,
+        };
+
+        await this.$store.dispatch('inboxes/updateInbox', payload);
+        this.showAlert(this.$t('INBOX_MGMT.EDIT.API.SUCCESS_MESSAGE'));
+      } catch (error) {
+        console.log(error)
+        this.showAlert(this.$t('INBOX_MGMT.EDIT.API.ERROR_MESSAGE'));
+      }
+    },
+  }
 };
 </script>
 <style lang="scss" scoped>
