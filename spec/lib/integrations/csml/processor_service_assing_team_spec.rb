@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe Integrations::Csml::ProcessorService do
+  include ActiveJob::TestHelper
+
   let(:account) { create(:account) }
   let(:inbox) { create(:inbox, account: account) }
   let(:team) {create(:team, account: account)}
@@ -30,10 +32,10 @@ describe Integrations::Csml::ProcessorService do
           }]
         )
         allow(csml_client).to receive(:run).and_return(csml_response)
-        processor.perform
+        perform_enqueued_jobs(only: Conversations::ActivityMessageJob) do
+          processor.perform
+        end
         expect(conversation.messages.last.content).to eql("Assign team id #{team.id}")
-        expect(conversation.messages.last.content_type).to eql('integrations')
-        expect(conversation.messages.last.content_attributes.to_s).to include('Component.transferteam')
         expect(conversation.reload.team_id).to eql(team.id)
       end
 
@@ -48,10 +50,10 @@ describe Integrations::Csml::ProcessorService do
           }]
         )
         allow(csml_client).to receive(:run).and_return(csml_response)
-        processor.perform
+        perform_enqueued_jobs(only: Conversations::ActivityMessageJob) do
+          processor.perform
+        end
         expect(conversation.messages.last.content).to eql("Assign team id #{invalid_team_id} failed")
-        expect(conversation.messages.last.content_type).to eql('integrations')
-        expect(conversation.messages.last.content_attributes.to_s).to include('Component.transferteam')
         expect(conversation.reload.team_id).to eql(nil)
       end
     end

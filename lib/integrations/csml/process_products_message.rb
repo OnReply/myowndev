@@ -29,45 +29,21 @@ module Integrations::Csml::ProcessProductsMessage
       content = "Assign agent id #{message_payload['content']['id']} failed"
     end
 
-    conversation.messages.create!(
-      {
-        message_type: :outgoing,
-        account_id: conversation.account_id,
-        inbox_id: conversation.inbox_id,
-        content: content,
-        content_type: 'integrations',
-        content_attributes: { 
-          type: 'transferagent',
-          id: message_payload['content']['id'],
-          message_payload: message_payload,
-        },
-        sender: agent_bot
-      }
-    )
+    Conversations::ActivityMessageJob.perform_later(conversation, activity_message_params(conversation,content))
   end
-  
+
   def process_assign_team(message_payload, conversation)
     if AgentBots::ActionService.new(conversation.account, conversation).assign_team([message_payload['content']['id'].to_i])
       content = "Assign team id #{message_payload['content']['id']}"
     else
       content = "Assign team id #{message_payload['content']['id']} failed"
     end
-
-    conversation.messages.create!(
-      {
-        message_type: :outgoing,
-        account_id: conversation.account_id,
-        inbox_id: conversation.inbox_id,
-        content: content,
-        content_type: 'integrations',
-        content_attributes: { 
-          type: 'transferteam',
-          id: message_payload['content']['id'],
-          message_payload: message_payload,
-        },
-        sender: agent_bot
-      }
-    )
+    
+    Conversations::ActivityMessageJob.perform_later(conversation, activity_message_params(conversation,content))
+  end
+  
+  def activity_message_params(conversation, content)
+    { account_id: conversation.account_id, inbox_id: conversation.inbox_id, message_type: :activity, content: content }
   end
 
   def process_products_messages(message_payload, conversation)
