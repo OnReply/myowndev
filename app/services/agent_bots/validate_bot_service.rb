@@ -72,6 +72,26 @@ class AgentBots::ValidateBotService
             }
           ]
         },
+        "AddLabels": {
+          "params": [
+            {
+              "value": {
+                "required": true,
+                "type": "Array",
+              }
+            }
+          ]
+        },
+        "RemoveLabels": {
+          "params": [
+            {
+              "value": {
+                "required": true,
+                "type": "Array",
+              }
+            }
+          ]
+        },
       },
       flows: [
         {

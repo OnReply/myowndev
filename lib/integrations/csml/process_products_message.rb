@@ -15,11 +15,23 @@ module Integrations::Csml::ProcessProductsMessage
       process_assign_team(message_payload, conversation)
     when 'Component.transferagent'
       process_assign_agent(message_payload, conversation)
+    when 'Component.addlabels'
+      process_add_labels(message_payload, conversation)
+    when 'Component.removelabels'
+      process_remove_labels(message_payload, conversation)
     when 'image'
       process_image_messages(message_payload, conversation)
     when 'file'
       process_file_messages(message_payload, conversation)
     end
+  end
+
+  def process_add_labels(message_payload, conversation)
+    AgentBots::ActionService.new(conversation.account, conversation).add_label(message_payload['content']['labels'])
+  end
+
+  def process_remove_labels(message_payload, conversation)
+    AgentBots::ActionService.new(conversation.account, conversation).remove_label(message_payload['content']['labels'])
   end
 
   def process_assign_agent(message_payload, conversation)
