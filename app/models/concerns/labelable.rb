@@ -16,6 +16,12 @@ module Labelable
     sync_contact_conversations_labels()
   end
 
+  def remove_labels(names_to_remove = nil)
+    filtered_labels = labels.select { |label| !names_to_remove.include?(label.name) }
+    update!(label_list: filtered_labels)
+    sync_contact_conversations_labels()
+  end
+
   def labels_list_array
     labels.pluck(:name)
   end

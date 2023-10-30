@@ -105,6 +105,12 @@ class ActionService
     @message = mb.perform
   end
 
+  def remove_label(labels)
+    return if labels.empty?
+
+    @conversation.reload.remove_labels(labels)
+  end
+
   private
 
   def agent_belongs_to_inbox?(agent_ids)

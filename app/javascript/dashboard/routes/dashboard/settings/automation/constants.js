@@ -118,6 +118,11 @@ export const AUTOMATIONS = {
         name: 'Send Whatsapp Template',
         attributeI18nKey: 'SEND_WHATSAPP_TEMPLATE',
       },
+      {
+        key: 'remove_label',
+        name: 'Remove a label',
+        attributeI18nKey: 'REMOVE_LABEL',
+      },
     ],
   },
   conversation_created: {
@@ -635,5 +640,10 @@ export const AUTOMATION_ACTION_TYPES = [
     key: 'send_whatsapp_template',
     label: 'Select Whatsapp Template',
     inputType: 'template_picker',
+  },
+  {
+    key: 'remove_label',
+    label: 'Remove a label',
+    inputType: 'multi_select',
   },
 ];
