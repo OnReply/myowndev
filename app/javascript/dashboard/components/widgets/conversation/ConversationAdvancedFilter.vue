@@ -80,6 +80,7 @@ import { mapGetters } from 'vuex';
 import { filterAttributeGroups } from './advancedFilterItems';
 import filterMixin from 'shared/mixins/filterMixin';
 import * as OPERATORS from 'dashboard/components/widgets/FilterInput/FilterOperatorTypes.js';
+import { CONVERSATION_PRIORITY } from 'shared/constants/messages';
 import { CONVERSATION_EVENTS } from '../../../helper/AnalyticsHelper/events';
 
 export default {
@@ -141,6 +142,24 @@ export default {
       allCustomAttributes: [],
       attributeModel: 'conversation_attribute',
       filtersFori18n: 'FILTER',
+      priorityOptions: [
+        {
+          id: CONVERSATION_PRIORITY.URGENT,
+          name: this.$t('CONVERSATION.PRIORITY.OPTIONS.URGENT'),
+        },
+        {
+          id: CONVERSATION_PRIORITY.HIGH,
+          name: this.$t('CONVERSATION.PRIORITY.OPTIONS.HIGH'),
+        },
+        {
+          id: CONVERSATION_PRIORITY.MEDIUM,
+          name: this.$t('CONVERSATION.PRIORITY.OPTIONS.MEDIUM'),
+        },
+        {
+          id: CONVERSATION_PRIORITY.LOW,
+          name: this.$t('CONVERSATION.PRIORITY.OPTIONS.LOW'),
+        },
+      ],
     };
   },
   computed: {
@@ -300,6 +319,8 @@ export default {
           return languages;
         case 'country_code':
           return countries;
+        case 'priority':
+          return this.priorityOptions;
         default:
           return undefined;
       }

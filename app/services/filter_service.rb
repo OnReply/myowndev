@@ -49,6 +49,10 @@ class FilterService
       query_hash['values'].map { |x| Message.message_types[x.to_sym] }
     when 'content'
       string_filter_values(query_hash)
+    when 'priority'
+      return Conversation.priorities.values if query_hash['values'].include?('all')
+
+      query_hash['values'].map { |x| Conversation.priorities[x.to_sym] }
     else
       case_insensitive_values(query_hash)
     end
