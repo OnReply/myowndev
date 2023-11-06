@@ -26,6 +26,7 @@
         "BUILDER": {
             "CREATE": "Create new template",
             "SUCCESSFUL_SUBMISSION": "Template created successfully. It'll appear after syncing. Thanks for your patience.",
+            "SUCCESSFUL_EDIT": "Template edited successfully. Changes appear after syncing. Thanks for your patience.",
             "SUCCESSFUL_DELETION": "Template deleted successfully. It'll disappear after syncing. Thanks for your patience.",
             "DELETE": "Delete",
             "DELETE_DESCRIPTION": "Are you sure you want to delete this template? This action cannot be undone.",
@@ -36,7 +37,8 @@
                 "HEADER_TYPE": "Header type",
                 "HEADER_TYPES": {
                     "TEXT": "Text",
-                    "IMAGE": "Image"
+                    "IMAGE": "Image",
+                    "NONE": "None"
                 },
                 "HEADER": "Header",
                 "BODY": "Body",

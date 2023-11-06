@@ -204,7 +204,7 @@ export default {
           query_operator: condition.query_operator || 'and',
           values: [
             ...this.getConditionDropdownValues(condition.attribute_key),
-          ].filter(item => [...condition.values].includes(item.id)),
+          ].filter(item => [...condition.values].includes(`${item.id}`)),
         };
       });
       return conditions;
@@ -218,12 +218,12 @@ export default {
       if (inputType === 'multi_select' || inputType === 'search_select') {
         actionParams = [
           ...this.getActionDropdownValues(action.action_name),
-        ].filter(item => [...params].includes(item.id));
+        ].filter(item => [...params].includes(`${item.id}`));
       } else if (inputType === 'team_message') {
         actionParams = {
           team_ids: [
             ...this.getActionDropdownValues(action.action_name),
-          ].filter(item => [...params[0].team_ids].includes(item.id)),
+          ].filter(item => [...params[0].team_ids].includes(`${item.id}`)),
           message: params[0].message,
         };
       } else actionParams = [...params];

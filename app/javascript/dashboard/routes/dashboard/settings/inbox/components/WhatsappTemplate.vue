@@ -27,6 +27,7 @@
             :inbox-id="inbox.id"
             :show="showWhatsAppTemplatesBuilderModal"
             :template="template"
+            :edit-mode="editMode"
             @disable-submit-button="toggleSubmitButton"
             ref="templateBuilder"
           />
@@ -34,13 +35,13 @@
         <div class="modal-footer">
           <div class="medium-12 row text-center">
             <woot-submit-button
-              v-if="!editMode"
+              
               :button-text="$t('EMAIL_TRANSCRIPT.SUBMIT')"
               @click="submitForm"
               :disabled="isDisabled"
             />
              <woot-button
-              v-else
+              
               :button-text="$t('EMAIL_TRANSCRIPT.SUBMIT')"
               @click="deleteTemplate"
               color-scheme="alert"
@@ -116,7 +117,7 @@ export default {
       this.isDisabled = true;
       const response = await InboxesAPI.createTemplate(this.inbox.id, this.template, this.$refs.templateBuilder.headerType, this.$refs.templateBuilder.imageFile, this.$refs.templateBuilder.buttonType, this.$refs.templateBuilder.buttonData)
       if(response.data.message) {
-        this.showAlert(this.$t('WHATSAPP_TEMPLATES.BUILDER.SUCCESSFUL_SUBMISSION'))
+        this.showAlert(this.editMode? this.$t('WHATSAPP_TEMPLATES.BUILDER.SUCCESSFUL_EDIT') : this.$t('WHATSAPP_TEMPLATES.BUILDER.SUCCESSFUL_SUBMISSION'))
         this.template = this.defaultTempate;
         this.onClose();
       } else {
