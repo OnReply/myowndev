@@ -296,6 +296,19 @@ start:
 
 ```
 
+## Assign agent
+CSML Code example:
+```ruby
+start:
+  say "Hello stranger! 👋"
+  say Component.TransferAgent(id="1")
+  goto end
+
+```
+
+
+
+# Tests
 
 
 # Tests
