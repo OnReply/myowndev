@@ -63,6 +63,15 @@ const primaryMenuItems = accountId => [
     toStateName: 'ecommerece_dashboard',
     roles: ['administrator'],
   },
+  {
+    icon: 'ticket',
+    key: 'tickets',
+    label: 'TICKETS',
+    featureFlag: FEATURE_FLAGS.TICKETS,
+    toState: frontendURL(`accounts/${accountId}/tickets`),
+    toStateName: 'tickets_iframe',
+    roles: ['administrator', 'agent'],
+  },
 ];
 
 export default primaryMenuItems;
