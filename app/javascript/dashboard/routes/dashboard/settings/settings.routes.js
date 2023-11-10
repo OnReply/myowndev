@@ -18,6 +18,7 @@ import reports from './reports/reports.routes';
 import store from '../../../store';
 import teams from './teams/teams.routes';
 import ecommerece from './ecommerece/ecommerece.routes';
+import tickets from './tickets/tickets.routes';
 
 export default {
   routes: [
@@ -49,6 +50,7 @@ export default {
     ...profile.routes,
     ...reports.routes,
     ...teams.routes,
-    ...ecommerece.routes
+    ...ecommerece.routes,
+    ...tickets.routes,
   ],
 };
