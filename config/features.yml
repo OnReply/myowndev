@@ -57,3 +57,5 @@
   enabled: false
 - name: ecommerece
   enabled: false
+- name: tickets
+  enabled: false
