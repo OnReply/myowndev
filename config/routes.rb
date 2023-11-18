@@ -408,6 +408,7 @@ Rails.application.routes.draw do
       end
       resources :users, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
         delete :avatar, on: :member, action: :destroy_avatar
+        get :export_csv, on: :collection, action: :export_users
       end
 
       resources :access_tokens, only: [:index, :show]
