@@ -102,6 +102,8 @@ class ConversationFinder
       @conversations = current_user.participating_conversations.where(account_id: current_account.id)
     when 'unattended'
       @conversations = @conversations.unattended
+    when 'unread'
+      @conversations = @conversations.unread
     end
     @conversations
   end
@@ -143,9 +145,9 @@ class ConversationFinder
 
   def set_count_for_all_conversations
     [
-      @conversations.assigned_to(current_user).count,
-      @conversations.unassigned.count,
-      @conversations.count
+      @conversations.assigned_to(current_user).length,
+      @conversations.unassigned.length,
+      @conversations.length
     ]
   end
 
