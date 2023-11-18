@@ -61,6 +61,29 @@ class SuperAdmin::UsersController < SuperAdmin::ApplicationController
     permitted_params.delete(:password) if permitted_params[:password].blank?
     permitted_params
   end
+  
+  def export_users
+    @users = User.all # You can customize this query as needed
+
+    respond_to do |format|
+      format.csv do
+        headers['Content-Type'] = 'text/csv'
+        headers['Content-Disposition'] = 'attachment; filename="users.csv"'
+
+        csv_data = CSV.generate do |csv|
+          csv << ['User Name', 'User Email', 'account ID', 'Account Status'] # Add headers
+          @users.each do |user|
+            user.accounts.each do |account|
+
+              csv << [user.name, user.email, account.id , account.status] # Add user data
+            end
+          end
+        end
+
+        render plain: csv_data
+      end
+    end
+  end
 
   # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
   # for more information
