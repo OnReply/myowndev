@@ -31,6 +31,7 @@ import teamsSettings from './teamsSettings.json';
 import whatsappTemplates from './whatsappTemplates.json';
 import whatsappProfile from './whatsappProfile.json';
 import ecommerece from './ecommerece.json';
+import tickets from './tickets.json'
 
 export default {
   ...advancedFilters,
@@ -65,5 +66,6 @@ export default {
   ...teamsSettings,
   ...whatsappTemplates,
   ...whatsappProfile,
-  ...ecommerece
+  ...ecommerece,
+  ...tickets,
 };

@@ -48,6 +48,7 @@
         selectedLocale: '<%= I18n.locale %>',
         ecommereceUrl: '<%= ENV.fetch('ECOMMERECE_URL', nil) %>',
         randomString: '<%= ENV.fetch('ECOMMERECE_SALT', nil) %>',
+        ticketsUrl: '<%= ENV.fetch('TICKETS_URL', nil) %>',
         <% if current_user.present? %>
           refreshedToken: [],
         <% end %>
