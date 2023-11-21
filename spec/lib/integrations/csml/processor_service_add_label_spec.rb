@@ -5,7 +5,7 @@ describe Integrations::Csml::ProcessorService do
 
   let(:account) { create(:account) }
   let(:inbox) { create(:inbox, account: account) }
-  let(:team) {create(:team, account: account)}
+  let(:team) { create(:team, account: account) }
   let(:agent_bot) { create(:agent_bot, :skip_validate, bot_type: 'csml', account: account) }
   let(:agent_bot_inbox) { create(:agent_bot_inbox, agent_bot: agent_bot, inbox: inbox, account: account) }
   let(:conversation) { create(:conversation, account: account, status: :pending) }
@@ -22,12 +22,12 @@ describe Integrations::Csml::ProcessorService do
     end
 
     context 'should add label' do
-      it 'should add one label' do
+      it 'adds one label' do
         csml_response = ActiveSupport::HashWithIndifferentAccess.new(
           messages: [{
             payload: {
               content_type: 'Component.addlabels',
-              content: { labels: [ 'label1' ] }
+              content: { value: ['label1'] }
             }
           }]
         )
@@ -38,12 +38,12 @@ describe Integrations::Csml::ProcessorService do
         expect(conversation.reload.label_list).to eql(['label1'])
       end
 
-      it 'should add two label' do
+      it 'adds two label' do
         csml_response = ActiveSupport::HashWithIndifferentAccess.new(
           messages: [{
             payload: {
               content_type: 'Component.addlabels',
-              content: { labels: [ 'label1', 'label2' ] }
+              content: { value: %w[label1 label2] }
             }
           }]
         )
@@ -51,7 +51,7 @@ describe Integrations::Csml::ProcessorService do
         perform_enqueued_jobs(only: Conversations::ActivityMessageJob) do
           processor.perform
         end
-        expect(conversation.reload.label_list).to eql(['label1', 'label2'])
+        expect(conversation.reload.label_list).to eql(%w[label1 label2])
       end
     end
   end
