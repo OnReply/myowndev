@@ -307,7 +307,6 @@ GEM
       gapic-common (>= 0.17.1, < 2.a)
       google-cloud-errors (~> 1.0)
     google-protobuf (3.23.1-arm64-darwin)
-    google-protobuf (3.23.1-x86_64-linux)
     googleapis-common-protos (1.4.0)
       google-protobuf (~> 3.14)
       googleapis-common-protos-types (~> 1.2)
@@ -324,9 +323,6 @@ GEM
     groupdate (6.2.1)
       activesupport (>= 5.2)
     grpc (1.55.0)
-      google-protobuf (~> 3.23)
-      googleapis-common-protos-types (~> 1.0)
-    grpc (1.55.0-x86_64-linux)
       google-protobuf (~> 3.23)
       googleapis-common-protos-types (~> 1.0)
     haikunator (1.1.1)
@@ -396,10 +392,7 @@ GEM
     letter_opener (1.8.1)
       launchy (>= 2.2, < 3)
     libdatadog (2.0.0.1.0)
-    libdatadog (2.0.0.1.0-x86_64-linux)
     libddwaf (1.8.2.0.0-arm64-darwin)
-      ffi (~> 1.0)
-    libddwaf (1.8.2.0.0-x86_64-linux)
       ffi (~> 1.0)
     line-bot-api (1.28.0)
     liquid (5.4.0)
@@ -456,8 +449,6 @@ GEM
     newrelic_rpm (8.16.0)
     nio4r (2.5.9)
     nokogiri (1.15.2-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.15.2-x86_64-linux)
       racc (~> 1.4)
     oauth (1.1.0)
       oauth-tty (~> 1.0, >= 1.0.1)
@@ -776,7 +767,6 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
-  x86_64-linux
 
 DEPENDENCIES
   active_record_query_trace
