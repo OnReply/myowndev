@@ -1,5 +1,0 @@
-FROM chatwoot/chatwoot:v2.17.0
-COPY . /app
-RUN chmod +x docker/entrypoints/rails.sh
-ENTRYPOINT ["docker/entrypoints/rails.sh"]
-CMD bundle exec sidekiq -C config/sidekiq.yml
