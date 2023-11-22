@@ -51,7 +51,47 @@ class AgentBots::ValidateBotService
               }
             },
           ]
-        }
+        },
+        "TransferTeam": {
+          "params": [
+            {
+              "id": {
+                "required": true,
+                "type": "String",
+              }
+            }
+          ]
+        },
+        "TransferAgent": {
+          "params": [
+            {
+              "id": {
+                "required": true,
+                "type": "String",
+              }
+            }
+          ]
+        },
+        "AddLabels": {
+          "params": [
+            {
+              "value": {
+                "required": true,
+                "type": "Array",
+              }
+            }
+          ]
+        },
+        "RemoveLabels": {
+          "params": [
+            {
+              "value": {
+                "required": true,
+                "type": "Array",
+              }
+            }
+          ]
+        },
       },
       flows: [
         {

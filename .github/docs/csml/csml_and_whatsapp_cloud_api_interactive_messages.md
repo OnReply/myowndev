@@ -285,6 +285,52 @@ start:
 | products | `{"section_title": "section title...", "skus": ["5r4tap9sy6"]}` | Maximum 30 products and 10 sections  | Yes |
 | footer | footer testing..| Maximum 60 characters. | No |
 
+
+## Assign team
+CSML Code example:
+```ruby
+start:
+  say "Hello stranger! 👋"
+  say Component.TransferTeam(id="1")
+  goto end
+
+```
+
+## Assign agent
+CSML Code example:
+```ruby
+start:
+  say "Hello stranger! 👋"
+  say Component.TransferAgent(id="1")
+  goto end
+
+```
+
+
+## Add Labels
+CSML Code example:
+```ruby
+start:
+  say "Hello stranger! 👋"
+  say Component.AddLabels(value=["label1", "label2"])
+  goto end
+
+```
+
+## Remove Labels
+CSML Code example:
+```ruby
+start:
+  say "Hello stranger! 👋"
+  say Component.RemoveLabels(value=["label1", "label2"])
+  goto end
+
+```
+
+
+# Tests
+
+
 # Tests
 
 ## Files
@@ -298,6 +344,10 @@ start:
 - spec/services/whatsapp/interactive_messages/providers/360_dialog/products_spec.rb
 - spec/services/whatsapp/interactive_messages/providers/cloud/products_spec.rb
 - spec/requests/webhooks/whatsapp_controller/bot_csml_flow/products_flow_spec.rb
+- spec/lib/integrations/csml/processor_service_assing_agent_spec.rb
+- spec/lib/integrations/csml/processor_service_assing_team_spec.rb
+- spec/lib/integrations/csml/processor_service_add_label_spec.rb
+- spec/lib/integrations/csml/processor_service_remove_label_spec.rb
 
 # Documentations references
 - https://docs.csml.dev/language/sending-receiving-messages/message-payloads
