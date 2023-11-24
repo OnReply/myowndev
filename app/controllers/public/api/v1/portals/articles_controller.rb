@@ -9,7 +9,8 @@ class Public::Api::V1::Portals::ArticlesController < Public::Api::V1::Portals::B
     return redirect_to unauthorized_path if current_user.nil?
     @articles = @portal.articles
     @articles = @articles.search(list_params) if list_params.present?
-    @articles.order(position: :asc)
+    order_by_sort_param
+    @articles.page(list_params[:page]) if list_params[:page].present?
   end
 
   def show
@@ -17,6 +18,14 @@ class Public::Api::V1::Portals::ArticlesController < Public::Api::V1::Portals::B
   end
 
   private
+
+  def order_by_sort_param
+    @articles = if list_params[:sort].present? && list_params[:sort] == 'views'
+                  @articles.order_by_views
+                else
+                  @articles.order_by_position
+                end
+  end
 
   def set_article
     @article = @portal.articles.find_by(slug: permitted_params[:article_slug])
@@ -33,12 +42,8 @@ class Public::Api::V1::Portals::ArticlesController < Public::Api::V1::Portals::B
     )
   end
 
-  def portal
-    @portal ||= Portal.find_by!(slug: permitted_params[:slug], archived: false)
-  end
-
   def list_params
-    params.permit(:query, :locale)
+    params.permit(:query, :locale, :sort, :status)
   end
 
   def permitted_params

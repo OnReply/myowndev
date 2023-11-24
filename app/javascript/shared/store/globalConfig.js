@@ -14,6 +14,7 @@ const {
   INSTALLATION_NAME: installationName,
   LOGO_THUMBNAIL: logoThumbnail,
   LOGO: logo,
+  LOGO_DARK: logoDark,
   PRIVACY_URL: privacyURL,
   TERMS_URL: termsURL,
   WIDGET_BRAND_URL: widgetBrandURL,
@@ -39,6 +40,7 @@ const state = {
   hCaptchaSiteKey,
   installationName,
   logo,
+  logoDark,
   logoThumbnail,
   privacyURL,
   termsURL,
@@ -50,6 +52,7 @@ export const getters = {
   get: $state => $state,
   isOnChatwootCloud: $state => $state.deploymentEnv === 'cloud',
   isACustomBrandedInstance: $state => $state.installationName !== 'Chatwoot',
+  isAChatwootInstance: $state => $state.installationName === 'Chatwoot',
 };
 
 export const actions = {};

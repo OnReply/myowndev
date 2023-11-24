@@ -3,7 +3,8 @@
     "TITLE": "Login to Chatwoot",
     "EMAIL": {
       "LABEL": "El. paštas",
-      "PLACEHOLDER": "example@companyname.com"
+      "PLACEHOLDER": "email pavyzdys: someone@example.com",
+      "ERROR": "Prašau įveskite teisingą el. pašto adresą"
     },
     "PASSWORD": {
       "LABEL": "Slaptažodis",
@@ -15,12 +16,12 @@
       "UNAUTH": "Username or password is incorrect. Please try again."
     },
     "OAUTH": {
-      "GOOGLE_LOGIN": "Login with Google",
-      "BUSINESS_ACCOUNTS_ONLY": "Please use your company email address to login",
-      "NO_ACCOUNT_FOUND": "We couldn't find an account for your email address."
+      "GOOGLE_LOGIN": "Prisijungti su Google",
+      "BUSINESS_ACCOUNTS_ONLY": "Norėdami prisijungti, naudokite savo įmonės el. pašto adresą",
+      "NO_ACCOUNT_FOUND": "Nepavyko rasti paskyros pagal jūsų el. pašto adresą."
     },
-    "FORGOT_PASSWORD": "Forgot your password?",
-    "CREATE_NEW_ACCOUNT": "Create new account",
+    "FORGOT_PASSWORD": "Pamiršote slaptažodį?",
+    "CREATE_NEW_ACCOUNT": "Sukurti naują paskyrą",
     "SUBMIT": "Prisijungti"
   }
 }

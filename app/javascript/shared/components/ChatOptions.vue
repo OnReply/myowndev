@@ -1,10 +1,7 @@
 <template>
-  <div
-    class="options-message chat-bubble agent"
-    :class="$dm('bg-white', 'dark:bg-slate-700')"
-  >
+  <div class="options-message chat-bubble agent bg-white dark:bg-slate-700">
     <div class="card-body">
-      <h4 class="title" :class="$dm('text-black-900', 'dark:text-slate-50')">        
+      <h4 class="title text-black-900 dark:text-slate-50">        
 
           <div v-if="isImageFile()">
             <img
@@ -38,7 +35,7 @@
 
 <script>
 import ChatOption from 'shared/components/ChatOption';
-import darkModeMixin from 'widget/mixins/darkModeMixin.js';
+import messageFormatterMixin from 'shared/mixins/messageFormatterMixin';
 import FileBubble from 'widget/components/FileBubble';
 
 export default {
@@ -46,7 +43,7 @@ export default {
     ChatOption,
     FileBubble
   },
-  mixins: [darkModeMixin],
+  mixins: [messageFormatterMixin],
   props: {
     title: {
       type: String,

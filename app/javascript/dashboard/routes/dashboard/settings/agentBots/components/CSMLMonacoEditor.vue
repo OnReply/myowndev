@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-import LoadingState from 'dashboard/components/widgets/LoadingState';
+import LoadingState from 'dashboard/components/widgets/LoadingState.vue';
 import { mapGetters } from 'vuex';
 import md5 from 'md5';
 

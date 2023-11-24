@@ -5,7 +5,9 @@ class ConversationFinder
   SORT_OPTIONS = {
     latest: 'latest',
     sort_on_created_at: 'sort_on_created_at',
-    last_user_message_at: 'last_user_message_at'
+    last_user_message_at: 'last_user_message_at',
+    sort_on_priority: 'sort_on_priority',
+    sort_on_waiting_since: 'sort_on_waiting_since'
   }.with_indifferent_access
 
   # assumptions

@@ -12,8 +12,7 @@
       "TABLE_HEADER": [
         "User",
         "Action",
-        "IP Address",
-        "Time"
+        "IP Address"
       ]
     },
     "API": {

@@ -40,7 +40,7 @@
           />
         </div>
         <div class="features-item">
-          <h2 class="block-title">
+          <h2 class="block-title text-black-900 dark:text-slate-200">
             <span class="emoji">💬</span>
             <span class="conversation--title">{{
               $t('ONBOARDING.ALL_CONVERSATION.TITLE')
@@ -51,7 +51,7 @@
           </p>
         </div>
         <div class="features-item">
-          <h2 class="block-title">
+          <h2 class="block-title text-black-900 dark:text-slate-200">
             <span class="emoji">👥</span>
             {{ $t('ONBOARDING.TEAM_MEMBERS.TITLE') }}
           </h2>
@@ -63,7 +63,7 @@
           </router-link>
         </div>
         <div class="features-item">
-          <h2 class="block-title">
+          <h2 class="block-title text-black-900 dark:text-slate-200">
             <span class="emoji">📥</span>{{ $t('ONBOARDING.INBOXES.TITLE') }}
           </h2>
           <p class="intro-body">
@@ -74,7 +74,7 @@
           </router-link>
         </div>
         <div class="features-item">
-          <h2 class="block-title">
+          <h2 class="block-title text-black-900 dark:text-slate-200">
             <span class="emoji">🔖</span>{{ $t('ONBOARDING.LABELS.TITLE') }}
           </h2>
           <p class="intro-body">
@@ -122,7 +122,7 @@ export default {
 }
 
 .scroll-wrap {
-  padding: var(--space-larger);
+  padding: var(--space-larger) 8.5rem;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

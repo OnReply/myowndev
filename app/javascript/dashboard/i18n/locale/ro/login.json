@@ -2,8 +2,9 @@
   "LOGIN": {
     "TITLE": "Conectează-te la Chatwoot",
     "EMAIL": {
-      "LABEL": "Email",
-      "PLACEHOLDER": "example@companyname.com"
+      "LABEL": "E-mail",
+      "PLACEHOLDER": "exemplu@companyname.com",
+      "ERROR": "Vă rugăm să introduceți o adresă de e-mail validă"
     },
     "PASSWORD": {
       "LABEL": "Parola",
