@@ -9,7 +9,7 @@
 #  auto_assignment_config        :jsonb
 #  business_name                 :string
 #  channel_type                  :string
-#  csat_survey_enabled           :boolean          default(FALSE)
+#  csat_survey_enabled           :boolean          default(TRUE)
 #  email_address                 :string
 #  enable_auto_assignment        :boolean          default(TRUE)
 #  enable_email_collect          :boolean          default(TRUE)

@@ -61,4 +61,16 @@ class InboxPolicy < ApplicationPolicy
   def avatar?
     @account_user.administrator?
   end
+
+  def template?
+    @account_user.administrator?
+  end
+
+  def delete_template?
+    @account_user.administrator?
+  end
+
+  def update_profile_picture?
+    @account_user.administrator?
+  end
 end

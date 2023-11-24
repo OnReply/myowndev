@@ -6,7 +6,6 @@
     :class="{ 'app-rtl--wrapper': isRTLView }"
     :dir="isRTLView ? 'rtl' : 'ltr'"
   >
-    <update-banner :latest-chatwoot-version="latestChatwootVersion" />
     <template v-if="currentAccountId">
       <payment-pending-banner />
       <upgrade-banner />
@@ -29,7 +28,6 @@ import { mapGetters } from 'vuex';
 import AddAccountModal from '../dashboard/components/layout/sidebarComponents/AddAccountModal.vue';
 import LoadingState from './components/widgets/LoadingState.vue';
 import NetworkNotification from './components/NetworkNotification.vue';
-import UpdateBanner from './components/app/UpdateBanner.vue';
 import UpgradeBanner from './components/app/UpgradeBanner.vue';
 import PaymentPendingBanner from './components/app/PaymentPendingBanner.vue';
 import vueActionCable from './helper/actionCable';
@@ -40,6 +38,7 @@ import {
   registerSubscription,
   verifyServiceWorkerExistence,
 } from './helper/pushHelper';
+import { refreshToken } from './store/modules/conversations/helpers/tokenRefresh';
 
 export default {
   name: 'App',
@@ -48,7 +47,6 @@ export default {
     AddAccountModal,
     LoadingState,
     NetworkNotification,
-    UpdateBanner,
     PaymentPendingBanner,
     WootSnackbarBox,
     UpgradeBanner,
@@ -87,6 +85,7 @@ export default {
     currentAccountId() {
       if (this.currentAccountId) {
         this.initializeAccount();
+        refreshToken(this.currentAccountId);
       }
     },
   },
@@ -111,12 +110,10 @@ export default {
       this.$store.dispatch('setActiveAccount', {
         accountId: this.currentAccountId,
       });
-      const { locale, latest_chatwoot_version: latestChatwootVersion } =
-        this.getAccount(this.currentAccountId);
+      const { locale } = this.getAccount(this.currentAccountId);
       const { pubsub_token: pubsubToken } = this.currentUser || {};
       this.setLocale(locale);
       this.updateRTLDirectionView(locale);
-      this.latestChatwootVersion = latestChatwootVersion;
       vueActionCable.init(pubsubToken);
 
       verifyServiceWorkerExistence(registration =>

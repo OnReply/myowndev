@@ -418,6 +418,12 @@
     <div v-if="selectedTabKey === 'botConfiguration'">
       <bot-configuration :inbox="inbox" />
     </div>
+    <div v-if="selectedTabKey === 'templates'">
+      <whatsapp-template :inbox="inbox" />
+    </div>
+    <div v-if="selectedTabKey === 'profile'">
+      <whatsapp-profile-page :inbox="inbox"/>
+    </div>
   </div>
 </template>
 
@@ -429,15 +435,17 @@ import alertMixin from 'shared/mixins/alertMixin';
 import SettingIntroBanner from 'dashboard/components/widgets/SettingIntroBanner.vue';
 import SettingsSection from '../../../../components/SettingsSection.vue';
 import inboxMixin from 'shared/mixins/inboxMixin';
-import FacebookReauthorize from './facebook/Reauthorize.vue';
-import PreChatFormSettings from './PreChatForm/Settings.vue';
-import WeeklyAvailability from './components/WeeklyAvailability.vue';
-import GreetingsEditor from 'shared/components/GreetingsEditor.vue';
-import ConfigurationPage from './settingsPage/ConfigurationPage.vue';
-import CollaboratorsPage from './settingsPage/CollaboratorsPage.vue';
-import WidgetBuilder from './WidgetBuilder.vue';
-import BotConfiguration from './components/BotConfiguration.vue';
+import FacebookReauthorize from './facebook/Reauthorize';
+import PreChatFormSettings from './PreChatForm/Settings';
+import WeeklyAvailability from './components/WeeklyAvailability';
+import GreetingsEditor from 'shared/components/GreetingsEditor';
+import ConfigurationPage from './settingsPage/ConfigurationPage';
+import CollaboratorsPage from './settingsPage/CollaboratorsPage';
+import WidgetBuilder from './WidgetBuilder';
+import BotConfiguration from './components/BotConfiguration';
+import WhatsappTemplate from './components/WhatsappTemplate';
 import { FEATURE_FLAGS } from '../../../../featureFlags';
+import WhatsappProfilePage from './settingsPage/WhatsappProfilePage.vue';
 import SenderNameExamplePreview from './components/SenderNameExamplePreview.vue';
 
 export default {
@@ -453,6 +461,8 @@ export default {
     WeeklyAvailability,
     WidgetBuilder,
     SenderNameExamplePreview,
+    WhatsappTemplate,
+    WhatsappProfilePage
   },
   mixins: [alertMixin, configMixin, inboxMixin],
   data() {
@@ -549,7 +559,19 @@ export default {
           },
         ];
       }
-
+      if (this.isAWhatsAppCloudChannel) {
+        visibleToAllChannelTabs = [
+          ...visibleToAllChannelTabs,
+          {
+            key: 'templates',
+            name: this.$t('INBOX_MGMT.TABS.TEMPLATES'),
+          },
+          {
+            key: 'profile',
+            name: this.$t('INBOX_MGMT.TABS.PROFILE'),
+          },
+        ];
+      }
       if (
         this.isFeatureEnabledonAccount(
           this.accountId,
@@ -573,7 +595,6 @@ export default {
     inbox() {
       return this.$store.getters['inboxes/getInbox'](this.currentInboxId);
     },
-
     inboxName() {
       if (this.isATwilioSMSChannel || this.isATwilioWhatsAppChannel) {
         return `${this.inbox.name} (${

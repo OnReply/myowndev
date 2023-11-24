@@ -11,9 +11,9 @@
       "PLACEHOLDER": "Hasło"
     },
     "API": {
-      "SUCCESS_MESSAGE": "Logowanie udane",
-      "ERROR_MESSAGE": "Nie można połączyć się z serwerem Woot. Spróbuj ponownie.",
-      "UNAUTH": "Nazwa użytkownika lub hasło jest nieprawidłowe. Spróbuj ponownie."
+      "SUCCESS_MESSAGE": "Login successful",
+      "ERROR_MESSAGE": "Could not connect to Social Bot Server. Please try again.",
+      "UNAUTH": "Username or password is incorrect. Please try again."
     },
     "OAUTH": {
       "GOOGLE_LOGIN": "Zaloguj się przez Google",

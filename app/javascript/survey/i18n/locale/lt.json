@@ -11,8 +11,8 @@
       "BUTTON_TEXT": "Pateikite atsiliepimą"
     },
     "API": {
-      "SUCCESS_MESSAGE": "Apklausa sėkmingai atnaujinta",
-      "ERROR_MESSAGE": "Nepavyko prisijungti prie Woot serverio, bandykite dar kartą vėliau"
+      "SUCCESS_MESSAGE": "Survey updated successfully",
+      "ERROR_MESSAGE": "Nepavyko prisijungti prie Social Bot Serverio, bandykite dar kartą vėliau"
     }
   },
   "POWERED_BY": "Parengta pagal Chatwoot"

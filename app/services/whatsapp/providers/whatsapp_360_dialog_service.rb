@@ -1,4 +1,6 @@
 class Whatsapp::Providers::Whatsapp360DialogService < Whatsapp::Providers::BaseService
+  prepend ::Whatsapp::Providers::WhatsappCloudInteractiveMessages
+
   def send_message(phone_number, message)
     if message.attachments.present?
       send_attachment_message(phone_number, message)
@@ -50,6 +52,11 @@ class Whatsapp::Providers::Whatsapp360DialogService < Whatsapp::Providers::BaseS
   end
 
   private
+
+  # TODO: See if we can unify the API versions and for both paths and make it consistent with out facebook app API versions
+  def phone_id_path
+    "#{api_base_path}"
+  end
 
   def api_base_path
     # provide the environment variable when testing against sandbox : 'https://waba-sandbox.360dialog.io/v1'
@@ -108,10 +115,7 @@ class Whatsapp::Providers::Whatsapp360DialogService < Whatsapp::Providers::BaseS
         policy: 'deterministic',
         code: template_info[:lang_code]
       },
-      components: [{
-        type: 'body',
-        parameters: template_info[:parameters]
-      }]
+      components: get_template_components(template_info)
     }
   end
 
@@ -129,5 +133,29 @@ class Whatsapp::Providers::Whatsapp360DialogService < Whatsapp::Providers::BaseS
     )
 
     process_response(response)
+  end
+  def get_template_components(template_info)
+    template = []
+
+    if template_info[:image_url].present?
+      template << {
+        type: "header",
+        parameters: [
+          {
+            "type": "image",
+            "image": {
+              "link": template_info[:image_url]
+            }
+          }
+        ]
+      }
+    end
+
+    template << {
+      type: 'body',
+      parameters: template_info[:parameters]
+    }
+
+    template
   end
 end

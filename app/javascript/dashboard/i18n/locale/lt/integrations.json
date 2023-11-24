@@ -46,23 +46,23 @@
         "BUTTON_TEXT": "Redaguoti",
         "TITLE": "Redaguoti webhook",
         "API": {
-          "SUCCESS_MESSAGE": "Webhook konfigūracija sėkmingai atnaujinta",
-          "ERROR_MESSAGE": "Nepavyko prisijungti prie Woot serverio, bandykite dar kartą vėliau"
+          "SUCCESS_MESSAGE": "Webhook configuration updated successfully",
+          "ERROR_MESSAGE": "Nepavyko prisijungti prieSocial Bot Serverio, bandykite dar kartą vėliau"
         }
       },
       "ADD": {
         "CANCEL": "Atšaukti",
         "TITLE": "Pridėti naują webhook",
         "API": {
-          "SUCCESS_MESSAGE": "Webhook konfigūracija pridėta sėkmingai",
-          "ERROR_MESSAGE": "Nepavyko prisijungti prie Woot serverio, bandykite dar kartą vėliau"
+          "SUCCESS_MESSAGE": "Webhook configuration added successfully",
+          "ERROR_MESSAGE": "Nepavyko prisijungti prieSocial Bot Serverio, bandykite dar kartą vėliau"
         }
       },
       "DELETE": {
         "BUTTON_TEXT": "Ištrinti",
         "API": {
-          "SUCCESS_MESSAGE": "Webhook ištrintas sėkmingai",
-          "ERROR_MESSAGE": "Nepavyko prisijungti prie Woot serverio, bandykite dar kartą vėliau"
+          "SUCCESS_MESSAGE": "Webhook deleted successfully",
+          "ERROR_MESSAGE": "Nepavyko prisijungti prieSocial Bot Serverio, bandykite dar kartą vėliau"
         },
         "CONFIRM": {
           "TITLE": "Patvirtinti Ištrynimą",

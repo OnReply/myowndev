@@ -11,6 +11,7 @@ export const state = {
     isDeleting: false,
     isUpdating: false,
   },
+  templates: [],
 };
 
 export const getters = {
@@ -20,6 +21,9 @@ export const getters = {
   getUIFlags(_state) {
     return _state.uiFlags;
   },
+  getTemplates(_state) {
+    return _state.templates;
+  },
 };
 
 export const actions = {
@@ -28,6 +32,7 @@ export const actions = {
     try {
       const response = await AutomationAPI.get();
       commit(types.SET_AUTOMATIONS, response.data.payload);
+      commit(types.SET_TEMPLATES, response.data.templates)
     } catch (error) {
       // Ignore error
     } finally {
@@ -92,6 +97,7 @@ export const mutations = {
   },
   [types.ADD_AUTOMATION]: MutationHelpers.create,
   [types.SET_AUTOMATIONS]: MutationHelpers.set,
+  [types.SET_TEMPLATES]: MutationHelpers.setTemplates,
   [types.EDIT_AUTOMATION]: MutationHelpers.update,
   [types.DELETE_AUTOMATION]: MutationHelpers.destroy,
 };

@@ -103,19 +103,6 @@
           <woot-code :script="getAccountId" />
         </div>
       </div>
-      <div class="text-sm text-center p-4">
-        <div>{{ `v${globalConfig.appVersion}` }}</div>
-        <div v-if="hasAnUpdateAvailable && globalConfig.displayManifest">
-          {{
-            $t('GENERAL_SETTINGS.UPDATE_CHATWOOT', {
-              latestChatwootVersion: latestChatwootVersion,
-            })
-          }}
-        </div>
-        <div class="build-id">
-          <div>{{ `Build ${globalConfig.gitSha}` }}</div>
-        </div>
-      </div>
 
       <woot-submit-button
         class="button nice success button--fixed-top"

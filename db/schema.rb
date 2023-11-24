@@ -132,6 +132,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_14_111614) do
     t.jsonb "meta", default: {}
     t.string "slug", null: false
     t.integer "position"
+    t.string "video_url", default: ""
     t.index ["associated_article_id"], name: "index_articles_on_associated_article_id"
     t.index ["author_id"], name: "index_articles_on_author_id"
     t.index ["slug"], name: "index_articles_on_slug", unique: true
@@ -582,7 +583,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_14_111614) do
     t.string "out_of_office_message"
     t.string "timezone", default: "UTC"
     t.boolean "enable_email_collect", default: true
-    t.boolean "csat_survey_enabled", default: false
+    t.boolean "csat_survey_enabled", default: true
     t.boolean "allow_messages_after_resolved", default: true
     t.jsonb "auto_assignment_config", default: {}
     t.boolean "lock_to_single_conversation", default: false, null: false

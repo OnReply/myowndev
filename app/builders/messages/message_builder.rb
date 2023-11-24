@@ -9,7 +9,10 @@ class Messages::MessageBuilder
     @user = user
     @message_type = params[:message_type] || 'outgoing'
     @attachments = params[:attachments]
+    pp "*****" * 10
+    pp "*****" * 10
     @automation_rule = content_attributes&.dig(:automation_rule_id)
+    @image = params[:image] if params[:image].present? && params[:image].respond_to?(:read)
     return unless params.instance_of?(ActionController::Parameters)
 
     @in_reply_to = content_attributes&.dig(:in_reply_to)
@@ -59,6 +62,7 @@ class Messages::MessageBuilder
   end
 
   def process_attachments
+    attach_image unless @image.nil?
     return if @attachments.blank?
 
     @attachments.each do |uploaded_attachment|
@@ -151,5 +155,9 @@ class Messages::MessageBuilder
       in_reply_to: @in_reply_to,
       echo_id: @params[:echo_id]
     }.merge(external_created_at).merge(automation_rule_id).merge(campaign_id).merge(template_params)
+  end
+
+  def attach_image 
+    @message.image.attach(@image)
   end
 end

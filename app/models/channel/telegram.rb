@@ -86,8 +86,12 @@ class Channel::Telegram < ApplicationRecord
   end
 
   def send_message(message)
-    response = message_request(chat_id(message), message.content, reply_markup(message), reply_to_message_id(message))
-    process_error(message, response)
+    response = if message.content_type == 'input_select'
+                  message_buttons_request(message)
+               else
+                  message_request(chat_id(message), message.content, reply_markup(message), reply_to_message_id(message))
+                  process_error(message, response)
+               end
     response.parsed_response['result']['message_id'] if response.success?
   end
 
@@ -156,6 +160,60 @@ class Channel::Telegram < ApplicationRecord
                     text: text,
                     reply_markup: reply_markup,
                     reply_to_message_id: reply_to_message_id
+                  })
+  end
+
+  def message_buttons_request(message)
+    image = message.content_attributes.dig('message_payload', 'content', 'image')
+    video = message.content_attributes.dig('message_payload', 'content', 'video')
+    document = message.content_attributes.dig('message_payload', 'content', 'document')
+    chat_id = message.conversation[:additional_attributes]['chat_id']
+    text = message.content
+    reply_markup = reply_markup(message)
+
+    if image.present?
+      message_buttons_with_image_request(chat_id, text, reply_markup, image)
+    elsif video.present?
+      message_buttons_with_video_request(chat_id, text, reply_markup, video)
+    elsif document.present?
+      message_buttons_with_document_request(chat_id, text, reply_markup, document)
+    else
+      HTTParty.post("#{telegram_api_url}/sendMessage",
+                    body: {
+                      chat_id: chat_id,
+                      text: text,
+                      reply_markup: reply_markup
+                    })
+    end
+  end
+
+  def message_buttons_with_image_request(chat_id, text, reply_markup, image_url)
+    HTTParty.post("#{telegram_api_url}/sendPhoto",
+                  body: {
+                    chat_id: chat_id,
+                    caption: text,
+                    photo: image_url,
+                    reply_markup: reply_markup
+                  })
+  end
+
+  def message_buttons_with_video_request(chat_id, text, reply_markup, video_url)
+    HTTParty.post("#{telegram_api_url}/sendVideo",
+                  body: {
+                    chat_id: chat_id,
+                    caption: text,
+                    video: video_url,
+                    reply_markup: reply_markup
+                  })
+  end
+
+  def message_buttons_with_document_request(chat_id, text, reply_markup, document_url)
+    HTTParty.post("#{telegram_api_url}/sendDocument",
+                  body: {
+                    chat_id: chat_id,
+                    caption: text,
+                    document: document_url,
+                    reply_markup: reply_markup
                   })
   end
 end

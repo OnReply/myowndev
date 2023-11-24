@@ -17,7 +17,7 @@
     },
     "API": {
       "SUCCESS_MESSAGE": "AuditLogs succesvol opgehaald",
-      "ERROR_MESSAGE": "Kan geen verbinding maken met Woot Server, probeer het later opnieuw"
+      "ERROR_MESSAGE": "Kan geen verbinding maken met Social Bot Server, probeer het later opnieuw"
     },
     "DEFAULT_USER": "Systeem",
     "AUTOMATION_RULE": {

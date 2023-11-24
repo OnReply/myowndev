@@ -17,7 +17,7 @@
     },
     "API": {
       "SUCCESS_MESSAGE": "Dzienniki audytowe pomyślnie pobrane.",
-      "ERROR_MESSAGE": "Nie można połączyć się z serwerem Woot. Spróbuj ponownie później."
+      "ERROR_MESSAGE": "Nie można połączyć się z serwerem Social Bot. Spróbuj ponownie później."
     },
     "DEFAULT_USER": "System",
     "AUTOMATION_RULE": {

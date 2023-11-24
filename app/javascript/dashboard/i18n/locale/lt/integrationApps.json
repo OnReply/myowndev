@@ -24,8 +24,8 @@
       },
       "CANCEL_BUTTON_TEXT": "Atšaukti",
       "API": {
-        "SUCCESS_MESSAGE": "Webhook ištrintas sėkmingai",
-        "ERROR_MESSAGE": "Nepavyko prisijungti prie Woot serverio, bandykite dar kartą vėliau"
+        "SUCCESS_MESSAGE": "Hook deleted successfully",
+        "ERROR_MESSAGE": "Nepavyko prisijungti prieSocial Bot Serverio, bandykite dar kartą vėliau"
       }
     },
     "LIST": {
@@ -45,8 +45,8 @@
         "CANCEL": "Atšaukti"
       },
       "API": {
-        "SUCCESS_MESSAGE": "Integravimo kwebhook pridėtas sėkmingai",
-        "ERROR_MESSAGE": "Nepavyko prisijungti prie Woot serverio, bandykite dar kartą vėliau"
+        "SUCCESS_MESSAGE": "Integration hook added successfully",
+        "ERROR_MESSAGE": "Nepavyko prisijungti prieSocial Bot Serverio, bandykite dar kartą vėliau"
       }
     },
     "CONNECT": {

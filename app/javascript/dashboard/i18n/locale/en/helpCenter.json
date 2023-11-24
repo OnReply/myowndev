@@ -67,6 +67,10 @@
         "META_TAGS": {
           "LABEL": "Meta tags",
           "PLACEHOLDER": "Add meta tags separated by comma..."
+        },
+        "EMBED_VIDEO_URL": {
+          "LABEL": "Video URL",
+          "PLACEHOLDER": "Add the Link of video you want to embed to article"
         }
       },
       "BUTTONS": {
@@ -377,7 +381,7 @@
         "SLUG": {
           "LABEL": "Slug",
           "PLACEHOLDER": "Category slug for urls",
-          "HELP_TEXT": "app.chatwoot.com/hc/my-portal/en-US/categories/my-slug",
+          "HELP_TEXT": "social.social-bot.io/hc/my-portal/en-US/categories/my-slug",
           "ERROR": "Slug is required"
         },
         "DESCRIPTION": {
@@ -408,7 +412,7 @@
         "SLUG": {
           "LABEL": "Slug",
           "PLACEHOLDER": "Category slug for urls",
-          "HELP_TEXT": "app.chatwoot.com/hc/my-portal/en-US/categories/my-slug",
+          "HELP_TEXT": "social.social-bot.io/hc/my-portal/en-US/categories/my-slug",
           "ERROR": "Slug is required"
         },
         "DESCRIPTION": {

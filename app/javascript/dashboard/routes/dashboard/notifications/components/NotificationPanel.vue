@@ -169,7 +169,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch('notifications/get', { page: 1 });
+    this.$store.dispatch('notifications/get', { page: 1});
   },
   methods: {
     onPageChange(page) {

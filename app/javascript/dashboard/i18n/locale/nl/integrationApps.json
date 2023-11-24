@@ -24,8 +24,8 @@
       },
       "CANCEL_BUTTON_TEXT": "Annuleren",
       "API": {
-        "SUCCESS_MESSAGE": "Hook succesvol verwijderd",
-        "ERROR_MESSAGE": "Kan geen verbinding maken met Woot Server, probeer het later opnieuw"
+        "SUCCESS_MESSAGE": "Hook deleted successfully",
+        "ERROR_MESSAGE": "Kan geen verbinding maken metSocial Bot Server, probeer het later opnieuw"
       }
     },
     "LIST": {
@@ -45,8 +45,8 @@
         "CANCEL": "Annuleren"
       },
       "API": {
-        "SUCCESS_MESSAGE": "Integratie hook succesvol toegevoegd",
-        "ERROR_MESSAGE": "Kan geen verbinding maken met Woot Server, probeer het later opnieuw"
+        "SUCCESS_MESSAGE": "Integration hook added successfully",
+        "ERROR_MESSAGE": "Kan geen verbinding maken metSocial Bot Server, probeer het later opnieuw"
       }
     },
     "CONNECT": {

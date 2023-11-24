@@ -46,23 +46,23 @@
         "BUTTON_TEXT": "Edytuj",
         "TITLE": "Edytuj webhook",
         "API": {
-          "SUCCESS_MESSAGE": "Konfiguracja webhooka została pomyślnie zaktualizowana",
-          "ERROR_MESSAGE": "Nie można połączyć się z serwerem Woot, spróbuj ponownie później"
+          "SUCCESS_MESSAGE": "Webhook configuration updated successfully",
+          "ERROR_MESSAGE": "Nie można połączyć się zSocial Bot Server, spróbuj ponownie później"
         }
       },
       "ADD": {
         "CANCEL": "Anuluj",
         "TITLE": "Dodaj nowy webhook",
         "API": {
-          "SUCCESS_MESSAGE": "Konfiguracja webhooka została pomyślnie dodana",
-          "ERROR_MESSAGE": "Nie można połączyć się z serwerem Woot, spróbuj ponownie później"
+          "SUCCESS_MESSAGE": "Webhook configuration added successfully",
+          "ERROR_MESSAGE": "Nie można połączyć się zSocial Bot Server, spróbuj ponownie później"
         }
       },
       "DELETE": {
         "BUTTON_TEXT": "Usuń",
         "API": {
-          "SUCCESS_MESSAGE": "Webhook został pomyślnie usunięty",
-          "ERROR_MESSAGE": "Nie można połączyć się z serwerem Woot, spróbuj ponownie później"
+          "SUCCESS_MESSAGE": "Webhook został usunięty",
+          "ERROR_MESSAGE": "Nie można połączyć się zSocial Bot Server, spróbuj ponownie później"
         },
         "CONFIRM": {
           "TITLE": "Potwierdź usunięcie",

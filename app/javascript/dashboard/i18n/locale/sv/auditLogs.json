@@ -17,7 +17,7 @@
     },
     "API": {
       "SUCCESS_MESSAGE": "AuditLogs retrieved successfully",
-      "ERROR_MESSAGE": "Kunde inte ansluta till Woot Server, försök igen senare"
+      "ERROR_MESSAGE": "Kunde inte ansluta till Social Bot Server, försök igen senare"
     },
     "DEFAULT_USER": "System",
     "AUTOMATION_RULE": {

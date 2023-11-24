@@ -87,7 +87,8 @@
       "conversation_assignment": "تم تعيين المحادثة",
       "assigned_conversation_new_message": "رسالة جديدة",
       "participating_conversation_new_message": "رسالة جديدة",
-      "conversation_mention": "إشارة"
+      "conversation_mention": "إشارة",
+      "article_creation": "مقال جديد"
     }
   },
   "NETWORK": {
@@ -153,7 +154,8 @@
       "CHANGE_APPEARANCE": "Change Appearance",
       "LIGHT_MODE": "Light",
       "DARK_MODE": "Dark",
-      "SYSTEM_MODE": "System"
+      "SYSTEM_MODE": "System",
+      "OPEN_CONVERSATION": "فتح المحادثة"
     }
   },
   "DASHBOARD_APPS": {

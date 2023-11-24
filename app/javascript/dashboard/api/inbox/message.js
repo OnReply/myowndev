@@ -12,17 +12,31 @@ export const buildCreatePayload = ({
   bccEmails = '',
   toEmails = '',
   templateParams,
+  image
 }) => {
   let payload;
-  if (files && files.length !== 0) {
+  if ((files && files.length !== 0) || (image)) {
     payload = new FormData();
     if (message) {
       payload.append('content', message);
     }
-    files.forEach(file => {
-      payload.append('attachments[]', file);
-    });
-    payload.append('private', isPrivate);
+    if(files && files.length > 0){
+      files.forEach(file => {
+        payload.append('attachments[]', file);
+      });
+    }
+    if(image) {
+      payload.append('image', image)
+      // payload.append('content_attributes', contentAttributes)'
+      for(var key in templateParams) {
+        if (key == 'processed_params') continue; 
+        payload.append(`template_params[${key}]`, templateParams[key])
+      }
+      for(var key in templateParams['processed_params']) {
+        payload.append(`template_params[processed_params][${key}]`, templateParams["processed_params"][key])
+      }
+    }
+    if (isPrivate !== undefined) payload.append('private', isPrivate);
     payload.append('echo_id', echoId);
     payload.append('cc_emails', ccEmails);
     payload.append('bcc_emails', bccEmails);
@@ -64,6 +78,7 @@ class MessageApi extends ApiClient {
     bccEmails = '',
     toEmails = '',
     templateParams,
+    image
   }) {
     return axios({
       method: 'post',
@@ -78,6 +93,7 @@ class MessageApi extends ApiClient {
         bccEmails,
         toEmails,
         templateParams,
+        image
       }),
     });
   }

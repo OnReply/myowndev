@@ -280,9 +280,9 @@
     "NEW_ACCOUNT": "Nowe konto",
     "SELECTOR_SUBTITLE": "Utwórz nowe konto",
     "API": {
-      "SUCCESS_MESSAGE": "Konto zostało pomyślnie utworzone",
-      "EXIST_MESSAGE": "Konto już istnieje",
-      "ERROR_MESSAGE": "Nie można połączyć się z serwerem Woot, spróbuj ponownie później"
+      "SUCCESS_MESSAGE": "Account created successfully",
+      "EXIST_MESSAGE": "Account already exists",
+      "ERROR_MESSAGE": "Nie można połączyć się zSocial Bot Server, spróbuj ponownie później"
     },
     "FORM": {
       "NAME": {

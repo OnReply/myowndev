@@ -87,7 +87,8 @@
       "conversation_assignment": "Conversation Assigned",
       "assigned_conversation_new_message": "New Message",
       "participating_conversation_new_message": "New Message",
-      "conversation_mention": "Mention"
+      "conversation_mention": "Mention",
+      "article_creation": "New Article"
     }
   },
   "NETWORK": {
@@ -153,7 +154,8 @@
       "CHANGE_APPEARANCE": "Change Appearance",
       "LIGHT_MODE": "Light",
       "DARK_MODE": "Dark",
-      "SYSTEM_MODE": "System"
+      "SYSTEM_MODE": "System",
+      "OPEN_CONVERSATION": "Open Conversation"
     }
   },
   "DASHBOARD_APPS": {

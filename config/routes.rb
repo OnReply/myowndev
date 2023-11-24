@@ -58,6 +58,7 @@ Rails.application.routes.draw do
               post :register_facebook_page
               get :register_facebook_page
               post :facebook_pages
+              post :facebook_tokens
               post :reauthorize_page
             end
           end
@@ -147,7 +148,11 @@ Rails.application.routes.draw do
             get :response_sources, on: :member
             get :agent_bot, on: :member
             post :set_agent_bot, on: :member
+            post :refresh_token, on: :member
+            post :template, on: :member
+            post :update_profile_picture, on: :member
             delete :avatar, on: :member
+            delete :delete_template, on: :member
           end
           resources :inbox_members, only: [:create, :show], param: :inbox_id do
             collection do
@@ -369,6 +374,7 @@ Rails.application.routes.draw do
   get 'hc/:slug/:locale/categories/:category_slug', to: 'public/api/v1/portals/categories#show'
   get 'hc/:slug/:locale/categories/:category_slug/articles', to: 'public/api/v1/portals/articles#index'
   get 'hc/:slug/articles/:article_slug', to: 'public/api/v1/portals/articles#show'
+  get '/unauthorized', to: 'public#unauthorized'
 
   # ----------------------------------------------------------------------
   # Used in mailer templates
@@ -428,6 +434,7 @@ Rails.application.routes.draw do
       end
       resources :users, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
         delete :avatar, on: :member, action: :destroy_avatar
+        get :export_csv, on: :collection, action: :export_users
       end
 
       resources :access_tokens, only: [:index, :show]

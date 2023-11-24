@@ -33,8 +33,8 @@
         "SUBMIT": "Prześlij"
       },
       "API": {
-        "SUCCESS_MESSAGE": "Gotowa odpowiedź została pomyślnie dodana",
-        "ERROR_MESSAGE": "Nie można połączyć się z Woot Server, spróbuj ponownie później"
+        "SUCCESS_MESSAGE": "Gotowa odpowiedź dodana pomyślnie",
+        "ERROR_MESSAGE": "Nie można połączyć się zSocial Bot Server, spróbuj ponownie później"
       }
     },
     "EDIT": {
@@ -55,15 +55,15 @@
       },
       "BUTTON_TEXT": "Edytuj",
       "API": {
-        "SUCCESS_MESSAGE": "Gotowa odpowiedź została pomyślnie zaktualizowana",
-        "ERROR_MESSAGE": "Nie można połączyć się z Woot Server, spróbuj ponownie później"
+        "SUCCESS_MESSAGE": "Gotowa odpowiedź została zaktualizowana",
+        "ERROR_MESSAGE": "Nie można połączyć się zSocial Bot Server, spróbuj ponownie później"
       }
     },
     "DELETE": {
       "BUTTON_TEXT": "Usuń",
       "API": {
-        "SUCCESS_MESSAGE": "Gotowa odpowiedź została pomyślnie usunięta",
-        "ERROR_MESSAGE": "Nie można połączyć się z Woot Server, spróbuj ponownie później"
+        "SUCCESS_MESSAGE": "Gotowa odpowiedź została usunięta",
+        "ERROR_MESSAGE": "Nie można połączyć się zSocial Bot Server, spróbuj ponownie później"
       },
       "CONFIRM": {
         "TITLE": "Potwierdź usunięcie",

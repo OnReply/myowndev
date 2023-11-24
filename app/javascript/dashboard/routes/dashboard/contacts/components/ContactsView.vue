@@ -391,7 +391,7 @@ export default {
     },
     onExportSubmit() {
       try {
-        this.$store.dispatch('contacts/export');
+        this.$store.dispatch('contacts/export', this.label);
         this.showAlert(this.$t('EXPORT_CONTACTS.SUCCESS_MESSAGE'));
       } catch (error) {
         this.showAlert(

@@ -12,7 +12,8 @@
     <div
       v-if="showActionsDropdown"
       v-on-clickaway="closeDropdown"
-      class="dropdown-pane dropdown-pane--open mt-1 right-0 basic-filter"
+      class="dropdown-pane dropdown-pane--open basic-filter"
+      :class="direction"
     >
       <div class="items-center flex justify-between last:mt-4">
         <span class="text-slate-800 dark:text-slate-100 text-xs font-medium">{{
@@ -59,12 +60,15 @@ export default {
       showActionsDropdown: false,
       chatStatusItems: this.$t('CHAT_LIST.CHAT_STATUS_FILTER_ITEMS'),
       chatSortItems: this.$t('CHAT_LIST.CHAT_SORT_FILTER_ITEMS'),
+      direction: "ltr"
     };
   },
   computed: {
     ...mapGetters({
       chatStatusFilter: 'getChatStatusFilter',
       chatSortFilter: 'getChatSortFilter',
+      getAccount: 'accounts/getAccount',
+      currentAccountId: 'getCurrentAccountId',
     }),
     chatStatus() {
       return this.chatStatusFilter || wootConstants.STATUS_TYPE.OPEN;
@@ -79,6 +83,7 @@ export default {
       this.closeDropdown();
     },
     toggleDropdown() {
+      this.direction = new Intl.Locale(this.getAccount(this.currentAccountId).locale).textInfo.direction
       this.showActionsDropdown = !this.showActionsDropdown;
     },
     closeDropdown() {
@@ -102,5 +107,12 @@ export default {
 <style lang="scss" scoped>
 .basic-filter {
   @apply w-52 p-4 top-6;
+}
+.ltr {
+  right: 0;
+}
+
+.rtl {
+  left: 0;
 }
 </style>

@@ -138,9 +138,9 @@ export const actions = {
     }
   },
 
-  export: async ({ commit }) => {
+  export: async ({ commit }, filter_label) => {
     try {
-      await ContactAPI.exportContacts();
+      await ContactAPI.exportContacts(filter_label);
       commit(types.SET_CONTACT_UI_FLAG, { isCreating: false });
     } catch (error) {
       commit(types.SET_CONTACT_UI_FLAG, { isCreating: false });

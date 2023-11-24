@@ -86,6 +86,12 @@ class Conversation < ApplicationRecord
     ).sort_on_last_user_message_at
   }
 
+  scope :unread, -> {
+    joins(:messages)
+      .group('conversations.id')
+      .having('MAX(messages.created_at) > conversations.agent_last_seen_at OR conversations.agent_last_seen_at IS NULL')
+  }
+
   belongs_to :account
   belongs_to :inbox
   belongs_to :assignee, class_name: 'User', optional: true

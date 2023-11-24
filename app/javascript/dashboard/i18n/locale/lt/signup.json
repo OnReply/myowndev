@@ -35,8 +35,8 @@
       "ERROR": "Password doesnot match"
     },
     "API": {
-      "SUCCESS_MESSAGE": "Registracija sėkminga",
-      "ERROR_MESSAGE": "Could not connect to Woot Server, Please try again later"
+      "SUCCESS_MESSAGE": "Registration Successfull",
+      "ERROR_MESSAGE": "Could not connect to Social Bot Server, Please try again later"
     },
     "SUBMIT": "Sukurti paskyrą",
     "HAVE_AN_ACCOUNT": "Jau turi prisijungimo paskyrą?"

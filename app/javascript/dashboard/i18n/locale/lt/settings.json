@@ -280,9 +280,9 @@
     "NEW_ACCOUNT": "Nauja Paskyra",
     "SELECTOR_SUBTITLE": "Sukurti naują paskyrą",
     "API": {
-      "SUCCESS_MESSAGE": "Paskyra sukurta sėkmingai",
-      "EXIST_MESSAGE": "Paskyra jau yra",
-      "ERROR_MESSAGE": "Nepavyko prisijungti prie Woot serverio, bandykite dar kartą vėliau"
+      "SUCCESS_MESSAGE": "Account created successfully",
+      "EXIST_MESSAGE": "Account already exists",
+      "ERROR_MESSAGE": "Nepavyko prisijungti prieSocial Bot Serverio, bandykite dar kartą vėliau"
     },
     "FORM": {
       "NAME": {

@@ -11,9 +11,9 @@
       "PLACEHOLDER": "Wachtwoord"
     },
     "API": {
-      "SUCCESS_MESSAGE": "Inloggen geslaagd",
-      "ERROR_MESSAGE": "Kan geen verbinding maken met de Woot server. Probeer het opnieuw.",
-      "UNAUTH": "Gebruikersnaam of wachtwoord is onjuist. Probeer het opnieuw."
+      "SUCCESS_MESSAGE": "Login successful",
+      "ERROR_MESSAGE": "Could not connect to Social Bot Server. Please try again.",
+      "UNAUTH": "Username or password is incorrect. Please try again."
     },
     "OAUTH": {
       "GOOGLE_LOGIN": "Inloggen met Google",

@@ -55,6 +55,10 @@
   enabled: false
 - name: audit_logs
   enabled: false
+- name: ecommerece
+  enabled: false
+- name: tickets
+  enabled: false
 - name: response_bot
   enabled: false
 - name: message_reply_to

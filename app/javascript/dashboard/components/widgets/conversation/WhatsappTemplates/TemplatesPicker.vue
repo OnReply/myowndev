@@ -10,7 +10,7 @@
         class="templates__search-input"
       />
     </div>
-    <div class="template__list-container">
+    <div :class="classes">
       <div v-for="(template, i) in filteredTemplateMessages" :key="template.id">
         <button
           class="template__list-item"
@@ -21,12 +21,16 @@
               <p class="label-title">
                 {{ template.name }}
               </p>
-              <span
-                class="inline-block py-1 px-2 rounded-sm text-xs leading-none cursor-default bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100"
-              >
-                {{ $t('WHATSAPP_TEMPLATES.PICKER.LABELS.LANGUAGE') }} :
-                {{ template.language }}
-              </span>
+              <div>
+                <span class="nline-block py-1 px-2 rounded-sm text-xs leading-none cursor-default bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100">
+                  {{ $t('WHATSAPP_TEMPLATES.PICKER.LABELS.LANGUAGE') }} :
+                  {{ template.language }}
+                </span>
+                <span class="nline-block py-1 px-2 rounded-sm text-xs leading-none cursor-default bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 status-label">
+                  {{ $t('WHATSAPP_TEMPLATES.PICKER.LABELS.LANGUAGE') }} :
+                  {{ template.status }}
+                </span>
+              </div>
             </div>
             <div>
               <p class="strong">
@@ -56,13 +60,21 @@
 
 <script>
 // TODO: Remove this when we support all formats
-const formatsToRemove = ['DOCUMENT', 'IMAGE', 'VIDEO'];
+const formatsToRemove = ['DOCUMENT', 'VIDEO'];
 
 export default {
   props: {
     inboxId: {
       type: Number,
       default: undefined,
+    },
+    classes: {
+      type: String,
+      default: 'template__list-container',
+    },
+    filterTemplates: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {
@@ -73,7 +85,19 @@ export default {
   computed: {
     whatsAppTemplateMessages() {
       // TODO: Remove the last filter when we support all formats
-      return this.$store.getters['inboxes/getWhatsAppTemplates'](this.inboxId)
+      if(this.inboxId !== undefined) {
+        var filteredMessages = this.$store.getters[
+          'inboxes/getWhatsAppTemplates'
+        ](this.inboxId);
+      } else {
+        var filteredMessages = this.$store.getters[
+          'automations/getTemplates'
+        ]
+      }
+      if (!this.filterTemplates) {
+        return filteredMessages;
+      }
+      return filteredMessages
         .filter(template => template.status.toLowerCase() === 'approved')
         .filter(template => {
           return template.components.every(component => {
@@ -142,5 +166,15 @@ export default {
 
 hr {
   @apply border-b border-solid border-slate-100 dark:border-slate-700 my-2.5 mx-auto max-w-[95%];
+}
+
+.max-h-full {
+  max-height: 100% !important;
+}
+
+.status-label {
+  border-radius: 12px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 </style>

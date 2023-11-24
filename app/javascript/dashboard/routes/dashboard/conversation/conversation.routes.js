@@ -129,6 +129,13 @@ export default {
       props: () => ({ conversationType: 'unattended' }),
     },
     {
+      path: frontendURL('accounts/:accountId/unread/conversations'),
+      name: 'conversation_unread',
+      roles: ['administrator', 'agent'],
+      component: ConversationView,
+      props: () => ({ conversationType: 'unread' }),
+    },
+    {
       path: frontendURL(
         'accounts/:accountId/unattended/conversations/:conversationId'
       ),

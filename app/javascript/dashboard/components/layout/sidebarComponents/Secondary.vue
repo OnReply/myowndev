@@ -118,6 +118,8 @@ export default {
             type: inbox.channel_type,
             phoneNumber: inbox.phone_number,
             reauthorizationRequired: inbox.reauthorization_required,
+            provider: inbox.provider,
+            provider_config: inbox.provider_config,
           }))
           .sort((a, b) =>
             a.label.toLowerCase() > b.label.toLowerCase() ? 1 : -1

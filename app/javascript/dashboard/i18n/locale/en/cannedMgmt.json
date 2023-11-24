@@ -29,8 +29,8 @@
         "SUBMIT": "Submit"
       },
       "API": {
-        "SUCCESS_MESSAGE": "Canned response added successfully.",
-        "ERROR_MESSAGE": "Could not connect to Woot server. Please try again."
+        "SUCCESS_MESSAGE": "Canned Response added successfully",
+        "ERROR_MESSAGE": "Could not connect to Social Bot Server, Please try again later"
       }
     },
     "EDIT": {
@@ -51,15 +51,15 @@
       },
       "BUTTON_TEXT": "Edit",
       "API": {
-        "SUCCESS_MESSAGE": "Canned response is updated successfully.",
-        "ERROR_MESSAGE": "Could not connect to Woot server. Please try again."
+        "SUCCESS_MESSAGE": "Canned Response updated successfully",
+        "ERROR_MESSAGE": "Could not connect to Social Bot Server, Please try again later"
       }
     },
     "DELETE": {
       "BUTTON_TEXT": "Delete",
       "API": {
-        "SUCCESS_MESSAGE": "Canned response deleted successfully.",
-        "ERROR_MESSAGE": "Could not connect to Woot server. Please try again."
+        "SUCCESS_MESSAGE": "Canned response deleted successfully",
+        "ERROR_MESSAGE": "Could not connect to Social Bot Server, Please try again later"
       },
       "CONFIRM": {
         "TITLE": "Confirm deletion",

@@ -17,6 +17,82 @@ class AgentBots::ValidateBotService
       id: agent_bot[:name],
       name: agent_bot[:name],
       default_flow: 'Default',
+      custom_components: {
+        "WhatsappProducts": {
+          "params": [
+            {
+              "catalog_id": {
+                "required": true,
+                "type": "String",
+              }
+            },
+            {
+              "header": {
+                "required": true,
+                "type": "String",
+              }
+            },
+            {
+              "products": {
+                "required": true,
+                "type": "Array",
+              }
+            },
+            {
+              "content": {
+                "required": true,
+                "type": "String",
+              }
+            },
+            {
+              "footer": {
+                "required": false,
+                "type": "String",
+              }
+            },
+          ]
+        },
+        "TransferTeam": {
+          "params": [
+            {
+              "id": {
+                "required": true,
+                "type": "String",
+              }
+            }
+          ]
+        },
+        "TransferAgent": {
+          "params": [
+            {
+              "id": {
+                "required": true,
+                "type": "String",
+              }
+            }
+          ]
+        },
+        "AddLabels": {
+          "params": [
+            {
+              "value": {
+                "required": true,
+                "type": "Array",
+              }
+            }
+          ]
+        },
+        "RemoveLabels": {
+          "params": [
+            {
+              "value": {
+                "required": true,
+                "type": "Array",
+              }
+            }
+          ]
+        },
+      },
       flows: [
         {
           id: SecureRandom.uuid,

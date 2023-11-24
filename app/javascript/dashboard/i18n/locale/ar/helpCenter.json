@@ -67,6 +67,10 @@
         "META_TAGS": {
           "LABEL": "علامات الوصف",
           "PLACEHOLDER": "إضافة وسوم ميتا مفصولة بفاصلة..."
+        },
+        "EMBED_VIDEO_URL": {
+          "LABEL": "رابط الفيديو",
+          "PLACEHOLDER": "أضف رابط الفيديو الذي ترغب في تضمينه في المقال"
         }
       },
       "BUTTONS": {
@@ -371,7 +375,7 @@
         "SLUG": {
           "LABEL": "Slug",
           "PLACEHOLDER": "Category slug for urls",
-          "HELP_TEXT": "app.chatwoot.com/hc/my-portal/en-US/categories/my-slug",
+          "HELP_TEXT": "social.social-bot.io/hc/my-portal/en-US/categories/my-slug",
           "ERROR": "Slug is required"
         },
         "DESCRIPTION": {
@@ -402,7 +406,7 @@
         "SLUG": {
           "LABEL": "Slug",
           "PLACEHOLDER": "Category slug for urls",
-          "HELP_TEXT": "app.chatwoot.com/hc/my-portal/en-US/categories/my-slug",
+          "HELP_TEXT": "social.social-bot.io/hc/my-portal/en-US/categories/my-slug",
           "ERROR": "Slug is required"
         },
         "DESCRIPTION": {

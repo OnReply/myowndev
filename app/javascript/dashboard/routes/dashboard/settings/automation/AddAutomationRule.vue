@@ -74,6 +74,9 @@
                 getCustomAttributeType(automation.conditions[i].attribute_key)
               "
               :v="$v.automation.conditions.$each[i]"
+              :has-whatsapp-action="automation.actions.some(action => action.action_name === 'send_whatsapp_template') "
+              :should-disable="shouldDisable(i,automation.conditions[i].attribute_key)"
+              :is-event-message-created="automation.event_name == 'message_created'"
               @resetFilter="resetFilter(i, automation.conditions[i])"
               @removeFilter="removeFilter(i)"
             />
@@ -111,8 +114,10 @@
                 showActionInput(automation.actions[i].action_name)
               "
               :v="$v.automation.actions.$each[i]"
+              @changeImage="changeImage"
               @resetAction="resetAction(i)"
               @removeAction="removeAction(i)"
+              @addWhatsappDefaultCondition="addWhatsappDefaultCondition()"
             />
             <div class="mt-4">
               <woot-button
@@ -182,12 +187,12 @@ export default {
         event_name: 'conversation_created',
         conditions: [
           {
-            attribute_key: 'status',
-            filter_operator: 'equal_to',
-            values: '',
-            query_operator: 'and',
-            custom_attribute_type: '',
-          },
+            attribute_key: "status",
+            custom_attribute_type: "",
+            filter_operator: "equal_to",
+            query_operator: "and",
+            values: ""
+          }
         ],
         actions: [
           {
@@ -199,7 +204,25 @@ export default {
       showDeleteConfirmationModal: false,
       allCustomAttributes: [],
       mode: 'create',
+      image: null,
     };
+  },
+  created() {
+    const isFeatureEnabledonAccount = this.$store.getters['accounts/isFeatureEnabledonAccount'];
+    const id = this.$store.getters['getCurrentAccountId'];
+    const ecomActions = 
+    [
+      {
+        key: 'close_conversation',
+        label: 'Close Conversation',
+        inputType: null,
+      }
+    ]
+    const lastObject = this.automationActionTypes[this.automationActionTypes.length - 1];
+    if( isFeatureEnabledonAccount(id, 'ecommerece') && lastObject.key !== 'close_conversation' )
+    {
+      this.automationActionTypes.push(...ecomActions)
+    }
   },
   computed: {
     hasAutomationMutated() {

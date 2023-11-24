@@ -24,8 +24,8 @@
       },
       "CANCEL_BUTTON_TEXT": "Anuluj",
       "API": {
-        "SUCCESS_MESSAGE": "Hook został pomyślnie usunięty",
-        "ERROR_MESSAGE": "Nie można połączyć się z serwerem Woot, spróbuj ponownie później"
+        "SUCCESS_MESSAGE": "Hook deleted successfully",
+        "ERROR_MESSAGE": "Nie można połączyć się zSocial Bot Server, spróbuj ponownie później"
       }
     },
     "LIST": {
@@ -45,8 +45,8 @@
         "CANCEL": "Anuluj"
       },
       "API": {
-        "SUCCESS_MESSAGE": "Hook integracyjny został pomyślnie dodany",
-        "ERROR_MESSAGE": "Nie można połączyć się z serwerem Woot, spróbuj ponownie później"
+        "SUCCESS_MESSAGE": "Integration hook added successfully",
+        "ERROR_MESSAGE": "Nie można połączyć się zSocial Bot Server, spróbuj ponownie później"
       }
     },
     "CONNECT": {

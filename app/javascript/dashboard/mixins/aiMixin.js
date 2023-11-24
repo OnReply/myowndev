@@ -16,9 +16,17 @@ export default {
       replyMode: 'draftMessages/getReplyEditorMode',
     }),
     aiIntegration() {
-      return this.appIntegrations.find(
+      const integration = this.appIntegrations.find(
         integration => integration.id === 'openai' && !!integration.hooks.length
-      ).hooks[0];
+      );
+      
+      let firstHook = null;
+      
+      if (integration && integration.hooks && integration.hooks.length > 0) {
+        // If 'integration' exists, 'hooks' exists, and 'hooks' has at least one element
+        firstHook = integration.hooks[0];
+      }
+      return firstHook
     },
     isAIIntegrationEnabled() {
       return !!this.aiIntegration;
