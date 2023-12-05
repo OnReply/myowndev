@@ -24,6 +24,7 @@ class Whatsapp::IncomingMessageBaseService
 
     cache_message_source_id_in_redis
     set_contact
+    return if @contact.blocked?
     return unless @contact
 
     set_conversation
