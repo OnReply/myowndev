@@ -13,6 +13,7 @@ class Line::IncomingMessageService
     return if line_contact_info['userId'].blank?
 
     set_contact
+    return if @contact.blocked?
     set_conversation
     parse_events
   end
