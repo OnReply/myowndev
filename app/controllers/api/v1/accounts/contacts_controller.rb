@@ -149,7 +149,7 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
   end
 
   def permitted_params
-    params.permit(:name, :identifier, :email, :phone_number, :avatar, :avatar_url, additional_attributes: {}, custom_attributes: {})
+    params.permit(:name, :identifier, :email, :phone_number, :avatar, :avatar_url, :blocked ,additional_attributes: {}, custom_attributes: {})
   end
 
   def contact_custom_attributes

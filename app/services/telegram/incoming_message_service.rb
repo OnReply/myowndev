@@ -11,6 +11,7 @@ class Telegram::IncomingMessageService
     return unless private_message?
 
     set_contact
+    return if @contact.blocked?
     update_contact_avatar
     set_conversation
     @message = @conversation.messages.build(

@@ -132,6 +132,28 @@
           :disabled="uiFlags.isDeleting"
           @click="toggleDeleteModal"
         />
+        <woot-button
+          v-if="isAdmin && !JSON.parse(contact.blocked)"
+          v-tooltip="$t('BLOCK_CONTACT.BUTTON_LABEL')"
+          :title="$t('BLOCK_CONTACT.BUTTON_LABEL')"
+          icon="block"
+          variant="smooth"
+          size="small"
+          color-scheme="alert"
+          :disabled="uiFlags.isDeleting"
+          @click="toggleBlockModal"
+        />
+        <woot-button
+          v-if="isAdmin && JSON.parse(contact.blocked)"
+          v-tooltip="$t('UNBLOCK_CONTACT.BUTTON_LABEL')"
+          :title="$t('UNBLOCK_CONTACT.BUTTON_LABEL')"
+          icon="block"
+          variant="smooth"
+          size="small"
+          color-scheme="secondary"
+          :disabled="uiFlags.isDeleting"
+          @click="toggleBlockModal"
+        />
       </div>
       <edit-contact
         v-if="showEditModal"
@@ -162,6 +184,17 @@
       :message-value="confirmDeleteMessage"
       :confirm-text="$t('DELETE_CONTACT.CONFIRM.YES')"
       :reject-text="$t('DELETE_CONTACT.CONFIRM.NO')"
+    />
+    <woot-delete-modal
+      v-if="showBlockModal"
+      :show.sync="showBlockModal"
+      :on-close="closeDelete"
+      :on-confirm="toggleBlock"
+      :title="JSON.parse(contact.blocked)? $t('UNBLOCK_CONTACT.CONFIRM.TITLE') : $t('BLOCK_CONTACT.CONFIRM.TITLE')"
+      :message="JSON.parse(contact.blocked)? $t('UNBLOCK_CONTACT.CONFIRM.MESSAGE') : $t('BLOCK_CONTACT.CONFIRM.MESSAGE')"
+      :message-value="confirmDeleteMessage"
+      :confirm-text="JSON.parse(contact.blocked)? $t('UNBLOCK_CONTACT.CONFIRM.YES') : $t('BLOCK_CONTACT.CONFIRM.YES')"
+      :reject-text="JSON.parse(contact.blocked)? $t('UNBLOCK_CONTACT.CONFIRM.NO') : $t('BLOCK_CONTACT.CONFIRM.NO')"
     />
   </div>
 </template>
@@ -223,6 +256,7 @@ export default {
       showConversationModal: false,
       showMergeModal: false,
       showDeleteModal: false,
+      showBlockModal: false
     };
   },
   computed: {
@@ -276,6 +310,9 @@ export default {
     toggleDeleteModal() {
       this.showDeleteModal = !this.showDeleteModal;
     },
+    toggleBlockModal() {
+      this.showBlockModal = !this.showBlockModal
+    },
     confirmDeletion() {
       this.deleteContact(this.contact);
       this.closeDelete();
@@ -284,6 +321,7 @@ export default {
       this.showDeleteModal = false;
       this.showConversationModal = false;
       this.showEditModal = false;
+      this.showBlockModal = false;
     },
     findCountryFlag(countryCode, cityAndCountry) {
       try {
@@ -315,6 +353,21 @@ export default {
             : this.$t('DELETE_CONTACT.API.ERROR_MESSAGE')
         );
       }
+    },
+    async toggleBlock() {
+      try {
+        await this.$store.dispatch('contacts/update', {id: this.contact.id, blocked: !JSON.parse(this.contact.blocked)});
+        this.$emit('panel-close');
+        this.showAlert(this.$t('DELETE_CONTACT.API.SUCCESS_MESSAGE'));
+
+      } catch (error) {
+        this.showAlert(
+          error.message
+            ? error.message
+            : this.$t('DELETE_CONTACT.API.ERROR_MESSAGE')
+        );
+      }
+      this.toggleBlockModal()
     },
     openMergeModal() {
       this.toggleMergeModal();

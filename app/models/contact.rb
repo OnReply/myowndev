@@ -6,6 +6,7 @@
 #
 #  id                    :integer          not null, primary key
 #  additional_attributes :jsonb
+#  blocked               :boolean          default(FALSE)
 #  custom_attributes     :jsonb
 #  email                 :string
 #  identifier            :string
