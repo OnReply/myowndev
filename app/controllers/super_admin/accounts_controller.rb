@@ -65,4 +65,25 @@ class SuperAdmin::AccountsController < SuperAdmin::ApplicationController
     redirect_back(fallback_location: [namespace, requested_resource], notice: 'Account deletion is in progress.')
     # rubocop:enable Rails/I18nLocaleTexts
   end
+
+  def export_accounts
+    @accounts = Account.all # You can customize this query as needed
+
+    respond_to do |format|
+      format.csv do
+        headers['Content-Type'] = 'text/csv'
+        headers['Content-Disposition'] = 'attachment; filename="accounts.csv"'
+
+        csv_data = CSV.generate do |csv|
+          csv << ['ID', 'Name', 'Locale', 'Users', 'Conversations', 'Status'] # Add headers
+          @accounts.each do |account|
+            csv << [ account.id , account.name, account.locale, account.users.size, account.conversations.size, account.status] # Add user data
+            
+          end
+        end
+
+        render plain: csv_data
+      end
+    end
+  end
 end

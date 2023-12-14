@@ -197,7 +197,7 @@ export default {
     [
       {
         key: 'close_conversation',
-        label: 'Close Conversation',
+        label: 'Close Conversation after 24 hours',
         inputType: null,
       }
     ]
