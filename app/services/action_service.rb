@@ -21,6 +21,10 @@ class ActionService
     @conversation.open!
   end
 
+  def pending_conversation(_params)
+    @conversation.pending!
+  end
+
   def change_status(status)
     @conversation.update!(status: status[0])
   end

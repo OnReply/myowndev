@@ -109,6 +109,11 @@ export const AUTOMATIONS = {
         attributeI18nKey: 'RESOLVE_CONVERSATION',
       },
       {
+        key: 'pending_conversation',
+        name: 'Pending conversation',
+        attributeI18nKey: 'PENDING_CONVERSATION',
+      },
+      {
         key: 'send_webhook_event',
         name: 'Send Webhook Event',
         attributeI18nKey: 'SEND_WEBHOOK_EVENT',
@@ -122,12 +127,7 @@ export const AUTOMATIONS = {
         key: 'send_whatsapp_template',
         name: 'Send Whatsapp Template',
         attributeI18nKey: 'SEND_WHATSAPP_TEMPLATE',
-      },
-      {
-        key: 'remove_label',
-        name: 'Remove a label',
-        attributeI18nKey: 'REMOVE_LABEL',
-      },
+      }
     ],
   },
   conversation_created: {
@@ -253,6 +253,11 @@ export const AUTOMATIONS = {
         key: 'open_conversation',
         name: 'Open conversation',
         attributeI18nKey: 'OPEN_CONVERSATION',
+      },
+      {
+        key: 'pending_conversation',
+        name: 'Pending conversation',
+        attributeI18nKey: 'PENDING_CONVERSATION',
       },
       {
         key: 'send_webhook_event',
@@ -405,6 +410,11 @@ export const AUTOMATIONS = {
         attributeI18nKey: 'OPEN_CONVERSATION',
       },
       {
+        key: 'pending_conversation',
+        name: 'Pending conversation',
+        attributeI18nKey: 'PENDING_CONVERSATION',
+      },
+      {
         key: 'send_webhook_event',
         name: 'Send Webhook Event',
         attributeI18nKey: 'SEND_WEBHOOK_EVENT',
@@ -543,6 +553,11 @@ export const AUTOMATIONS = {
         attributeI18nKey: 'OPEN_CONVERSATION',
       },
       {
+        key: 'pending_conversation',
+        name: 'Pending conversation',
+        attributeI18nKey: 'PENDING_CONVERSATION',
+      },
+      {
         key: 'send_webhook_event',
         name: 'Send Webhook Event',
         attributeI18nKey: 'SEND_WEBHOOK_EVENT',
@@ -624,6 +639,11 @@ export const AUTOMATION_ACTION_TYPES = [
   {
     key: 'open_conversation',
     label: 'Open conversation',
+    inputType: null,
+  },
+  {
+    key: 'pending_conversation',
+    label: 'Pending conversation',
     inputType: null,
   },
   {
