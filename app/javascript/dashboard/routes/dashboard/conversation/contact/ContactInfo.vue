@@ -358,13 +358,15 @@ export default {
       try {
         await this.$store.dispatch('contacts/update', {id: this.contact.id, blocked: !JSON.parse(this.contact.blocked)});
         this.$emit('panel-close');
-        this.showAlert(this.$t('DELETE_CONTACT.API.SUCCESS_MESSAGE'));
+        this.showAlert(JSON.parse(this.contact.blocked)? this.$t('BLOCK_CONTACT.API.SUCCESS_MESSAGE') : this.$t('UNBLOCK_CONTACT.API.SUCCESS_MESSAGE'));
 
       } catch (error) {
         this.showAlert(
           error.message
             ? error.message
-            : this.$t('DELETE_CONTACT.API.ERROR_MESSAGE')
+            : JSON.parse(this.contact.blocked) 
+              ? this.$t('BLOCK_CONTACT.API.ERROR_MESSAGE') 
+              : this.$t('UNBLOCK_CONTACT.API.ERROR_MESSAGE')
         );
       }
       this.toggleBlockModal()
