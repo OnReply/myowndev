@@ -132,6 +132,7 @@ class Contact < ApplicationRecord
       name: name,
       phone_number: phone_number,
       thumbnail: avatar_url,
+      blocked: blocked,
       type: 'contact'
     }
   end
